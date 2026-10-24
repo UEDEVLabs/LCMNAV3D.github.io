@@ -77,7 +77,8 @@
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
-   "operatingSystem": "Windows, PlayStation 5, Xbox Series X|S",
+   "softwareVersion": "3.6.0",
+   "operatingSystem": "Windows, macOS, Linux, Android, iOS, PlayStation 5, Xbox Series X|S",
    "softwareRequirements": "Unreal Engine 5.2 to 5.8",
    "url": "https://lcmnav3d.github.io/",
    "downloadUrl": "https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73",
@@ -88,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU voxelization with automatic CPU fallback, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -98,7 +99,9 @@
    },
    "featureList": [
     "Sparse voxel octree 3D pathfinding",
-    "GPU voxelization with automatic CPU fallback",
+    "GPU-built voxelization, octrees and links, verified on each machine, with a CPU voxelizer for a GPU that fails its checks",
+    "Fly To predicts moving obstacles and times its pass",
+    "Behaviour nodes: Engage, Investigate, Flee, Scan Area, Perch, Land and Take Off",
     "Asynchronous pathfinding off the game thread",
     "Deterministic results for replays, lockstep multiplayer and automated tests",
     "Mass Entity ECS crowds at 10,000+ agents with LOD-culled rendering",
@@ -110,6 +113,7 @@
     "Behavior Tree and StateTree tasks",
     "Gameplay Debugger integration",
     "Setup wizard, health check and auto-tuner editor tooling",
+    "57 free demo levels and 8 Feature Examples levels, downloaded from inside the editor",
     "Complete C++ source, fully Blueprint exposed"
    ]
   },
@@ -171,8 +175,8 @@
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
    },
-   "datePublished": "2026-09-26",
-   "dateModified": "2026-09-26",
+   "datePublished": "2026-10-24",
+   "dateModified": "2026-10-24",
    "proficiencyLevel": "Beginner",
    "dependencies": "Unreal Engine 5.2 to 5.8"
   }
@@ -183,7 +187,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="top">
  <button id="burger" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidenav">&#9776;</button>
- <a class="mark" href="index.html"><img src="logo.png" alt="" width="49" height="60"> LCM Nav3D</a>
+ <a class="mark" href="index.html"><img src="logo.png" alt="" width="49" height="60"> LCM Nav3D</a><span class="ver" title="This documentation describes LCM Nav3D 3.6.0">v3.6.0</span>
  <span class="sp"></span>
  <a class="cta cta--demo" href="https://uedevlabs.itch.io/lcm-3d-navigation">Free demo</a>
  <a class="cta" href="https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73">Get it on Fab</a>
@@ -195,7 +199,7 @@
   <p id="q-status" class="visually-hidden" role="status" aria-live="polite"></p>
   <h4>Start here</h4>
   <a href="index.html" data-slug="index">Overview</a>
-  <a href="whats-new.html" data-slug="whats-new">What's new in 3.4.1</a>
+  <a href="whats-new.html" data-slug="whats-new">What's new in 3.6</a>
   <a href="nav3d-vs-recast.html" data-slug="nav3d-vs-recast">Nav3D vs Recast</a>
   <h4>Getting started</h4>
   <a href="installation.html" data-slug="installation" class="on" aria-current="page">Installation</a>
@@ -203,6 +207,7 @@
   <a href="your-first-flying-agent.html" data-slug="your-first-flying-agent">Your first flying agent</a>
   <a href="statetree-agent.html" data-slug="statetree-agent">The same agent in StateTree</a>
   <a href="dynamic-obstacles.html" data-slug="dynamic-obstacles">Dynamic obstacles</a>
+  <a href="feature-examples.html" data-slug="feature-examples">Feature Examples levels</a>
   <h4>Going further</h4>
   <a href="mass-entity-crowds.html" data-slug="mass-entity-crowds">Mass Entity crowds</a>
   <a href="tactical-eqs.html" data-slug="tactical-eqs">Tactical EQS in true 3D</a>
@@ -213,6 +218,7 @@
   <a href="small-worlds.html" data-slug="small-worlds">Small worlds</a>
   <a href="fly-to-location.html" data-slug="fly-to-location">Fly To Location node</a>
   <a href="stock-navigation.html" data-slug="stock-navigation">Stock Move To and EQS</a>
+  <a href="behaviour-nodes.html" data-slug="behaviour-nodes">Behaviour nodes</a>
   <h4>Behaviour Tree patterns</h4>
   <a href="bt-wait.html" data-slug="bt-wait">Wait</a>
   <a href="bt-is-at-location.html" data-slug="bt-is-at-location">Is At Location</a>
@@ -231,71 +237,86 @@
  </nav>
  <main id="content">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-i-getting-started">Getting Started</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Installation</span></nav>
-  <h1 id="tutorial-01-installation">Tutorial 01: Installation</h1>
-<p><strong>TL;DR:</strong> Put the plugin in
-<code>YourProject/Plugins/LCMNav3D/</code>, open the project and let it
-compile, enable <strong>Show Plugin Content</strong> in the Content
-Browser, then open a demo map and press Play. If the demo map works,
-your install is good.</p>
-<p><strong>Time:</strong> ~10 minutes (plus one compile).</p>
+<h1 id="tutorial-01-installation">Tutorial 01: Installation
+</h1>
+<p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
+<p><strong>TL;DR:</strong> Put the plugin in <code>YourProject/Plugins/LCMNav3D/</code>, open the project and let it compile, enable <strong>Show Plugin Content</strong> in the Content Browser, then open the <strong>QuickStart</strong> level and press Play. If its displays pass, your install is good. The demo levels are a free download from the <strong>LCM Nav3D</strong> menu.
+</p>
+<p><strong>Time:</strong> ~10 minutes (plus one compile).
+</p>
 <hr />
-<h2 id="before-you-start">Before you start</h2>
+<h2 id="before-you-start">Before you start
+</h2>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
 <tr>
-<th>Requirement</th>
-<th>Detail</th>
+<th>Requirement
+</th>
+<th>Detail
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Unreal Engine</strong></td>
-<td>5.2 to 5.8</td>
+<td><strong>Unreal Engine</strong>
+</td>
+<td>5.2 to 5.8
+</td>
 </tr>
 <tr>
-<td><strong>Platform</strong></td>
-<td>Windows 64-bit or Linux</td>
+<td><strong>Platform</strong>
+</td>
+<td>Windows 64-bit or Linux
+</td>
 </tr>
 <tr>
-<td><strong>Project type</strong></td>
-<td><strong>C++ project</strong> for a manual install (see below)</td>
+<td><strong>Project type</strong>
+</td>
+<td><strong>C++ project</strong> for a manual install (see below)
+</td>
 </tr>
 <tr>
-<td><strong>Compiler</strong></td>
-<td>Visual Studio 2022 with the <em>Game development with C++</em>
-workload (Windows)</td>
+<td><strong>Compiler</strong>
+</td>
+<td>Visual Studio 2022 with the <em>Game development with C++</em> workload (Windows)
+</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The plugin ships as source, so something has to compile it once.
-Which "something" depends on how you install it.</p>
+<p>The plugin ships as source, so something has to compile it once. Which "something" depends on how you install it.
+</p>
 <hr />
-<h2 id="method-a-installed-from-fab--epic-games-launcher">Method A:
-Installed from Fab / Epic Games Launcher</h2>
-<p>This is the simplest path and works with <strong>Blueprint-only
-projects</strong>.</p>
+<h2 id="method-a-installed-from-fab--epic-games-launcher">Method A: Installed from Fab / Epic Games Launcher
+</h2>
+<p>This is the simplest path and works with <strong>Blueprint-only projects</strong>.
+</p>
 <ol type="1">
-<li>Install the plugin from the Launcher's <strong>Library → Fab
-Library</strong> section. It lands in
-<code>&lt;Engine&gt;/Plugins/Marketplace/LCMNav3D/</code> and is already
-compiled for that engine version.</li>
-<li>Open your project.</li>
-<li><strong>Edit → Plugins</strong>, search "LCM Nav3D", tick
-<strong>Enabled</strong> if it isn't already.</li>
-<li>Restart the editor when prompted.</li>
+<li>Install the plugin from the Launcher's <strong>Library → Fab Library</strong> section. It lands in <code>&lt;Engine&gt;/Plugins/Marketplace/LCMNav3D/</code> and is already compiled for that engine version.
+</li>
+<li>Open your project.
+</li>
+<li><strong>Edit → Plugins</strong>, search "LCM Nav3D", tick <strong>Enabled</strong> if it isn't already.
+</li>
+<li>Restart the editor when prompted.
+</li>
 </ol>
-<p>Skip to <a href="#verify-the-install">Verify the install</a>.</p>
+<p>Skip to <a href="#verify-the-install">Verify the install</a>.
+</p>
 <hr />
-<h2 id="method-b-manual-install-into-your-project">Method B: Manual
-install into your project</h2>
-<p>Use this when you have the plugin as a folder (for example from a
-direct purchase or a version you re-targeted yourself).</p>
+<h2 id="method-b-manual-install-into-your-project">Method B: Manual install into your project
+</h2>
+<p>Use this when you have the plugin as a folder (for example from a direct purchase or a version you re-targeted yourself).
+</p>
 <ol type="1">
-<li><p>Close the editor.</p></li>
-<li><p>Copy the <code>LCMNav3D</code> folder into your project so the
-layout is:</p>
+<li>
+<p>Close the editor.
+</p>
+</li>
+<li>
+<p>Copy the <code>LCMNav3D</code> folder into your project so the layout is:
+</p>
 <pre><code>YourProject/
   YourProject.uproject
   Plugins/
@@ -304,132 +325,141 @@ layout is:</p>
       Source/
       Content/
       Config/
-      Shaders/</code></pre></li>
+      Shaders/</code></pre>
+</li>
 </ol>
 <blockquote>
-<p>Create the <code>Plugins</code> folder if your project doesn't have
-one. The folder must be named exactly <code>LCMNav3D</code>, because the
-content mount <code>/LCMNav3D/</code> depends on it.</p>
+<p>Create the <code>Plugins</code> folder if your project doesn't have one. The folder must be named exactly <code>LCMNav3D</code>, because the content mount <code>/LCMNav3D/</code> depends on it.
+</p>
 </blockquote>
 <ol start="3" type="1">
-<li><p><strong>If your project is Blueprint-only, convert it to C++
-first.</strong> A Blueprint-only project has no build pipeline and
-cannot compile a source plugin. The easiest conversion: <strong>Tools →
-New C++ Class → None → Create Class</strong>. The editor generates a
-<code>Source/</code> folder and restarts. You never have to write any
-C++ afterwards.</p></li>
-<li><p>Right-click <code>YourProject.uproject</code> → <strong>Generate
-Visual Studio project files</strong>.</p></li>
-<li><p>Open the generated <code>.sln</code> and build
-<strong>Development Editor | Win64</strong>, or open the
-<code>.uproject</code> and click <strong>Yes</strong> when the editor
-offers to rebuild.</p></li>
-<li><p>The plugin is <code>EnabledByDefault</code>, so it turns itself
-on. Confirm under <strong>Edit → Plugins</strong>.</p></li>
+<li>
+<p><strong>If your project is Blueprint-only, convert it to C++ first.</strong> A Blueprint-only project has no build pipeline and cannot compile a source plugin. The easiest conversion: <strong>Tools → New C++ Class → None → Create Class</strong>. The editor generates a <code>Source/</code> folder and restarts. You never have to write any C++ afterwards.
+</p>
+</li>
+<li>
+<p>Right-click <code>YourProject.uproject</code> → <strong>Generate Visual Studio project files</strong>.
+</p>
+</li>
+<li>
+<p>Open the generated <code>.sln</code> and build <strong>Development Editor | Win64</strong>, or open the <code>.uproject</code> and click <strong>Yes</strong> when the editor offers to rebuild.
+</p>
+</li>
+<li>
+<p>The plugin is <code>EnabledByDefault</code>, so it turns itself on. Confirm under <strong>Edit → Plugins</strong>.
+</p>
+</li>
 </ol>
 <hr />
-<h2 id="verify-the-install">Verify the install</h2>
-<p>Do all three of these. Each one catches a different kind of
-failure.</p>
-<h3 id="1-the-plugin-loaded">1. The plugin loaded</h3>
-<p><strong>Edit → Plugins → AI Navigation</strong> category. You should
-see <strong>LCM Nav3D</strong>, enabled, version 3.3.0.</p>
-<h3 id="2-you-can-see-the-plugins-content">2. You can see the plugin's
-content</h3>
-<p>Plugin content is hidden by default in the Content Browser:</p>
-<p><strong>Content Browser → Settings (the gear icon) → tick "Show
-Plugin Content".</strong></p>
-<p>A <strong>LCM Nav3D Content</strong> folder appears in the tree.
-Without this you will not find any demo map, and it is by far the most
-common "the plugin didn't install" false alarm.</p>
-<h3 id="3-a-demo-map-actually-runs">3. A demo map actually runs</h3>
-<p>Open
-<strong><code>LCM Nav3D Content → Demo → BehaviourTree → InfniteMaps → Vertical_Skyscraper_BT</code></strong>
-and press <strong>Play</strong>.</p>
-<p>You should see agents flying through the building: over floors,
-through gaps, not along the ground. Give it a second or two on first
-play: the navigation volume builds at <code>BeginPlay</code>.</p>
+<h2 id="verify-the-install">Verify the install
+</h2>
+<p>Do these in order. Each one catches a different kind of failure.
+</p>
+<h3 id="1-the-plugin-loaded">1. The plugin loaded
+</h3>
+<p><strong>Edit → Plugins → AI Navigation</strong> category. You should see <strong>LCM Nav3D</strong>, enabled, version 3.6.0.
+</p>
+<h3 id="2-get-the-demo-levels-optional">2. Get the demo levels (optional)
+</h3>
+<p>The demo levels, their art and the demo menu are a free download, <strong>LCM Nav3D Samples</strong> (about 0.9 GB to download, 1.3 GB installed). Your game does not need them.
+</p>
+<ul>
+<li><strong>To install them:</strong> <strong>LCM Nav3D</strong> toolbar menu → <strong>Get the Demo Levels (free)...</strong> (or <strong>Demo Levels (free)</strong> on the Welcome screen) → <strong>Download and Install</strong>. The window shows the progress; you can pause, resume or cancel, and an interrupted download resumes where it stopped. Every file is checked before it is installed, into <code>YourProject/Plugins/LCMNav3DSamples</code>. When it finishes, <strong>Open the Demo Menu</strong>.
+</li>
+<li><strong>Updates and removal:</strong> the same window offers a newer version when one is published, and <strong>Remove Samples</strong>. Both finish when the editor next starts. Nothing in LCM Nav3D refers to the samples.
+</li>
+</ul>
+<h3 id="3-you-can-see-the-demo-content">3. You can see the demo content
+</h3>
+<p>Plugin content is hidden by default in the Content Browser:
+</p>
+<p><strong>Content Browser → Settings (the gear icon) → tick "Show Plugin Content".</strong>
+</p>
+<p>An <strong>LCM Nav3D Content</strong> folder appears in the tree (and <strong>LCM Nav3D Samples Content</strong> once the demo levels are installed). Without this you will not find the QuickStart level or any demo map, and it is by far the most common "the plugin didn't install" false alarm.
+</p>
+<h3 id="4-a-level-actually-runs">4. A level actually runs
+</h3>
+<p>Open <strong><code>LCM Nav3D Content → QuickStart → QuickStart</code></strong> (or <strong>QuickStart Level</strong> on the Welcome screen) and press <strong>Play</strong>. Walk up to a display to start it: an agent flies over and under obstacles, a large and a small agent take different routes, a patrol loops, and a Blueprint queries paths. Each display reads <strong>PASSED</strong> when what it checks holds; <strong>O</strong> shows the planned routes.
+</p>
+<p>With the demo levels installed, open <strong><code>LCM Nav3D Samples Content → Demo → MainMenu</code></strong>, press <strong>Play</strong> and pick a level.
+</p>
 <blockquote>
-<p><strong><code>Demo → MainMenu</code></strong> is a gallery of every
-demo in the plugin, if you would rather browse than open maps by
-name.</p>
+<p><strong><code>Demo → MainMenu</code></strong> is a gallery of every demo in the plugin, if you would rather browse than open maps by name.
+</p>
 </blockquote>
-<p>If that works, <strong>your install is correct</strong> and you can
-move on to <a href="core-concepts.html">Tutorial 02: Core
-Concepts</a>.</p>
+<p>If that works, <strong>your install is correct</strong> and you can move on to <a href="core-concepts.html">Tutorial 02: Core Concepts</a>.
+</p>
 <hr />
-<h2 id="the-engine-plugins-it-turns-on">The engine plugins it turns
-on</h2>
-<p><code>LCMNav3D.uplugin</code> declares these as dependencies, so the
-engine enables them for you. You do not need to touch them, but it is
-worth knowing they are on:</p>
+<h2 id="the-engine-plugins-it-turns-on">The engine plugins it turns on
+</h2>
+<p><code>LCMNav3D.uplugin</code> declares these as dependencies, so the engine enables them for you. You do not need to touch them, but it is worth knowing they are on:
+</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
 <tr>
-<th>Plugin</th>
-<th>Why it's needed</th>
+<th>Plugin
+</th>
+<th>Why it's needed
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>StateTree</code>, <code>GameplayStateTree</code></td>
-<td>The StateTree task/condition/evaluator set</td>
+<td><code>StateTree</code>, <code>GameplayStateTree</code>
+</td>
+<td>The StateTree task/condition/evaluator set
+</td>
 </tr>
 <tr>
-<td><code>MassEntity</code>, <code>MassGameplay</code>,
-<code>MassAI</code></td>
-<td>The Mass crowd layer</td>
+<td><code>MassEntity</code>, <code>MassGameplay</code>, <code>MassAI</code>
+</td>
+<td>The Mass crowd layer
+</td>
 </tr>
 <tr>
-<td><code>SmartObjects</code></td>
-<td>Smart Object behaviour definitions</td>
+<td><code>SmartObjects</code>
+</td>
+<td>Smart Object behaviour definitions
+</td>
 </tr>
 <tr>
-<td><code>DataValidation</code></td>
-<td>In-editor validation of illegal Mass trait combinations</td>
+<td><code>DataValidation</code>
+</td>
+<td>In-editor validation of illegal Mass trait combinations
+</td>
 </tr>
 </tbody>
 </table>
 </div>
 <blockquote>
-<p><strong>If the plugin fails to load with
-<code>GetLastError 126</code></strong>, one of the Mass plugins got
-disabled. <code>MassGameplay</code> in particular is required at
-runtime. Re-enable it and restart.</p>
+<p><strong>If the plugin fails to load with <code>GetLastError 126</code></strong>, one of the Mass plugins got disabled. <code>MassGameplay</code> in particular is required at runtime. Re-enable it and restart.
+</p>
 </blockquote>
 <hr />
-<h2 id="common-install-problems">Common install problems</h2>
-<p><strong>"The following modules are missing or built with a different
-engine version: LCMNav3D"</strong> The plugin hasn't been compiled for
-your engine build. Click <strong>Yes</strong> to rebuild. If the rebuild
-fails, you are on a Blueprint-only project, so go back to Method B step
-3.</p>
-<p><strong>I can't find the demo maps.</strong> You haven't enabled
-<em>Show Plugin Content</em>. See verification step 2.</p>
-<p><strong>The plugin is missing from the Plugins window
-entirely.</strong> The folder is in the wrong place or misnamed. It must
-be <code>YourProject/Plugins/LCMNav3D/LCMNav3D.uplugin</code>. Check you
-didn't end up with a doubled folder like
-<code>Plugins/LCMNav3D/LCMNav3D/</code>.</p>
-<p><strong>Compile errors mentioning StateTree or Mass types.</strong>
-An engine plugin dependency was disabled. Re-enable the table above and
-regenerate project files.</p>
-<p>More in <a href="troubleshooting.html">Troubleshooting</a>.</p>
+<h2 id="common-install-problems">Common install problems
+</h2>
+<p><strong>"The following modules are missing or built with a different engine version: LCMNav3D"</strong> The plugin hasn't been compiled for your engine build. Click <strong>Yes</strong> to rebuild. If the rebuild fails, you are on a Blueprint-only project, so go back to Method B step 3.
+</p>
+<p><strong>I can't find the demo maps.</strong> They are a free download: <strong>LCM Nav3D</strong> menu → <strong>Get the Demo Levels (free)...</strong> (verification step 2). Then enable <em>Show Plugin Content</em> (step 3).
+</p>
+<p><strong>The plugin is missing from the Plugins window entirely.</strong> The folder is in the wrong place or misnamed. It must be <code>YourProject/Plugins/LCMNav3D/LCMNav3D.uplugin</code>. Check you didn't end up with a doubled folder like <code>Plugins/LCMNav3D/LCMNav3D/</code>.
+</p>
+<p><strong>Compile errors mentioning StateTree or Mass types.</strong> An engine plugin dependency was disabled. Re-enable the table above and regenerate project files.
+</p>
+<p>More in <a href="troubleshooting.html">Troubleshooting</a>.
+</p>
 <hr />
-<h2 id="other-engine-versions">Other engine versions</h2>
-<p>The plugin ships as a separate copy for each supported engine
-version, <strong>5.2 through 5.8</strong>, and each one is built and
-verified against that engine.</p>
-<p>Install the copy that matches your project rather than re-targeting
-this one. Engine APIs move between versions, and the per-version copies
-already carry those differences.</p>
+<h2 id="other-engine-versions">Other engine versions
+</h2>
+<p>The plugin ships as a separate copy for each supported engine version, <strong>5.2 through 5.8</strong>, and each one is built and verified against that engine.
+</p>
+<p>Install the copy that matches your project rather than re-targeting this one. Engine APIs move between versions, and the per-version copies already carry those differences.
+</p>
 <hr />
-<p><strong>Next:</strong> <a href="core-concepts.html">Tutorial 02: Core
-Concepts</a>. What the navigation manager is actually doing, and the
-three settings that decide whether it works well in your level.</p>
-
-  <div class="pager"><a href="nav3d-vs-recast.html">&larr; Nav3D vs Recast</a><a href="core-concepts.html">Core concepts &rarr;</a></div>
+<p><strong>Next:</strong> <a href="core-concepts.html">Tutorial 02: Core Concepts</a>. What the navigation manager is actually doing, and the three settings that decide whether it works well in your level.
+</p>
+<div class="pager"><a href="nav3d-vs-recast.html">&larr; Nav3D vs Recast</a><a href="core-concepts.html">Core concepts &rarr;</a></div>
   <footer>
    <p><strong>LCM Nav3D</strong> True Volumetric 3D Navigation for Unreal Engine &nbsp;|&nbsp;
     <a href="https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73">Fab</a> &nbsp;|&nbsp;

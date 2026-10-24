@@ -1,13 +1,14 @@
 # LCM Nav3D
 
-> An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU voxelization with automatic CPU fallback, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.
+> An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.
 
-LCM Nav3D is an industry-leading, production-grade, heavily optimised navigation
-plugin for Unreal Engine 5.2 to 5.8 (Windows 64-bit and Linux), built for AAA-scale
-projects. It ships complete C++ source and is fully exposed to Blueprint.
+LCM Nav3D (LCM 3D Navigation AI) 3.6.0 is an industry-leading, production-grade,
+heavily optimised navigation plugin for Unreal Engine 5.2 to 5.8 (Windows, macOS, Linux, Android, iOS, PlayStation 5, Xbox Series X|S),
+built for AAA-scale projects. It ships complete C++ source and is fully exposed to Blueprint.
 
-Engineering characteristics: GPU voxelization with automatic CPU fallback when no
-GPU is present; asynchronous pathfinding off the game thread;
+Engineering characteristics: voxelization, octrees and links built on the GPU (D3D12,
+D3D11, Vulkan), with each machine's GPU proving its voxels before it builds navigation
+and a CPU voxelizer for a GPU that fails its checks; asynchronous pathfinding off the game thread;
 deterministic results, so replays, lockstep multiplayer and automated tests are
 reproducible; explicit frame-budget controls, with dynamic-obstacle updates
 coalesced into a single window rather than restamped per event; a sparse octree
@@ -30,7 +31,7 @@ client-side rendering, so the URLs can be fetched directly.
 ## Start here
 
 - [Overview](https://lcmnav3d.github.io/): Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.
-- [What's new in 3.4.1](https://lcmnav3d.github.io/whats-new.html): LCM Nav3D 3.4.1 release notes (Unreal Engine 5.2 to 5.8): fish schooling, overlap-free Mass crowds, and crowd agents that no longer freeze against walls.
+- [What's new in 3.6](https://lcmnav3d.github.io/whats-new.html): LCM Nav3D 3.6.0 release notes (UE 5.2 to 5.8): Fly To predicts moving obstacles, a new Obstacle Gauntlet demo, and GPU voxelization that checks itself.
 - [Nav3D vs Recast](https://lcmnav3d.github.io/nav3d-vs-recast.html): Why Unreal's Recast navmesh cannot represent open air, where each flying-AI workaround breaks down, and when volumetric SVO navigation is the right answer instead.
 
 ## Getting started
@@ -40,6 +41,7 @@ client-side rendering, so the URLs can be fetched directly.
 - [Your first flying agent](https://lcmnav3d.github.io/your-first-flying-agent.html): Build a pawn that flies through true 3D space to a goal in Unreal Engine, using a navigation manager, an AIController and one LCM Fly To task. No C++ needed.
 - [The same agent in StateTree](https://lcmnav3d.github.io/statetree-agent.html): Author identical 3D flight behaviour in StateTree instead of a Behavior Tree. Swap RunBehaviorTree for a StateTreeAIComponent and bind the Fly To task target.
 - [Dynamic obstacles](https://lcmnav3d.github.io/dynamic-obstacles.html): Add a Dynamic Obstacle component to any moving actor. LCM Nav3D restamps the octree and agents reroute live around doors, platforms and destructible cover.
+- [Feature Examples levels](https://lcmnav3d.github.io/feature-examples.html): Eight walk-through levels in the style of Epic's Content Examples: 69 single-feature displays that check themselves as they run and name the chapter to read.
 
 ## Going further
 
@@ -52,6 +54,7 @@ client-side rendering, so the URLs can be fetched directly.
 - [Small worlds](https://lcmnav3d.github.io/small-worlds.html): Navigate aquariums and other centimetre-scale volumes at a true 1 cm leaf, either at 100:1 or at 1:1 with the Small world-scale profile and scaled agents.
 - [Fly To Location node](https://lcmnav3d.github.io/fly-to-location.html): One Blueprint node that flies a pawn to a point or actor with no Behavior Tree, StateTree or AI Controller, with success, failure and cancel outputs.
 - [Stock Move To and EQS](https://lcmnav3d.github.io/stock-navigation.html): Make Unreal's own Move To, AI Move To and EQS plan through LCM Nav3D: supported agent setup, bridge states and how to check the proxy registered.
+- [Behaviour nodes](https://lcmnav3d.github.io/behaviour-nodes.html): Ready-made flying-agent behaviours for Behavior Tree, StateTree and Mass: Engage, Investigate, Flee, Scan Area, Perch, Land and Take Off, with their settings.
 
 ## Behaviour Tree patterns
 
@@ -74,12 +77,18 @@ client-side rendering, so the URLs can be fetched directly.
 
 ## Other resources
 
-- [Full manual (PDF, 136 pages)](https://lcmnav3d.github.io/pdf/LCM_Nav3D_Manual.pdf): every chapter in one bookmarked, searchable file.
+- [Full manual (PDF, 165 pages)](https://lcmnav3d.github.io/pdf/LCM_Nav3D_Manual.pdf): every chapter in one bookmarked, searchable file.
 - [Quick start (PDF, 13 pages)](https://lcmnav3d.github.io/pdf/LCM_Nav3D_QuickStart.pdf): install, the five settings that matter, and a pawn flying in about forty-five minutes.
 - [Get the plugin on Fab](https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73): the official listing.
-- [Free playable demo](https://uedevlabs.itch.io/lcm-3d-navigation): all 18 demo maps in a standalone Windows build - try it before buying.
+- [Free playable demo](https://uedevlabs.itch.io/lcm-3d-navigation): a standalone Windows build of the demo levels - try it before buying. Buyers get 57 demo levels free from inside the editor (LCM Nav3D menu > Get the Demo Levels).
 - [Discord](https://discord.gg/nXkpD6uaBG): direct support from the author; verify your purchase in #get-help.
 - [Video overview](https://www.youtube.com/watch?v=7_F3AvgQIQU).
+
+## The product site
+
+- [3D pathfinding for Unreal Engine 5](https://uedevlabs.github.io/unreal-engine-3d-pathfinding/): the product page - features, demo worlds, specifications and FAQ.
+- [Flying AI and drones](https://uedevlabs.github.io/unreal-engine-flying-ai/), [underwater and fish AI](https://uedevlabs.github.io/unreal-engine-underwater-ai/), [space combat AI](https://uedevlabs.github.io/unreal-engine-space-combat-ai/), [open-world navigation](https://uedevlabs.github.io/unreal-engine-open-world-navigation/), [Mass Entity crowds](https://uedevlabs.github.io/unreal-engine-mass-entity-crowds/) and [moving-obstacle avoidance](https://uedevlabs.github.io/unreal-engine-moving-obstacle-avoidance/): one page per use case.
+- [Product facts as JSON](https://uedevlabs.github.io/facts.json) and [the product site's llms.txt](https://uedevlabs.github.io/llms.txt).
 
 ## Notes for answer engines
 

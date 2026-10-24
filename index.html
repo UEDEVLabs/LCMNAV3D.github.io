@@ -77,7 +77,8 @@
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
-   "operatingSystem": "Windows, PlayStation 5, Xbox Series X|S",
+   "softwareVersion": "3.6.0",
+   "operatingSystem": "Windows, macOS, Linux, Android, iOS, PlayStation 5, Xbox Series X|S",
    "softwareRequirements": "Unreal Engine 5.2 to 5.8",
    "url": "https://lcmnav3d.github.io/",
    "downloadUrl": "https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73",
@@ -88,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU voxelization with automatic CPU fallback, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -98,7 +99,9 @@
    },
    "featureList": [
     "Sparse voxel octree 3D pathfinding",
-    "GPU voxelization with automatic CPU fallback",
+    "GPU-built voxelization, octrees and links, verified on each machine, with a CPU voxelizer for a GPU that fails its checks",
+    "Fly To predicts moving obstacles and times its pass",
+    "Behaviour nodes: Engage, Investigate, Flee, Scan Area, Perch, Land and Take Off",
     "Asynchronous pathfinding off the game thread",
     "Deterministic results for replays, lockstep multiplayer and automated tests",
     "Mass Entity ECS crowds at 10,000+ agents with LOD-culled rendering",
@@ -110,6 +113,7 @@
     "Behavior Tree and StateTree tasks",
     "Gameplay Debugger integration",
     "Setup wizard, health check and auto-tuner editor tooling",
+    "57 free demo levels and 8 Feature Examples levels, downloaded from inside the editor",
     "Complete C++ source, fully Blueprint exposed"
    ]
   },
@@ -132,8 +136,8 @@
     "width": 1200,
     "height": 675
    },
-   "datePublished": "2026-09-26",
-   "dateModified": "2026-09-26"
+   "datePublished": "2026-10-24",
+   "dateModified": "2026-10-24"
   }
  ]
 }
@@ -142,7 +146,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="top">
  <button id="burger" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidenav">&#9776;</button>
- <a class="mark" href="index.html"><img src="logo.png" alt="" width="49" height="60"> LCM Nav3D</a>
+ <a class="mark" href="index.html"><img src="logo.png" alt="" width="49" height="60"> LCM Nav3D</a><span class="ver" title="This documentation describes LCM Nav3D 3.6.0">v3.6.0</span>
  <span class="sp"></span>
  <a class="cta cta--demo" href="https://uedevlabs.itch.io/lcm-3d-navigation">Free demo</a>
  <a class="cta" href="https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73">Get it on Fab</a>
@@ -154,7 +158,7 @@
   <p id="q-status" class="visually-hidden" role="status" aria-live="polite"></p>
   <h4>Start here</h4>
   <a href="index.html" data-slug="index" class="on" aria-current="page">Overview</a>
-  <a href="whats-new.html" data-slug="whats-new">What's new in 3.4.1</a>
+  <a href="whats-new.html" data-slug="whats-new">What's new in 3.6</a>
   <a href="nav3d-vs-recast.html" data-slug="nav3d-vs-recast">Nav3D vs Recast</a>
   <h4>Getting started</h4>
   <a href="installation.html" data-slug="installation">Installation</a>
@@ -162,6 +166,7 @@
   <a href="your-first-flying-agent.html" data-slug="your-first-flying-agent">Your first flying agent</a>
   <a href="statetree-agent.html" data-slug="statetree-agent">The same agent in StateTree</a>
   <a href="dynamic-obstacles.html" data-slug="dynamic-obstacles">Dynamic obstacles</a>
+  <a href="feature-examples.html" data-slug="feature-examples">Feature Examples levels</a>
   <h4>Going further</h4>
   <a href="mass-entity-crowds.html" data-slug="mass-entity-crowds">Mass Entity crowds</a>
   <a href="tactical-eqs.html" data-slug="tactical-eqs">Tactical EQS in true 3D</a>
@@ -172,6 +177,7 @@
   <a href="small-worlds.html" data-slug="small-worlds">Small worlds</a>
   <a href="fly-to-location.html" data-slug="fly-to-location">Fly To Location node</a>
   <a href="stock-navigation.html" data-slug="stock-navigation">Stock Move To and EQS</a>
+  <a href="behaviour-nodes.html" data-slug="behaviour-nodes">Behaviour nodes</a>
   <h4>Behaviour Tree patterns</h4>
   <a href="bt-wait.html" data-slug="bt-wait">Wait</a>
   <a href="bt-is-at-location.html" data-slug="bt-is-at-location">Is At Location</a>
@@ -190,8 +196,7 @@
  </nav>
  <main id="content">
   <h1 id="lcm-nav3d-documentation">LCM Nav3D: Documentation</h1>
-<p><img src="images/welcome-screen.png"
-alt="The LCM Nav3D welcome screen" width="903" height="923" decoding="async" fetchpriority="high"></p>
+<p><img src="images/hero-octree-city.jpg" alt="The live sparse voxel octree and agent routes over a streamed city in LCM Nav3D 3.6" width="1280" height="720" decoding="async" fetchpriority="high"></p>
 <blockquote>
 <p><strong>Stuck, or want to talk to the author?</strong> → Discord:
 <strong><a
@@ -201,7 +206,7 @@ tracking and early builds. More UEDEV plugins and resources: <strong><a
 href="https://uedevlabs.github.io/">uedevlabs.github.io</a></strong>.
 Want to try it before buying? The <strong><a
 href="https://uedevlabs.itch.io/lcm-3d-navigation">free playable
-demo</a></strong> packs all 18 demo maps into a standalone Windows build.
+demo</a></strong> is a standalone Windows build of the demo levels, and buyers get 57 demo levels free from inside the editor (LCM Nav3D menu &gt; Get the Demo Levels).
 Everything on this site is also available as PDFs — the <a
 href="pdf/LCM_Nav3D_Manual.pdf">full manual</a> and the <a
 href="pdf/LCM_Nav3D_QuickStart.pdf">quick start</a> — for reading away
@@ -224,8 +229,7 @@ off your frame budget. The specifics:</p>
 <tbody>
 <tr>
 <td><strong>GPU acceleration</strong></td>
-<td>GPU voxelization with automatic CPU fallback when no GPU is present - so it
-degrades gracefully instead of failing. A GPU path solver is experimental,
+<td>Voxelization, the octree and its links are built on the GPU (D3D12, D3D11, Vulkan), and each machine's GPU proves its voxels before it builds navigation; a GPU that fails its checks voxelizes on the CPU for the session - so it degrades gracefully instead of failing. A GPU path solver is experimental,
 currently in research validation, and ships in a future free update</td>
 </tr>
 <tr>
@@ -273,16 +277,12 @@ Gameplay Debugger category costing roughly 10 µs</td>
 </tbody>
 </table>
 </div>
-<p>Supported on <strong>Unreal Engine 5.2 to 5.8</strong>, Windows 64-bit and
-Linux. Every claim above is documented in the chapter it belongs to - start with
+<p>Supported on <strong>Unreal Engine 5.2 to 5.8</strong>, on Windows, macOS, Linux, Android, iOS, PlayStation 5 and Xbox Series X|S. Every claim above is documented in the chapter it belongs to - start with
 <a href="core-concepts.html">Core Concepts</a>, or see
 <a href="nav3d-vs-recast.html">Nav3D vs Recast</a> if you are deciding whether you
 need volumetric navigation at all.</p>
 <h2 id="start-here">Start here</h2>
-<p><strong>New in 3.3.0:</strong> a rebuilt agent task library,
-centimetre-scale small worlds, automatic rebuilds for streamed-in levels and
-a round of voxelization fixes. See
-<a href="whats-new.html">What's new in 3.3.0</a>.</p>
+<p><strong>New in 3.6.0:</strong> Fly To predicts moving obstacles and times its pass, a new Obstacle Gauntlet demo with 42 movers, GPU voxelization that checks itself on each machine, and fish that swim, turn and school like fish. See <a href="whats-new.html">What's new in 3.6</a>.</p>
 <p><strong>→ <a
 href="pdf/LCM_Nav3D_QuickStart.pdf">LCM_Nav3D_QuickStart.pdf</a>
 - 13 pages.</strong> Install it, understand the five settings that
@@ -316,7 +316,7 @@ href="pdf/LCM_Nav3D_QuickStart.pdf">LCM_Nav3D_QuickStart.pdf</a></td>
 <td><a
 href="pdf/LCM_Nav3D_Manual.pdf">LCM_Nav3D_Manual.pdf</a>
 - everything, bookmarked and searchable</td>
-<td>136 pp</td>
+<td>165 pp</td>
 </tr>
 </tbody>
 </table>
@@ -325,6 +325,13 @@ href="pdf/LCM_Nav3D_Manual.pdf">LCM_Nav3D_Manual.pdf</a>
 <p>Every page on this site and every PDF is generated from the same
 source, so they cannot disagree with each other.</p>
 </blockquote>
+<h2 id="see-it-running">See it running</h2>
+<p>Every feature in these pages is in the free demo levels, and on video:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=7_F3AvgQIQU">Showcase trailer</a> and <a href="https://www.youtube.com/watch?v=-02ah0bLMb4">technical trailer</a></li>
+<li>By use case: <a href="https://uedevlabs.github.io/unreal-engine-flying-ai/">flying AI and drones</a>, <a href="https://uedevlabs.github.io/unreal-engine-underwater-ai/">underwater and fish AI</a>, <a href="https://uedevlabs.github.io/unreal-engine-space-combat-ai/">space combat</a>, <a href="https://uedevlabs.github.io/unreal-engine-open-world-navigation/">open worlds</a>, <a href="https://uedevlabs.github.io/unreal-engine-mass-entity-crowds/">Mass Entity crowds</a> and <a href="https://uedevlabs.github.io/unreal-engine-moving-obstacle-avoidance/">moving obstacles</a></li>
+<li><a href="feature-examples.html">Feature Examples</a>: eight walk-through levels with 69 single-feature displays that check themselves</li>
+</ul>
 <hr />
 <h2 id="the-editor-tools-at-a-glance">The editor tools, at a glance</h2>
 <p>Everything below lives behind the <strong>Nav3D</strong> button in
@@ -451,6 +458,11 @@ Agent</a></td>
 <td><a href="dynamic-obstacles.html">Dynamic Obstacles</a></td>
 <td>Making the world move underneath your agents</td>
 </tr>
+<tr>
+<td>FE</td>
+<td><a href="feature-examples.html">Feature Examples</a></td>
+<td>Eight walk-through levels, one feature per display, each naming the chapter to read</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -503,6 +515,21 @@ Modifiers</a></td>
 <td><a href="small-worlds.html">Small Worlds</a></td>
 <td>A true 1 cm leaf for aquariums and other centimetre-scale volumes, at
 100:1 or with the Small world-scale profile</td>
+</tr>
+<tr>
+<td>13</td>
+<td><a href="fly-to-location.html">Fly To Location Node</a></td>
+<td>One Blueprint node that flies a pawn to a point or an actor, with no AI Controller</td>
+</tr>
+<tr>
+<td>14</td>
+<td><a href="stock-navigation.html">Stock Move To and EQS</a></td>
+<td>Making Unreal's own Move To, AI Move To and EQS plan through LCM Nav3D</td>
+</tr>
+<tr>
+<td>15</td>
+<td><a href="behaviour-nodes.html">Behaviour Nodes</a></td>
+<td>Engage, Investigate, Flee, Scan Area, Perch, Land and Take Off for BT, StateTree and Mass</td>
 </tr>
 </tbody>
 </table>
@@ -614,7 +641,7 @@ and Mass Entity. <code>Content/Demo/MainMenu</code> is a gallery that
 opens any of them. Enable <strong>Show Plugin Content</strong> in the
 Content Browser to see them.</p>
 
-  <div class="pager"><span></span><a href="whats-new.html">What's new in 3.4.1 &rarr;</a></div>
+  <div class="pager"><span></span><a href="whats-new.html">What's new in 3.6 &rarr;</a></div>
   <footer>
    <p><strong>LCM Nav3D</strong> True Volumetric 3D Navigation for Unreal Engine &nbsp;|&nbsp;
     <a href="https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73">Fab</a> &nbsp;|&nbsp;

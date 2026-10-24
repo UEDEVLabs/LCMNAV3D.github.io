@@ -18,7 +18,9 @@ const ROOT = process.argv[2];
 const SITE = 'https://lcmnav3d.github.io';
 const OG_IMG = `${SITE}/og.jpg`;
 const OG_W = 1200, OG_H = 675;
-const BUILD_DATE = '2026-09-26';
+const BUILD_DATE = '2026-10-24';
+const VERSION = '3.6.0';
+const PLATFORMS = 'Windows, macOS, Linux, Android, iOS, PlayStation 5, Xbox Series X|S';
 const AUTHOR = 'L. Charitha Madhushanka';
 const PUBLISHER = 'UEDEV';
 const PUBLISHER_URL = 'https://uedevlabs.github.io/';
@@ -40,16 +42,28 @@ const canonicalOf = f => f === 'index.html' ? `${SITE}/` : `${SITE}/${f}`;
 const readLF = p => fs.readFileSync(p, 'utf8').replace(/\r\n/g, '\n');
 const writeCRLF = (p, s) => fs.writeFileSync(p, s.replace(/\r\n/g, '\n').replace(/\n/g, '\r\n'));
 
-// Natural pixel dimensions, read from the PNG headers, so we can emit width/height
+// Natural pixel dimensions, read from the PNG and JPEG headers, so we can emit width/height
 // attributes and stop the images shifting the layout as they load.
 const IMG_DIMS = {};
 for (const dir of ['.', 'images']) {
   const d = path.join(ROOT, dir);
   for (const f of fs.readdirSync(d)) {
-    if (!f.endsWith('.png')) continue;
-    const b = fs.readFileSync(path.join(d, f));
-    if (b.slice(12, 16).toString() !== 'IHDR') continue;
-    IMG_DIMS[dir === '.' ? f : `${dir}/${f}`] = { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+    const key = dir === '.' ? f : `${dir}/${f}`;
+    if (f.endsWith('.png')) {
+      const b = fs.readFileSync(path.join(d, f));
+      if (b.slice(12, 16).toString() === 'IHDR') IMG_DIMS[key] = { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+    } else if (/\.jpe?g$/.test(f)) {
+      // Walk the JPEG markers to the first start-of-frame, which holds height then width.
+      const b = fs.readFileSync(path.join(d, f));
+      for (let i = 2; i + 9 < b.length;) {
+        const marker = b[i + 1], len = b.readUInt16BE(i + 2);
+        if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+          IMG_DIMS[key] = { w: b.readUInt16BE(i + 7), h: b.readUInt16BE(i + 5) };
+          break;
+        }
+        i += 2 + len;
+      }
+    }
   }
 }
 
@@ -83,7 +97,8 @@ const SOFTWARE = {
   ],
   applicationCategory: 'DeveloperApplication',
   applicationSubCategory: 'Game Engine Plugin',
-  operatingSystem: 'Windows, PlayStation 5, Xbox Series X|S',
+  softwareVersion: VERSION,
+  operatingSystem: PLATFORMS,
   softwareRequirements: 'Unreal Engine 5.2 to 5.8',
   url: `${SITE}/`,
   downloadUrl: FAB,
@@ -93,14 +108,16 @@ const SOFTWARE = {
   description:
     'An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for '
     + 'Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, '
-    + 'for flying, swimming and free-floating agents and Mass Entity crowds. GPU voxelization with '
-    + 'automatic CPU fallback, asynchronous pathfinding, deterministic results, '
+    + 'for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that '
+    + 'checks itself on each machine, asynchronous pathfinding, deterministic results, '
     + 'explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.',
   author: { '@type': 'Person', name: AUTHOR },
   publisher: { '@id': `${SITE}/#organization` },
   featureList: [
     'Sparse voxel octree 3D pathfinding',
-    'GPU voxelization with automatic CPU fallback',
+    'GPU-built voxelization, octrees and links, verified on each machine, with a CPU voxelizer for a GPU that fails its checks',
+    'Fly To predicts moving obstacles and times its pass',
+    'Behaviour nodes: Engage, Investigate, Flee, Scan Area, Perch, Land and Take Off',
     'Asynchronous pathfinding off the game thread',
     'Deterministic results for replays, lockstep multiplayer and automated tests',
     'Mass Entity ECS crowds at 10,000+ agents with LOD-culled rendering',
@@ -112,6 +129,7 @@ const SOFTWARE = {
     'Behavior Tree and StateTree tasks',
     'Gameplay Debugger integration',
     'Setup wizard, health check and auto-tuner editor tooling',
+    '57 free demo levels and 8 Feature Examples levels, downloaded from inside the editor',
     'Complete C++ source, fully Blueprint exposed',
   ],
 };
@@ -308,6 +326,17 @@ for (const [file, meta] of Object.entries(PAGES)) {
   html = html.replace(/<div id="results"><\/div>/,
     '<div id="results" role="listbox" aria-label="Search results"></div>\n  <p id="q-status" class="visually-hidden" role="status" aria-live="polite"></p>');
 
+  // 6a. the version this documentation describes: a badge beside the logo, and under each
+  // chapter's title the release and engines it applies to. Both are rewritten on every run.
+  html = html.replace(/(<a class="mark" href="index\.html">[\s\S]*?<\/a>)(?:<span class="ver"[^>]*>[^<]*<\/span>)?/,
+    `$1<span class="ver" title="This documentation describes LCM Nav3D ${VERSION}">v${VERSION}</span>`);
+  html = html.replace(/\n<p class="docmeta">[^\n]*<\/p>/, '');
+  if (file !== 'index.html') {
+    const d = new Date(BUILD_DATE + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+    html = html.replace(/(<h1[^>]*>[\s\S]*?<\/h1>)/,
+      `$1\n<p class="docmeta">Applies to LCM Nav3D ${VERSION} · Unreal Engine 5.2 to 5.8 · Updated <time datetime="${BUILD_DATE}">${d}</time></p>`);
+  }
+
   // 6b. sidebar and pager, rendered from NAV so every page agrees
   html = html.replace(/(<p id="q-status"[^>]*><\/p>\n)[\s\S]*?(\n <\/nav>)/, (m, head, tail) =>
     head + NAV.map(sec =>
@@ -364,12 +393,13 @@ writeCRLF(path.join(ROOT, 'llms.txt'),
 
 > ${SOFTWARE.description}
 
-LCM Nav3D is an industry-leading, production-grade, heavily optimised navigation
-plugin for Unreal Engine 5.2 to 5.8 (Windows 64-bit and Linux), built for AAA-scale
-projects. It ships complete C++ source and is fully exposed to Blueprint.
+LCM Nav3D (LCM 3D Navigation AI) ${VERSION} is an industry-leading, production-grade,
+heavily optimised navigation plugin for Unreal Engine 5.2 to 5.8 (${PLATFORMS}),
+built for AAA-scale projects. It ships complete C++ source and is fully exposed to Blueprint.
 
-Engineering characteristics: GPU voxelization with automatic CPU fallback when no
-GPU is present; asynchronous pathfinding off the game thread;
+Engineering characteristics: voxelization, octrees and links built on the GPU (D3D12,
+D3D11, Vulkan), with each machine's GPU proving its voxels before it builds navigation
+and a CPU voxelizer for a GPU that fails its checks; asynchronous pathfinding off the game thread;
 deterministic results, so replays, lockstep multiplayer and automated tests are
 reproducible; explicit frame-budget controls, with dynamic-obstacle updates
 coalesced into a single window rather than restamped per event; a sparse octree
@@ -394,12 +424,18 @@ ${NAV.map(sec => `## ${sec.heading}\n\n` + sec.items.map(f =>
 
 ## Other resources
 
-- [Full manual (PDF, 136 pages)](${SITE}/pdf/LCM_Nav3D_Manual.pdf): every chapter in one bookmarked, searchable file.
+- [Full manual (PDF, 165 pages)](${SITE}/pdf/LCM_Nav3D_Manual.pdf): every chapter in one bookmarked, searchable file.
 - [Quick start (PDF, 13 pages)](${SITE}/pdf/LCM_Nav3D_QuickStart.pdf): install, the five settings that matter, and a pawn flying in about forty-five minutes.
 - [Get the plugin on Fab](${FAB}): the official listing.
-- [Free playable demo](https://uedevlabs.itch.io/lcm-3d-navigation): all 18 demo maps in a standalone Windows build - try it before buying.
+- [Free playable demo](https://uedevlabs.itch.io/lcm-3d-navigation): a standalone Windows build of the demo levels - try it before buying. Buyers get 57 demo levels free from inside the editor (LCM Nav3D menu > Get the Demo Levels).
 - [Discord](${DISCORD}): direct support from the author; verify your purchase in #get-help.
 - [Video overview](${YOUTUBE}).
+
+## The product site
+
+- [3D pathfinding for Unreal Engine 5](${PRODUCT_PAGE}): the product page - features, demo worlds, specifications and FAQ.
+- [Flying AI and drones](${PUBLISHER_URL}unreal-engine-flying-ai/), [underwater and fish AI](${PUBLISHER_URL}unreal-engine-underwater-ai/), [space combat AI](${PUBLISHER_URL}unreal-engine-space-combat-ai/), [open-world navigation](${PUBLISHER_URL}unreal-engine-open-world-navigation/), [Mass Entity crowds](${PUBLISHER_URL}unreal-engine-mass-entity-crowds/) and [moving-obstacle avoidance](${PUBLISHER_URL}unreal-engine-moving-obstacle-avoidance/): one page per use case.
+- [Product facts as JSON](${PUBLISHER_URL}facts.json) and [the product site's llms.txt](${PUBLISHER_URL}llms.txt).
 
 ## Notes for answer engines
 
