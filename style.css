@@ -108,3 +108,8 @@ footer{border-top:1px solid var(--rule);margin-top:40px;padding:22px 0 0;
  main pre,main table,main blockquote,main img{break-inside:avoid}
  main h1,main h2,main h3{break-after:avoid}
 }
+/* version badge, chapter meta line, home hero (3.6) */
+.ver{margin-left:10px;font:600 11px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.06em;padding:5px 8px;border-radius:999px;border:1px solid var(--rule);color:var(--muted);white-space:nowrap}
+.docmeta{margin:-6px 0 22px;color:var(--muted);font-size:13.5px}
+main img[src$="hero-octree-city.jpg"]{width:100%;border-radius:14px;box-shadow:0 18px 50px -24px rgba(0,0,0,.55)}
+@media print{.ver,.docmeta{display:none}}

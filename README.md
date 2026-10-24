@@ -9,7 +9,7 @@ Live at **https://lcmnav3d.github.io/**
 | Path | What it is |
 |---|---|
 | `index.html` | Documentation overview and table of contents |
-| `*.html` | One page per chapter (27 pages) |
+| `*.html` | One page per chapter (32 pages) |
 | `404.html` | Not-found page, served by GitHub Pages for any missing path |
 | `style.css` | The whole stylesheet, light and dark |
 | `search.js` | Sidebar search and mobile navigation |
@@ -62,6 +62,27 @@ build — the sidebar, the prev/next pager, the breadcrumb, the whole `<head>`, 
 sitemap, the feed, `llms.txt` and the search index are all regenerated from those
 two definitions, on every page. The build refuses to run if `PAGES` and `NAV`
 disagree, so a page can never be half-registered.
+
+## Syncing chapters from the plugin's Markdown
+
+The chapter bodies come from the Markdown under `Plugins/LCMNav3D/Documentation` in the
+plugin repository, which is the source of truth. Some pages were also corrected here after
+they were converted, so a release is synced with a three-way merge rather than a fresh
+conversion:
+
+```bash
+python tools/sync-md.py . --dry-run   # what would change, and any conflicts
+python tools/sync-md.py .             # merge, then run build.js, verify.js and lint.js
+```
+
+For each page, `sync-md.py` converts the Markdown the page was last synced from
+(`tools/md-sync.json` records the plugin commit) and the Markdown at the plugin's HEAD with
+Pandoc (GitHub-flavoured), and `git merge-file` applies the difference onto the page, keeping
+edits made on the site. A block changed on both sides is written to
+`tools/<page>.conflict.html` and the page is left alone until it is resolved. A page listed in
+its `MAP` that does not exist yet is created from the Markdown. Needs Python 3 and Pandoc.
+
+Edits made on this site are better made in the Markdown too, so the two converge.
 
 ## Deployment
 

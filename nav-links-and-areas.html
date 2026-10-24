@@ -77,7 +77,8 @@
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
-   "operatingSystem": "Windows, PlayStation 5, Xbox Series X|S",
+   "softwareVersion": "3.6.0",
+   "operatingSystem": "Windows, macOS, Linux, Android, iOS, PlayStation 5, Xbox Series X|S",
    "softwareRequirements": "Unreal Engine 5.2 to 5.8",
    "url": "https://lcmnav3d.github.io/",
    "downloadUrl": "https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73",
@@ -88,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU voxelization with automatic CPU fallback, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -98,7 +99,9 @@
    },
    "featureList": [
     "Sparse voxel octree 3D pathfinding",
-    "GPU voxelization with automatic CPU fallback",
+    "GPU-built voxelization, octrees and links, verified on each machine, with a CPU voxelizer for a GPU that fails its checks",
+    "Fly To predicts moving obstacles and times its pass",
+    "Behaviour nodes: Engage, Investigate, Flee, Scan Area, Perch, Land and Take Off",
     "Asynchronous pathfinding off the game thread",
     "Deterministic results for replays, lockstep multiplayer and automated tests",
     "Mass Entity ECS crowds at 10,000+ agents with LOD-culled rendering",
@@ -110,6 +113,7 @@
     "Behavior Tree and StateTree tasks",
     "Gameplay Debugger integration",
     "Setup wizard, health check and auto-tuner editor tooling",
+    "57 free demo levels and 8 Feature Examples levels, downloaded from inside the editor",
     "Complete C++ source, fully Blueprint exposed"
    ]
   },
@@ -171,8 +175,8 @@
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
    },
-   "datePublished": "2026-09-26",
-   "dateModified": "2026-09-26",
+   "datePublished": "2026-10-24",
+   "dateModified": "2026-10-24",
    "proficiencyLevel": "Beginner",
    "dependencies": "Unreal Engine 5.2 to 5.8"
   }
@@ -183,7 +187,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="top">
  <button id="burger" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidenav">&#9776;</button>
- <a class="mark" href="index.html"><img src="logo.png" alt="" width="49" height="60"> LCM Nav3D</a>
+ <a class="mark" href="index.html"><img src="logo.png" alt="" width="49" height="60"> LCM Nav3D</a><span class="ver" title="This documentation describes LCM Nav3D 3.6.0">v3.6.0</span>
  <span class="sp"></span>
  <a class="cta cta--demo" href="https://uedevlabs.itch.io/lcm-3d-navigation">Free demo</a>
  <a class="cta" href="https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73">Get it on Fab</a>
@@ -195,7 +199,7 @@
   <p id="q-status" class="visually-hidden" role="status" aria-live="polite"></p>
   <h4>Start here</h4>
   <a href="index.html" data-slug="index">Overview</a>
-  <a href="whats-new.html" data-slug="whats-new">What's new in 3.4.1</a>
+  <a href="whats-new.html" data-slug="whats-new">What's new in 3.6</a>
   <a href="nav3d-vs-recast.html" data-slug="nav3d-vs-recast">Nav3D vs Recast</a>
   <h4>Getting started</h4>
   <a href="installation.html" data-slug="installation">Installation</a>
@@ -203,6 +207,7 @@
   <a href="your-first-flying-agent.html" data-slug="your-first-flying-agent">Your first flying agent</a>
   <a href="statetree-agent.html" data-slug="statetree-agent">The same agent in StateTree</a>
   <a href="dynamic-obstacles.html" data-slug="dynamic-obstacles">Dynamic obstacles</a>
+  <a href="feature-examples.html" data-slug="feature-examples">Feature Examples levels</a>
   <h4>Going further</h4>
   <a href="mass-entity-crowds.html" data-slug="mass-entity-crowds">Mass Entity crowds</a>
   <a href="tactical-eqs.html" data-slug="tactical-eqs">Tactical EQS in true 3D</a>
@@ -213,6 +218,7 @@
   <a href="small-worlds.html" data-slug="small-worlds">Small worlds</a>
   <a href="fly-to-location.html" data-slug="fly-to-location">Fly To Location node</a>
   <a href="stock-navigation.html" data-slug="stock-navigation">Stock Move To and EQS</a>
+  <a href="behaviour-nodes.html" data-slug="behaviour-nodes">Behaviour nodes</a>
   <h4>Behaviour Tree patterns</h4>
   <a href="bt-wait.html" data-slug="bt-wait">Wait</a>
   <a href="bt-is-at-location.html" data-slug="bt-is-at-location">Is At Location</a>
@@ -233,6 +239,7 @@
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-ii-going-further">Going Further</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Cost Areas and NavLinks</span></nav>
   <h1 id="tutorial-10---cost-areas-query-filters-and-3d-navlinks">Tutorial
 10 - Cost areas, query filters and 3D NavLinks</h1>
+<p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
 <p><strong>TL;DR:</strong> Drop an <code>ALcmNavAreaModifier</code>
 volume, give it a stock NavArea class, and every LCM Nav3D planner
 routes by it: FlyTo (BT and StateTree), Fly To Location, Mass crowds,

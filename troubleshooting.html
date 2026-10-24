@@ -77,7 +77,8 @@
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
-   "operatingSystem": "Windows, PlayStation 5, Xbox Series X|S",
+   "softwareVersion": "3.6.0",
+   "operatingSystem": "Windows, macOS, Linux, Android, iOS, PlayStation 5, Xbox Series X|S",
    "softwareRequirements": "Unreal Engine 5.2 to 5.8",
    "url": "https://lcmnav3d.github.io/",
    "downloadUrl": "https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73",
@@ -88,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU voxelization with automatic CPU fallback, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -98,7 +99,9 @@
    },
    "featureList": [
     "Sparse voxel octree 3D pathfinding",
-    "GPU voxelization with automatic CPU fallback",
+    "GPU-built voxelization, octrees and links, verified on each machine, with a CPU voxelizer for a GPU that fails its checks",
+    "Fly To predicts moving obstacles and times its pass",
+    "Behaviour nodes: Engage, Investigate, Flee, Scan Area, Perch, Land and Take Off",
     "Asynchronous pathfinding off the game thread",
     "Deterministic results for replays, lockstep multiplayer and automated tests",
     "Mass Entity ECS crowds at 10,000+ agents with LOD-culled rendering",
@@ -110,6 +113,7 @@
     "Behavior Tree and StateTree tasks",
     "Gameplay Debugger integration",
     "Setup wizard, health check and auto-tuner editor tooling",
+    "57 free demo levels and 8 Feature Examples levels, downloaded from inside the editor",
     "Complete C++ source, fully Blueprint exposed"
    ]
   },
@@ -171,8 +175,8 @@
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
    },
-   "datePublished": "2026-09-26",
-   "dateModified": "2026-09-26",
+   "datePublished": "2026-10-24",
+   "dateModified": "2026-10-24",
    "proficiencyLevel": "Beginner",
    "dependencies": "Unreal Engine 5.2 to 5.8"
   },
@@ -253,7 +257,7 @@
 <a class="skip" href="#content">Skip to content</a>
 <header class="top">
  <button id="burger" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidenav">&#9776;</button>
- <a class="mark" href="index.html"><img src="logo.png" alt="" width="49" height="60"> LCM Nav3D</a>
+ <a class="mark" href="index.html"><img src="logo.png" alt="" width="49" height="60"> LCM Nav3D</a><span class="ver" title="This documentation describes LCM Nav3D 3.6.0">v3.6.0</span>
  <span class="sp"></span>
  <a class="cta cta--demo" href="https://uedevlabs.itch.io/lcm-3d-navigation">Free demo</a>
  <a class="cta" href="https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73">Get it on Fab</a>
@@ -265,7 +269,7 @@
   <p id="q-status" class="visually-hidden" role="status" aria-live="polite"></p>
   <h4>Start here</h4>
   <a href="index.html" data-slug="index">Overview</a>
-  <a href="whats-new.html" data-slug="whats-new">What's new in 3.4.1</a>
+  <a href="whats-new.html" data-slug="whats-new">What's new in 3.6</a>
   <a href="nav3d-vs-recast.html" data-slug="nav3d-vs-recast">Nav3D vs Recast</a>
   <h4>Getting started</h4>
   <a href="installation.html" data-slug="installation">Installation</a>
@@ -273,6 +277,7 @@
   <a href="your-first-flying-agent.html" data-slug="your-first-flying-agent">Your first flying agent</a>
   <a href="statetree-agent.html" data-slug="statetree-agent">The same agent in StateTree</a>
   <a href="dynamic-obstacles.html" data-slug="dynamic-obstacles">Dynamic obstacles</a>
+  <a href="feature-examples.html" data-slug="feature-examples">Feature Examples levels</a>
   <h4>Going further</h4>
   <a href="mass-entity-crowds.html" data-slug="mass-entity-crowds">Mass Entity crowds</a>
   <a href="tactical-eqs.html" data-slug="tactical-eqs">Tactical EQS in true 3D</a>
@@ -283,6 +288,7 @@
   <a href="small-worlds.html" data-slug="small-worlds">Small worlds</a>
   <a href="fly-to-location.html" data-slug="fly-to-location">Fly To Location node</a>
   <a href="stock-navigation.html" data-slug="stock-navigation">Stock Move To and EQS</a>
+  <a href="behaviour-nodes.html" data-slug="behaviour-nodes">Behaviour nodes</a>
   <h4>Behaviour Tree patterns</h4>
   <a href="bt-wait.html" data-slug="bt-wait">Wait</a>
   <a href="bt-is-at-location.html" data-slug="bt-is-at-location">Is At Location</a>
@@ -301,407 +307,479 @@
  </nav>
  <main id="content">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-iii-reference">Reference</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Troubleshooting</span></nav>
-  <h1 id="troubleshooting">Troubleshooting</h1>
-<p>Problems in the order people actually hit them. <strong>Start with
-the Quick Triage table</strong>: it resolves most issues in under a
-minute.</p>
+<h1 id="troubleshooting">Troubleshooting
+</h1>
+<p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
+<p>Problems in the order people actually hit them. <strong>Start with the Quick Triage table</strong>: it resolves most issues in under a minute.
+</p>
 <hr />
-<h2 id="quick-triage">Quick triage</h2>
+<h2 id="quick-triage">Quick triage
+</h2>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
 <tr>
-<th>Symptom</th>
-<th>Most likely cause</th>
-<th>Jump to</th>
+<th>Symptom
+</th>
+<th>Most likely cause
+</th>
+<th>Jump to
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Agent doesn't move at all</td>
-<td>No navigation manager in the level</td>
-<td><a href="#1-nothing-moves">§1</a></td>
+<td>Agent doesn't move at all
+</td>
+<td>No navigation manager in the level
+</td>
+<td><a href="#1-nothing-moves">§1</a>
+</td>
 </tr>
 <tr>
-<td>"No path" through a gap you can see</td>
-<td><code>Clearance Padding</code> sealed it</td>
-<td><a href="#3-no-path-found">§3</a></td>
+<td>"No path" through a gap you can see
+</td>
+<td><code>Clearance Padding</code> sealed it
+</td>
+<td><a href="#3-no-path-found">§3</a>
+</td>
 </tr>
 <tr>
-<td>Agent flies through walls</td>
-<td>Geometry not voxelized</td>
-<td><a href="#4-agents-ignore-geometry">§4</a></td>
+<td>Agent flies through walls
+</td>
+<td>Geometry not voxelized
+</td>
+<td><a href="#4-agents-ignore-geometry">§4</a>
+</td>
 </tr>
 <tr>
-<td>Moving obstacles ignored</td>
-<td>Missing Dynamic Obstacle component</td>
-<td><a href="#5-dynamic-obstacles-do-nothing">§5</a></td>
+<td>Moving obstacles ignored
+</td>
+<td>Missing Dynamic Obstacle component
+</td>
+<td><a href="#5-dynamic-obstacles-do-nothing">§5</a>
+</td>
 </tr>
 <tr>
-<td>Can't find the demo maps</td>
-<td><em>Show Plugin Content</em> is off</td>
-<td><a href="#7-editor-and-install">§7</a></td>
+<td>Can't find the demo maps
+</td>
+<td><em>Show Plugin Content</em> is off
+</td>
+<td><a href="#7-editor-and-install">§7</a>
+</td>
 </tr>
 <tr>
-<td>Frame rate drops</td>
-<td>Voxel resolution too fine</td>
-<td><a href="#6-performance">§6</a></td>
+<td>Frame rate drops
+</td>
+<td>Voxel resolution too fine
+</td>
+<td><a href="#6-performance">§6</a>
+</td>
 </tr>
 <tr>
-<td>Long paths fail, short ones work</td>
-<td>Infinite-world streaming</td>
-<td><a href="#3-no-path-found">§3</a></td>
+<td>Long paths fail, short ones work
+</td>
+<td>Infinite-world streaming
+</td>
+<td><a href="#3-no-path-found">§3</a>
+</td>
 </tr>
 </tbody>
 </table>
 </div>
 <hr />
-<h2 id="the-two-diagnostics-that-answer-almost-everything">The two
-diagnostics that answer almost everything</h2>
-<p><strong>1. Turn on <code>Draw Debug Volumes</code></strong>
-(navigation manager → <em>6. Debug</em>).</p>
-<p>This draws the octree. It tells you what the pathfinder actually
-sees, which is frequently not what you assume:</p>
+<h2 id="the-two-diagnostics-that-answer-almost-everything">The two diagnostics that answer almost everything
+</h2>
+<p><strong>1. Turn on <code>Draw Debug Volumes</code></strong> (navigation manager → <em>6. Debug</em>).
+</p>
+<p>This draws the octree. It tells you what the pathfinder actually sees, which is frequently not what you assume:
+</p>
 <ul>
-<li><strong>No small voxels around a doorway</strong> → the pathfinder
-can't route through it either.</li>
-<li><strong>No voxels at all in a region</strong> → it's outside
-<code>World Extent</code>, or the chunk hasn't generated.</li>
-<li><strong>Solid voxels where there's visibly open air</strong> →
-<code>Clearance Padding</code> is too large.</li>
+<li><strong>No small voxels around a doorway</strong> → the pathfinder can't route through it either.
+</li>
+<li><strong>No voxels at all in a region</strong> → it's outside <code>World Extent</code>, or the chunk hasn't generated.
+</li>
+<li><strong>Solid voxels where there's visibly open air</strong> → <code>Clearance Padding</code> is too large.
+</li>
 </ul>
-<p><strong>2. Check the Output Log</strong> (Window → Output Log) and
-filter for <code>Lcm</code>. The plugin logs the specific reason a query
-failed.</p>
+<p><strong>2. Check the Output Log</strong> (Window → Output Log) and filter for <code>Lcm</code>. The plugin logs the specific reason a query failed.
+</p>
 <hr />
-<h2 id="1-nothing-moves">1. Nothing moves</h2>
-<p>Work in this order.</p>
-<h3 id="is-there-a-navigation-manager">Is there a navigation
-manager?</h3>
-<p>Output Log shows
-<strong><code>LCMBTTask_FlyTo: No SVO Manager found in the level!</code></strong>
-→ drag an <strong><code>LcmNavigationManagerSVO</code></strong> into the
-level. One per level, required.</p>
-<h3 id="did-the-ai-possess-the-pawn">Did the AI possess the pawn?</h3>
+<h2 id="1-nothing-moves">1. Nothing moves
+</h2>
+<p>Work in this order.
+</p>
+<h3 id="is-there-a-navigation-manager">Is there a navigation manager?
+</h3>
+<p>Output Log shows <strong><code>LCMBTTask_FlyTo: No SVO Manager found in the level!</code></strong> → drag an <strong><code>LcmNavigationManagerSVO</code></strong> into the level. One per level, required.
+</p>
+<h3 id="did-the-ai-possess-the-pawn">Did the AI possess the pawn?
+</h3>
 <ul>
-<li>Pawn → Class Defaults →
-<strong><code>Auto Possess AI</code></strong> = <strong>Placed in World
-or Spawned</strong></li>
-<li>Pawn → Class Defaults →
-<strong><code>AI Controller Class</code></strong> is set</li>
-<li>The controller actually runs the tree
-(<code>Run Behavior Tree</code>, or a <code>StateTreeAIComponent</code>
-with a State Tree assigned)</li>
+<li>Pawn → Class Defaults → <strong><code>Auto Possess AI</code></strong> = <strong>Placed in World or Spawned</strong>
+</li>
+<li>Pawn → Class Defaults → <strong><code>AI Controller Class</code></strong> is set
+</li>
+<li>The controller actually runs the tree (<code>Run Behavior Tree</code>, or a <code>StateTreeAIComponent</code> with a State Tree assigned)
+</li>
 </ul>
-<h3 id="can-the-pawn-move-at-all">Can the pawn move at all?</h3>
-<p>It needs a movement component that supports flight. <strong>Floating
-Pawn Movement</strong> is the simple choice. Check its <strong>Max
-Speed</strong> isn't 0.</p>
-<h3 id="is-the-goal-set">Is the goal set?</h3>
-<p>Print the blackboard key (or StateTree parameter). A goal of
-<code>(0,0,0)</code> means it was never set, or was set after the tree
-started.</p>
+<h3 id="can-the-pawn-move-at-all">Can the pawn move at all?
+</h3>
+<p>It needs a movement component that supports flight. <strong>Floating Pawn Movement</strong> is the simple choice. Check its <strong>Max Speed</strong> isn't 0.
+</p>
+<h3 id="is-the-goal-set">Is the goal set?
+</h3>
+<p>Print the blackboard key (or StateTree parameter). A goal of <code>(0,0,0)</code> means it was never set, or was set after the tree started.
+</p>
 <hr />
-<h2 id="2-agent-moves-but-badly">2. Agent moves, but badly</h2>
+<h2 id="2-agent-moves-but-badly">2. Agent moves, but badly
+</h2>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
 <tr>
-<th>Symptom</th>
-<th>Cause</th>
-<th>Fix</th>
+<th>Symptom
+</th>
+<th>Cause
+</th>
+<th>Fix
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Jitters, vibrates in place</td>
-<td>Physics fighting navigation</td>
-<td>Set mesh collision to <em>No Collision</em> to confirm, then re-add
-carefully</td>
+<td>Jitters, vibrates in place
+</td>
+<td>Physics fighting navigation
+</td>
+<td>Set mesh collision to <em>No Collision</em> to confirm, then re-add carefully
+</td>
 </tr>
 <tr>
-<td>Stops short of the goal</td>
-<td><code>Acceptance Radius</code> too large</td>
-<td>Lower it, but not below one voxel</td>
+<td>Stops short of the goal
+</td>
+<td><code>Acceptance Radius</code> too large
+</td>
+<td>Lower it, but not below one voxel
+</td>
 </tr>
 <tr>
-<td>Overshoots and circles</td>
-<td>Speed too high for turn rate</td>
-<td>Lower <code>Flight Speed</code> or raise
-<code>Deceleration Distance</code></td>
+<td>Overshoots and circles
+</td>
+<td>Speed too high for turn rate
+</td>
+<td>Lower <code>Flight Speed</code> or raise <code>Deceleration Distance</code>
+</td>
 </tr>
 <tr>
-<td>Robotic square turns</td>
-<td>Grid-locked solver, no smoothing</td>
-<td>Use <em>Lazy Theta*</em> and <em>Curved Spline</em> smoothing</td>
+<td>Robotic square turns
+</td>
+<td>Grid-locked solver, no smoothing
+</td>
+<td>Use <em>Lazy Theta*</em> and <em>Curved Spline</em> smoothing
+</td>
 </tr>
 <tr>
-<td>Sinks into the floor</td>
-<td>Insufficient clearance below</td>
-<td>Raise <code>Clearance Padding</code> slightly, or
-<code>Min Voxel Size</code> finer</td>
+<td>Sinks into the floor
+</td>
+<td>Insufficient clearance below
+</td>
+<td>Raise <code>Clearance Padding</code> slightly, or <code>Min Voxel Size</code> finer
+</td>
 </tr>
 <tr>
-<td>Agents pile up on each other</td>
-<td>No separation</td>
-<td>Raise <code>Separation Radius</code> /
-<code>Separation Weight</code>, or use <em>Predictive (ORCA)</em>
-avoidance</td>
+<td>Agents pile up on each other
+</td>
+<td>No separation
+</td>
+<td>Raise <code>Separation Radius</code> / <code>Separation Weight</code>, or use <em>Predictive (ORCA)</em> avoidance
+</td>
+</tr>
+<tr>
+<td>A small creature (fish, insect) circles its target, overshoots, rams its neighbours
+</td>
+<td>Agent Scale left at 1: it flies a metre agent's speed and turning circle
+</td>
+<td>Set Agent Scale = body length / 100 on the Flight Movement component and its Fly To nodes, or the manager's World Scale. The Output Log names the value
+</td>
+</tr>
+<tr>
+<td>Fish swim out of a tank or break the surface
+</td>
+<td>Nothing tells navigation where the water ends
+</td>
+<td>Add a Physics Volume with <strong>Water Volume</strong> ticked round the water (see Tutorial 12)
+</td>
+</tr>
+<tr>
+<td>Fish stop or shove each other when they meet (for seconds head-on)
+</td>
+<td>Their root collision BLOCKS Pawn: they collide before they can steer round
+</td>
+<td>Set the root's Pawn response to Overlap (WorldStatic / WorldDynamic stay Block); the steering keeps the spacing
+</td>
+</tr>
+<tr>
+<td>Fish pass through each other or through glass
+</td>
+<td>The root is a plain Scene Component: the pawn is swept with no collision
+</td>
+<td>Make the collision shape (sphere, capsule or box) the ROOT, the mesh under it
+</td>
+</tr>
+<tr>
+<td>Fish pass through each other
+</td>
+<td>Body width wider than the schooling capsule
+</td>
+<td>Set Schooling <strong>Body Length Cm</strong> and <strong>Body Width BL</strong> to the fish's shape; raise <strong>Repulsion BL</strong> / <strong>Contact Push</strong>
+</td>
 </tr>
 </tbody>
 </table>
 </div>
 <hr />
-<h2 id="3-no-path-found">3. "No path found"</h2>
-<h3 id="first-is-the-goal-reachable-at-all">First: is the goal reachable
-at all?</h3>
+<h2 id="3-no-path-found">3. "No path found"
+</h2>
+<h3 id="first-is-the-goal-reachable-at-all">First: is the goal reachable at all?
+</h3>
 <ul>
-<li><strong>Inside the navigation volume?</strong> Outside
-<code>World Extent</code> there is no data. Enlarge it, or move the goal
-in.</li>
-<li><strong>Inside geometry?</strong> A goal (or start) buried in a wall
-has no free voxel. Move it into open air.</li>
-<li><strong>Genuinely enclosed?</strong> If the destination is sealed
-off, failure is correct.</li>
+<li><strong>Inside the navigation volume?</strong> Outside <code>World Extent</code> there is no data. Enlarge it, or move the goal in.
+</li>
+<li><strong>Inside geometry?</strong> A goal (or start) buried in a wall has no free voxel. Move it into open air.
+</li>
+<li><strong>Genuinely enclosed?</strong> If the destination is sealed off, failure is correct.
+</li>
 </ul>
-<h3 id="the-classic-padding-sealed-the-opening">The classic: padding
-sealed the opening</h3>
-<p><strong>This is the most common cause of a mystifying "no
-path".</strong></p>
-<p>If <code>Clearance Padding</code> is close to
-<code>Min Voxel Size</code>, obstacle inflation fills narrow openings
-completely. A 2 m doorway with 100 cm voxels and 100 cm padding can
-vanish entirely.</p>
-<p><strong>Fix:</strong> lower <code>Clearance Padding</code>, or lower
-<code>Min Voxel Size</code> so the opening survives the inflation.
-Confirm with <code>Draw Debug Volumes</code>: you should see free voxels
-<em>through</em> the opening.</p>
-<h3 id="short-paths-work-long-ones-fail">Short paths work, long ones
-fail</h3>
-<p>Almost always an <strong>infinite world</strong> issue: the route
-crosses chunks that haven't generated yet.</p>
+<h3 id="the-classic-padding-sealed-the-opening">The classic: padding sealed the opening
+</h3>
+<p><strong>This is the most common cause of a mystifying "no path".</strong>
+</p>
+<p>If <code>Clearance Padding</code> is close to <code>Min Voxel Size</code>, obstacle inflation fills narrow openings completely. A 2 m doorway with 100 cm voxels and 100 cm padding can vanish entirely.
+</p>
+<p><strong>Fix:</strong> lower <code>Clearance Padding</code>, or lower <code>Min Voxel Size</code> so the opening survives the inflation. Confirm with <code>Draw Debug Volumes</code>: you should see free voxels <em>through</em> the opening.
+</p>
+<h3 id="short-paths-work-long-ones-fail">Short paths work, long ones fail
+</h3>
+<p>Almost always an <strong>infinite world</strong> issue: the route crosses chunks that haven't generated yet.
+</p>
 <ul>
-<li>Turn on <strong><code>Persistent Skeleton</code></strong> under
-<strong>5. Coarse Skeleton (optional)</strong>. It is <strong>off by
-default</strong></li>
-<li>it is what allows long-range planning before the detail exists, and
-it is the first thing to try when an agent loses routability over ground
-it has already crossed.</li>
-<li>For routing to be complete on the very first frame, including into
-space the agent has never visited, tick
-<strong><code>Use Baked Skeleton</code></strong> (also under <strong>5.
-Coarse Skeleton (optional)</strong>) and then click the
-<strong><code>Bake Skeleton</code></strong> button, which appears in the
-banner once that option is on.</li>
-<li>Tick <strong><code>Assist Infinite Streaming</code></strong> on the
-Fly To task for agents that must traverse the frontier.</li>
-<li>Leave <strong><code>Chunk Size</code></strong> at
-<strong>8000</strong> unless you have a specific reason and will re-test
-long routes.</li>
+<li>Turn on <strong><code>Persistent Skeleton</code></strong> under <strong>5. Coarse Skeleton (optional)</strong>. It is <strong>off by default</strong>
+</li>
+<li>it is what allows long-range planning before the detail exists, and it is the first thing to try when an agent loses routability over ground it has already crossed.
+</li>
+<li>For routing to be complete on the very first frame, including into space the agent has never visited, tick <strong><code>Use Baked Skeleton</code></strong> (also under <strong>5. Coarse Skeleton (optional)</strong>) and then click the <strong><code>Bake Skeleton</code></strong> button, which appears in the banner once that option is on.
+</li>
+<li>Tick <strong><code>Assist Infinite Streaming</code></strong> on the Fly To task for agents that must traverse the frontier.
+</li>
+<li>Leave <strong><code>Chunk Size</code></strong> at <strong>8000</strong> unless you have a specific reason and will re-test long routes.
+</li>
 </ul>
-<h3 id="everything-fails-immediately">Everything fails immediately</h3>
-<p>The volume never built. Check
-<strong><code>Auto Build On Play</code></strong> is on, or that you call
-<code>BuildSVO</code>. With <code>Draw Debug Volumes</code> on, you
-should see the octree at <code>BeginPlay</code>.</p>
-<h3 id="it-fails-only-for-some-agents-cost-areas">It fails only for some
-agents: cost areas</h3>
-<p>Call <strong><code>Get Last Path Cost Failure</code></strong> on the
-manager.</p>
+<h3 id="everything-fails-immediately">Everything fails immediately
+</h3>
+<p>The volume never built. Check <strong><code>Auto Build On Play</code></strong> is on, or that you call <code>BuildSVO</code>. With <code>Draw Debug Volumes</code> on, you should see the octree at <code>BeginPlay</code>.
+</p>
+<h3 id="it-fails-only-for-some-agents-cost-areas">It fails only for some agents: cost areas
+</h3>
+<p>Call <strong><code>Get Last Path Cost Failure</code></strong> on the manager.
+</p>
 <ul>
-<li><strong>Goal In Excluded Area</strong>: the goal is inside a volume
-this agent's filter excludes (or a No-Fly / Null area). Move the goal,
-or give the agent a filter that allows it.</li>
-<li><strong>No Route Under Filter</strong>: every way to the goal
-crosses an excluded volume. Open a gap, or change the filter.</li>
+<li><strong>Goal In Excluded Area</strong>: the goal is inside a volume this agent's filter excludes (or a No-Fly / Null area). Move the goal, or give the agent a filter that allows it.
+</li>
+<li><strong>No Route Under Filter</strong>: every way to the goal crosses an excluded volume. Open a gap, or change the filter.
+</li>
 </ul>
-<p>Set the manager's <strong>Cost View</strong> to <em>Regions</em> and
-its <strong>Cost View Filter</strong> to that agent's filter to see the
-world as it does. See <a
-href="nav-links-and-areas.html">Tutorial 10</a>.</p>
-<h3 id="the-route-stops-short-of-the-goal">The route stops short of the
-goal</h3>
-<p>In a streamed world, part of the way may not be generated yet. Find
-Path returns that partial route on purpose, and the agent follows it
-while the rest streams in.
-<strong><code>Find Path Detailed</code></strong> tells you whether a
-route is Complete or Partial; <strong>Require Complete Path</strong> in
-the query options makes a partial route fail instead.</p>
+<p>Set the manager's <strong>Cost View</strong> to <em>Regions</em> and its <strong>Cost View Filter</strong> to that agent's filter to see the world as it does. See <a href="nav-links-and-areas.html">Tutorial 10</a>.
+</p>
+<h3 id="the-route-stops-short-of-the-goal">The route stops short of the goal
+</h3>
+<p>In a streamed world, part of the way may not be generated yet. Find Path returns that partial route on purpose, and the agent follows it while the rest streams in. <strong><code>Find Path Detailed</code></strong> tells you whether a route is Complete or Partial; <strong>Require Complete Path</strong> in the query options makes a partial route fail instead.
+</p>
 <hr />
-<h2 id="4-agents-ignore-geometry">4. Agents ignore geometry</h2>
-<p>If agents fly through a wall, the wall isn't in the octree.</p>
+<h2 id="4-agents-ignore-geometry">4. Agents ignore geometry
+</h2>
+<p>If agents fly through a wall, the wall isn't in the octree.
+</p>
 <ol type="1">
-<li><strong>Does the mesh have collision?</strong> Voxelization uses
-collision, not visual geometry. <em>No Collision</em> = invisible to
-navigation.</li>
-<li><strong>Is its channel in
-<code>Obstacle Query Channels</code>?</strong> <em>(3.
-Collision)</em></li>
-<li><strong>Is <code>Allowed Obstacle Classes</code> filtering it
-out?</strong> Empty = allow everything, which is what you normally
-want.</li>
-<li><strong>Was it added after the build?</strong> Static geometry is
-baked at build time. Something spawned later needs either a rebuild or a
-Dynamic Obstacle component. In an infinite world, a level that streams
-in after its area was built is picked up automatically: the chunks it
-overlaps are rebuilt (see <a
-href="settings.html#infinite-world-default-off">Infinite
-World</a>).</li>
-<li><strong>Is it too thin?</strong> Geometry thinner than a voxel can
-be missed. Lower <code>Min Voxel Size</code>, or thicken the
-collision.</li>
+<li><strong>Does the mesh have collision?</strong> Voxelization uses collision, not visual geometry. <em>No Collision</em> = invisible to navigation.
+</li>
+<li><strong>Is its channel in <code>Obstacle Query Channels</code>?</strong> <em>(3. Collision)</em>
+</li>
+<li><strong>Is <code>Allowed Obstacle Classes</code> filtering it out?</strong> Empty = allow everything, which is what you normally want.
+</li>
+<li><strong>Was it added after the build?</strong> Static geometry is baked at build time. Something spawned later needs either a rebuild or a Dynamic Obstacle component. In an infinite world, a level that streams in after its area was built is picked up automatically: the chunks it overlaps are rebuilt (see <a href="settings.html#infinite-world-default-off">Infinite World</a>).
+</li>
+<li><strong>Is it too thin?</strong> Geometry thinner than a voxel can be missed. Lower <code>Min Voxel Size</code>, or thicken the collision.
+</li>
 </ol>
 <hr />
-<h2 id="5-dynamic-obstacles-do-nothing">5. Dynamic obstacles do
-nothing</h2>
+<h2 id="5-dynamic-obstacles-do-nothing">5. Dynamic obstacles do nothing
+</h2>
 <ol type="1">
-<li><strong>Does the actor have an
-<code>LCM Nav3D Dynamic Obstacle</code> component?</strong> Moving an
-actor without one changes nothing as far as navigation is concerned, and
-produces no error.</li>
-<li><strong>Does its mesh have collision enabled?</strong></li>
-<li><strong>Is <code>Update Distance Threshold</code> too high?</strong>
-It won't restamp until the actor moves that far (default 50 cm).</li>
-<li><strong>Reaction too slow?</strong> Lower
-<code>Finite Obstacle Update Interval</code> (default 0.1 s).</li>
-<li><strong>Using <code>Tracked Components</code>?</strong> If the list
-is non-empty, only those components are tracked, so make sure the
-blocking one is in it.</li>
+<li><strong>Does the actor have an <code>LCM Nav3D Dynamic Obstacle</code> component?</strong> Moving an actor without one changes nothing as far as navigation is concerned, and produces no error.
+</li>
+<li><strong>Does its mesh have collision enabled?</strong>
+</li>
+<li><strong>Is <code>Update Distance Threshold</code> too high?</strong> It won't restamp until the actor moves that far (default 50 cm).
+</li>
+<li><strong>Reaction too slow?</strong> Lower <code>Finite Obstacle Update Interval</code> (default 0.1 s).
+</li>
+<li><strong>Is its collision object type in the manager's <code>Obstacle Query Channels</code>?</strong> A mover is usually <code>WorldDynamic</code>; if that type is not in the list the mover never reaches the octree, and <code>Draw Debug Volumes</code> shows the level but not the mover.
+</li>
+<li><strong>Using <code>Tracked Components</code>?</strong> If the list is non-empty, only those components are tracked, so make sure the blocking one is in it.
+</li>
 </ol>
-<p>See <a href="dynamic-obstacles.html">Tutorial 05</a>.</p>
+<p>See <a href="dynamic-obstacles.html">Tutorial 05</a>.
+</p>
 <hr />
-<h2 id="6-performance">6. Performance</h2>
-<h3 id="build-is-slow--hitches-when-streaming">Build is slow / hitches
-when streaming</h3>
+<h2 id="6-performance">6. Performance
+</h2>
+<h3 id="build-is-slow--hitches-when-streaming">Build is slow / hitches when streaming
+</h3>
 <ul>
-<li>Raise <strong><code>Min Voxel Size</code></strong> (the biggest
-lever by far).</li>
-<li>Keep <strong><code>Voxelization Method</code></strong> on
-<code>Auto</code> (GPU).</li>
-<li>Lower <strong><code>Max Generations Per Frame</code></strong> to
-spread work (world fills in more slowly, but smoothly).</li>
+<li>Raise <strong><code>Min Voxel Size</code></strong> (the biggest lever by far).
+</li>
+<li>Keep <strong><code>Voxelization Method</code></strong> on <code>Auto</code> (GPU).
+</li>
+<li>Lower <strong><code>Max Generations Per Frame</code></strong> to spread work (world fills in more slowly, but smoothly).
+</li>
 </ul>
-<h3 id="frame-rate-drops-with-many-agents">Frame rate drops with many
-agents</h3>
+<h3 id="the-log-says-the-gpu-failed-a-voxelization-check">The log says the GPU failed a voxelization check
+</h3>
+<p>With <code>Voxelization Method</code> on <code>Auto</code>, a GPU must prove its voxels before it builds navigation: a capability check, a self-test, and sampled checks of its chunks while it runs. When one fails, the log names the check and the reason, the session voxelizes on the CPU from then on (chunks already built are rebuilt), and the manager's <strong>On Voxelization Changed</strong> event fires. Navigation stays correct; only building it is slower.
+</p>
 <ul>
-<li>Lower <strong><code>Max Path Requests Per Frame</code></strong> to
-cap per-frame planning.</li>
-<li>Use cheaper avoidance: <em>Reactive</em> rather than
-<em>Predictive</em>.</li>
-<li>For agents sharing a goal, enable
-<strong><code>Use Flow Fields</code></strong>.</li>
-<li><strong>Past a few hundred agents, move to <a
-href="mass-entity-crowds.html">Mass Entity</a>.</strong> Actor
-ticks, not pathfinding, are the ceiling.</li>
+<li>Update the graphics driver first: the failures seen so far came from a driver that dropped GPU writes.
+</li>
+<li>A passed self-test is remembered for that GPU, driver and plugin build, so the next session starts at once. <code>r.LcmNav.VoxelGuardRememberPass 0</code> runs the test every session.
+</li>
+<li><code>Voxelization Method</code> = <code>GPU</code> never moves to the CPU: use it only on hardware you control.
+</li>
 </ul>
-<h3 id="memory-too-high">Memory too high</h3>
+<h3 id="frame-rate-drops-with-many-agents">Frame rate drops with many agents
+</h3>
 <ul>
-<li>Raise <strong><code>Min Voxel Size</code></strong> (memory scales
-steeply with resolution).</li>
-<li>Shrink <strong><code>World Extent</code></strong> to just your play
-space.</li>
-<li>In infinite worlds, keep <code>Chunk Size</code> at the
-default.</li>
+<li>Lower <strong><code>Max Path Requests Per Frame</code></strong> to cap per-frame planning.
+</li>
+<li>Use cheaper avoidance: <em>Reactive</em> rather than <em>Predictive</em>.
+</li>
+<li>For agents sharing a goal, enable <strong><code>Use Flow Fields</code></strong>.
+</li>
+<li><strong>Past a few hundred agents, move to <a href="mass-entity-crowds.html">Mass Entity</a>.</strong> Actor ticks, not pathfinding, are the ceiling.
+</li>
 </ul>
-<h3 id="debug-drawing-is-itself-slow">Debug drawing is itself slow</h3>
-<p>Expected: it's a debug tool. Raise
-<code>Debug Redraw Coalesce Seconds</code>, or turn it off.</p>
+<h3 id="memory-too-high">Memory too high
+</h3>
+<ul>
+<li>Raise <strong><code>Min Voxel Size</code></strong> (memory scales steeply with resolution).
+</li>
+<li>Shrink <strong><code>World Extent</code></strong> to just your play space.
+</li>
+<li>In infinite worlds, keep <code>Chunk Size</code> at the default.
+</li>
+</ul>
+<h3 id="debug-drawing-is-itself-slow">Debug drawing is itself slow
+</h3>
+<p>Expected: it's a debug tool. Raise <code>Debug Redraw Coalesce Seconds</code>, or turn it off.
+</p>
 <hr />
-<h2 id="7-editor-and-install">7. Editor and install</h2>
+<h2 id="7-editor-and-install">7. Editor and install
+</h2>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
 <tr>
-<th>Problem</th>
-<th>Fix</th>
+<th>Problem
+</th>
+<th>Fix
+</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Can't find demo maps</td>
-<td>Content Browser → Settings → <strong>Show Plugin
-Content</strong></td>
+<td>Can't find demo maps
+</td>
+<td>Content Browser → Settings → <strong>Show Plugin Content</strong>
+</td>
 </tr>
 <tr>
-<td>"Modules are missing or built with a different engine version"</td>
-<td>Rebuild; if it fails, your project is Blueprint-only. See <a
-href="installation.html#method-b-manual-install-into-your-project">Tutorial
-01</a></td>
+<td>"Modules are missing or built with a different engine version"
+</td>
+<td>Rebuild; if it fails, your project is Blueprint-only. See <a href="installation.html#method-b-manual-install-into-your-project">Tutorial 01</a>
+</td>
 </tr>
 <tr>
-<td>Plugin absent from the Plugins window</td>
-<td>Wrong folder layout: must be
-<code>YourProject/Plugins/LCMNav3D/LCMNav3D.uplugin</code></td>
+<td>Plugin absent from the Plugins window
+</td>
+<td>Wrong folder layout: must be <code>YourProject/Plugins/LCMNav3D/LCMNav3D.uplugin</code>
+</td>
 </tr>
 <tr>
-<td>Fails to load, <code>GetLastError 126</code></td>
-<td>A Mass plugin dependency got disabled; re-enable
-<code>MassEntity</code>, <code>MassGameplay</code>,
-<code>MassAI</code></td>
+<td>Fails to load, <code>GetLastError 126</code>
+</td>
+<td>A Mass plugin dependency got disabled; re-enable <code>MassEntity</code>, <code>MassGameplay</code>, <code>MassAI</code>
+</td>
 </tr>
 <tr>
-<td>Compile errors about StateTree or Mass types</td>
-<td>Same cause: an engine plugin dependency is off</td>
+<td>Compile errors about StateTree or Mass types
+</td>
+<td>Same cause: an engine plugin dependency is off
+</td>
 </tr>
 <tr>
-<td>EQS preview shows nothing in-editor</td>
-<td>Call <strong><code>Build SVO In Editor</code></strong> on the
-manager; EQS previews need navigation data without playing</td>
+<td>EQS preview shows nothing in-editor
+</td>
+<td>Call <strong><code>Build SVO In Editor</code></strong> on the manager; EQS previews need navigation data without playing
+</td>
 </tr>
 <tr>
-<td>Stock Move To ignores LCM Nav3D</td>
-<td>The log says <strong>NotClaimed</strong>: a Recast navmesh owns the
-default agent. Add a Supported Agent for LCM Nav3D (<a
-href="stock-navigation.html">Tutorial 14</a>)</td>
+<td>Stock Move To ignores LCM Nav3D
+</td>
+<td>The log says <strong>NotClaimed</strong>: a Recast navmesh owns the default agent. Add a Supported Agent for LCM Nav3D (<a href="stock-navigation.html">Tutorial 14</a>)
+</td>
 </tr>
 <tr>
-<td>Log line "mass.FullyParallel set to 0"</td>
-<td>Expected. The plugin runs Mass phases serially to avoid a UE 5.2
-phase-order ensure that froze the editor for seconds, and it was also
-faster at 10,000 agents. It never overrides a value you set. To opt out:
-<code>r.LcmNav.Mass.SerialPhases 0</code></td>
+<td>Log line "mass.FullyParallel set to 0"
+</td>
+<td>Expected. The plugin runs Mass phases serially to avoid a UE 5.2 phase-order ensure that froze the editor for seconds, and it was also faster at 10,000 agents. It never overrides a value you set. To opt out: <code>r.LcmNav.Mass.SerialPhases 0</code>
+</td>
 </tr>
 </tbody>
 </table>
 </div>
 <hr />
-<h2 id="8-determinism-and-multiplayer">8. Determinism and
-multiplayer</h2>
-<p>If you need identical results across runs (replays, lockstep,
-automated tests):</p>
+<h2 id="8-determinism-and-multiplayer">8. Determinism and multiplayer
+</h2>
+<p>If you need identical results across runs (replays, lockstep, automated tests):
+</p>
 <ul>
-<li>Set <strong><code>Voxelization Method</code></strong> to
-<code>CPU</code>.</li>
+<li>Set <strong><code>Voxelization Method</code></strong> to <code>CPU</code>.
+</li>
 </ul>
-<p>Path solving already runs on the CPU and is deterministic by design.
-Voxelization is the part that can vary: GPU execution order isn't
-guaranteed run-to-run, so force the CPU voxelizer when you need a
-bit-identical rebuild.</p>
+<p>Path solving already runs on the CPU and is deterministic by design. Voxelization is the part that can vary: GPU execution order isn't guaranteed run-to-run, so force the CPU voxelizer when you need a bit-identical rebuild.
+</p>
 <hr />
-<h2 id="still-stuck">Still stuck?</h2>
-<p>Gather these before asking for help, since they identify most
-problems immediately:</p>
+<h2 id="still-stuck">Still stuck?
+</h2>
+<p>Gather these before asking for help, since they identify most problems immediately:
+</p>
 <ol type="1">
-<li><strong><code>Draw Debug Volumes</code> screenshot</strong> of the
-area that misbehaves.</li>
-<li><strong>Output Log</strong> filtered to <code>Lcm</code>.</li>
-<li><strong>Manager settings</strong>: <code>Infinite World</code>,
-<code>World Extent</code>/<code>Chunk Size</code>,
-<code>Min Voxel Size</code>, <code>Clearance Padding</code>.</li>
-<li><strong>Which path</strong> you're using: Behavior Tree, StateTree,
-or Mass.</li>
-<li><strong>Does the equivalent demo map work?</strong> If yes it's a
-setup issue in your level; if no it's an install issue.</li>
+<li><strong><code>Draw Debug Volumes</code> screenshot</strong> of the area that misbehaves.
+</li>
+<li><strong>Output Log</strong> filtered to <code>Lcm</code>.
+</li>
+<li><strong>Manager settings</strong>: <code>Infinite World</code>, <code>World Extent</code>/<code>Chunk Size</code>, <code>Min Voxel Size</code>, <code>Clearance Padding</code>.
+</li>
+<li><strong>Which path</strong> you're using: Behavior Tree, StateTree, or Mass.
+</li>
+<li><strong>Does the equivalent demo map work?</strong> If yes it's a setup issue in your level; if no it's an install issue.
+</li>
 </ol>
-<p>Then bring them to the community Discord: <strong><a
-href="https://discord.gg/nXkpD6uaBG">https://discord.gg/nXkpD6uaBG</a></strong></p>
-<p>Open a <strong>Technical Support</strong> ticket in
-<code>#get-help</code> and you get a private channel with the author.
-First reply within 24 hours on weekdays. <code>#support-faq</code> there
-carries this same triage list, and <code>#known-issues</code> tracks
-confirmed defects with their workarounds - worth checking before you
-write.</p>
-  <div class="pager"><a href="settings.html">&larr; Settings reference</a><a href="flight-locomotion.html">Flight and locomotion &rarr;</a></div>
+<p>Then bring them to the community Discord: <strong><a href="https://discord.gg/nXkpD6uaBG">https://discord.gg/nXkpD6uaBG</a></strong>
+</p>
+<p>Open a <strong>Technical Support</strong> ticket in <code>#get-help</code> and you get a private channel with the author. First reply within 24 hours on weekdays. <code>#support-faq</code> there carries this same triage list, and <code>#known-issues</code> tracks confirmed defects with their workarounds - worth checking before you write.
+</p>
+<div class="pager"><a href="settings.html">&larr; Settings reference</a><a href="flight-locomotion.html">Flight and locomotion &rarr;</a></div>
   <footer>
    <p><strong>LCM Nav3D</strong> True Volumetric 3D Navigation for Unreal Engine &nbsp;|&nbsp;
     <a href="https://www.fab.com/listings/92f05e42-d7be-4de3-abe8-7b0a3e70ba73">Fab</a> &nbsp;|&nbsp;

@@ -15,9 +15,9 @@ const PAGES = {
     desc: 'Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.',
   },
   'whats-new.html': {
-    crumb: "What's New in 3.4.1", section: 'gs', nav: "What's new in 3.4.1",
-    title: "What's New in LCM Nav3D 3.4.1 | Release Notes",
-    desc: 'LCM Nav3D 3.4.1 release notes (Unreal Engine 5.2 to 5.8): fish schooling, overlap-free Mass crowds, and crowd agents that no longer freeze against walls.',
+    crumb: "What's New in 3.6", section: 'gs', nav: "What's new in 3.6",
+    title: "What's New in LCM Nav3D 3.6.0 | Release Notes",
+    desc: "LCM Nav3D 3.6.0 release notes (UE 5.2 to 5.8): Fly To predicts moving obstacles, a new Obstacle Gauntlet demo, and GPU voxelization that checks itself.",
   },
   'nav3d-vs-recast.html': {
     crumb: 'Nav3D vs Recast', section: 'gs', nav: 'Nav3D vs Recast',
@@ -35,7 +35,7 @@ const PAGES = {
       ['Does LCM Nav3D replace Unreal\'s navigation system?',
        'No, it sits beside it. Recast, Behavior Trees, StateTree, EQS, AI Perception, Mass and the Gameplay Debugger all keep working as they do now. LCM Nav3D adds tasks, tests, traits and a debugger category to them rather than substituting for them.'],
       ['Which Unreal Engine versions does LCM Nav3D support?',
-       'Unreal Engine 5.2 to 5.8, on Windows 64-bit and Linux.'],
+       'Unreal Engine 5.2 to 5.8, on Windows, macOS, Linux, Android, iOS, PlayStation 5 and Xbox Series X|S.'],
     ],
   },
   'installation.html': {
@@ -143,6 +143,16 @@ const PAGES = {
     title: 'BT MemoryDecay: Use GetLastStimulusLocation | LCM Nav3D',
     desc: "Unreal's UAIPerceptionComponent already tracks per-actor last-known stimulus location with age. Use it as a BT service instead of a hand-rolled decay timer.",
   },
+  'behaviour-nodes.html': {
+    crumb: 'Behaviour Nodes', section: 'gf', nav: "Behaviour nodes",
+    title: 'Behaviour Nodes: Engage, Perch, Land, Flee | LCM Nav3D',
+    desc: "Ready-made flying-agent behaviours for Behavior Tree, StateTree and Mass: Engage, Investigate, Flee, Scan Area, Perch, Land and Take Off, with their settings.",
+  },
+  'feature-examples.html': {
+    crumb: 'Feature Examples', section: 'gs', nav: "Feature Examples levels",
+    title: 'Feature Examples: 69 Displays of 3D Navigation | LCM Nav3D',
+    desc: "Eight walk-through levels in the style of Epic's Content Examples: 69 single-feature displays that check themselves as they run and name the chapter to read.",
+  },
   'editor-tools.html': {
     crumb: 'Editor Tools', section: 'ref', nav: "Editor tools",
     title: 'Editor Tools: Wizard, Health Check, Auto-Tuner | LCM Nav3D',
@@ -202,11 +212,11 @@ const NAV = [
   { heading: 'Start here', items: ['index.html', 'whats-new.html', 'nav3d-vs-recast.html'] },
   { heading: 'Getting started', items: [
     'installation.html', 'core-concepts.html', 'your-first-flying-agent.html',
-    'statetree-agent.html', 'dynamic-obstacles.html'] },
+    'statetree-agent.html', 'dynamic-obstacles.html', 'feature-examples.html'] },
   { heading: 'Going further', items: [
     'mass-entity-crowds.html', 'tactical-eqs.html', 'ai-perception.html',
     'hybrid-recast.html', 'nav-links-and-areas.html', 'gameplay-debugger.html',
-    'small-worlds.html', 'fly-to-location.html', 'stock-navigation.html'] },
+    'small-worlds.html', 'fly-to-location.html', 'stock-navigation.html', 'behaviour-nodes.html'] },
   { heading: 'Behaviour Tree patterns', items: [
     'bt-wait.html', 'bt-is-at-location.html', 'bt-look-at.html', 'bt-turn-in-place.html',
     'bt-health-below.html', 'bt-perception-relay.html', 'bt-memory-decay.html'] },
