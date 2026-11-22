@@ -240,29 +240,29 @@
 <h1 id="settings-reference-lcmnavigationmanagersvo">Settings Reference: <code>LcmNavigationManagerSVO</code>
 </h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-11-22">22 November 2026</time></p>
-<p>Every field on the navigation manager, in the order the Details panel presents them. Defaults and limits below are the shipping values.
+<p>This page lists every field on the navigation manager, in the same order as the Details panel. The defaults and limits are the values the plugin ships with.
 </p>
-<p><strong>If you only read one thing:</strong> the four settings that decide whether the plugin works well in your level are <strong><code>Infinite World</code></strong>, <strong><code>World Extent</code> / <code>Chunk Size</code></strong>, <strong><code>Min Voxel Size</code></strong>, and <strong><code>Clearance Padding</code></strong>. Everything else is refinement.
+<p><strong>The four most important settings</strong> are <strong><code>Infinite World</code></strong>, <strong><code>World Extent</code> / <code>Chunk Size</code></strong>, <strong><code>Min Voxel Size</code></strong> and <strong><code>Clearance Padding</code></strong>. Get these right first. The others are for fine-tuning.
 </p>
-<p>Concepts behind these are explained in <a href="core-concepts.html">Tutorial 02: Core Concepts</a>.
+<p>The ideas behind these settings are explained in <a href="core-concepts.html">Tutorial 02: Core Concepts</a>.
 </p>
 <hr />
 <h2 id="the-panel-at-a-glance">The panel at a glance
 </h2>
-<p>The manager's Details panel is one <strong>LCM Nav3D</strong> group floated above the inherited Actor sections, then seven numbered sections in the order below.
+<p>The manager's Details panel starts with an <strong>LCM Nav3D</strong> group above the usual Actor sections, followed by seven numbered sections in the order below.
 </p>
 <p><img src="images/manager-details-top.png" alt="Manager Details, upper half: header pills, Configuration Health, What You Get, section 1 Setup and section 2 Voxels" width="792" height="1074" decoding="async" fetchpriority="high">
 </p>
-<p><strong>Figure 1: Sections 1-2, plus the three blocks above them.</strong> <em>Configuration Health</em> and <em>What You Get</em> are not settings; they are what the settings below <em>resolve to</em>. They are worth reading before you change anything: the health block in this shot is reporting a raised invoker radius, and the <em>What You Get</em> block is reporting a 250 cm finest leaf from a 100 cm <code>Min Voxel Size</code>. That difference is the one people most often misunderstand.
+<p><strong>Figure 1: Sections 1-2, and the three blocks above them.</strong> <em>Configuration Health</em> and <em>What You Get</em> are not settings. They show what the settings below <em>produce</em>, so read them before you change anything. In this screenshot the health block reports that the invoker radius was raised, and <em>What You Get</em> shows a 250 cm finest leaf from a 100 cm <code>Min Voxel Size</code>. People often misread that second number.
 </p>
 <p><img src="images/manager-details-lower.png" alt="Manager Details, lower half: sections 3 Collision, 4 Performance, 5 Coarse Skeleton, 6 Debug and 7 Runtime State" width="780" height="1008" loading="lazy" decoding="async">
 </p>
-<p><strong>Figure 2: Sections 3-7.</strong> Two things to notice:
+<p><strong>Figure 2: Sections 3-7.</strong> Two things to know:
 </p>
 <ul>
-<li><strong>Section 7 is read-only.</strong> Every <code>(auto)</code> row is a value the Streaming Profile <em>derived</em>, shown so you can see exactly what the profile chose. <code>Frontier Stall Recovery (auto)</code> is the only place a BehaviorTree task's <code>Inherit</code> can be resolved for you, because a BT asset is not owned by a level and cannot know which manager it will run under.
+<li><strong>Section 7 is read-only.</strong> Each <code>(auto)</code> row is a value the Streaming Profile chose, shown so you can see it. <code>Frontier Stall Recovery (auto)</code> is the only place you can see what a Behavior Tree task's <code>Inherit</code> turns into, because a BT asset doesn't belong to a level and doesn't know which manager it will run under.
 </li>
-<li><strong>Sections hide what does not apply.</strong> A finite world shows no Coarse Skeleton options, and <code>Max Generations Per Frame</code> disappears unless you are finite or on the Manual profile; the plugin does not show you a property it is going to ignore.
+<li><strong>Settings that don't apply are hidden.</strong> A finite world shows no Coarse Skeleton options, and <code>Max Generations Per Frame</code> is only shown in a finite world or with the Manual profile. If a setting would be ignored, it isn't shown.
 </li>
 </ul>
 <hr />
@@ -270,13 +270,13 @@
 </h2>
 <h3 id="infinite-world-default-off"><code>Infinite World</code>: default <strong>off</strong>
 </h3>
-<p>The biggest decision. Off = one fixed navigation volume built up front. On = the world is divided into chunks generated around agents as they move.
+<p>This is the most important choice. Off means one fixed navigation volume, built at the start. On means the world is split into chunks, which are built around agents as they move.
 </p>
 <p><strong>Leave it off</strong> unless your world really is unbounded or streamed. Finite is simpler, faster and more predictable.
 </p>
-<p>Ticking this hides <code>World Extent</code> and reveals <code>Chunk Size</code> and the skeleton options.
+<p>Ticking it hides <code>World Extent</code> and shows <code>Chunk Size</code> and the skeleton options instead.
 </p>
-<p><strong>Levels that stream in late.</strong> When a streaming level loads after the navigation around it was already built, the chunks it overlaps are rebuilt automatically, so its geometry does not stay open air. Three console variables control this:
+<p><strong>Levels that stream in late.</strong> If a streaming level loads after the navigation around it was built, the chunks it overlaps are rebuilt automatically, so its geometry is added to the navigation. Three console variables control this:
 </p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
@@ -320,29 +320,29 @@
 </div>
 <h3 id="auto-build-on-play-default-on-finite-only"><code>Auto Build On Play</code>: default <strong>on</strong> <em>(finite only)</em>
 </h3>
-<p>Builds the navigation volume at <code>BeginPlay</code>, voxelizing the whole world, on every launch, on every player's machine. Turn it off if you want to trigger <code>BuildSVO</code> yourself from Blueprint at a specific moment, or if you have baked the SVO to an asset.
+<p>Builds the navigation volume at <code>BeginPlay</code>. This voxelizes the whole world every time the game starts, on every player's machine. Turn it off if you call <code>BuildSVO</code> yourself from Blueprint, or if you have baked the octree to an asset.
 </p>
-<p><strong>Turn it off when you bake.</strong> The <strong>Bake to Asset</strong> button does this for you, and it is not a tidiness measure: the streaming proxy and the manager both write the navigation data during <code>BeginPlay</code>, and actor order is not guaranteed, so with both enabled which one the level ends up using is undefined. The Configuration Health section flags the combination.
+<p><strong>Turn it off when you bake.</strong> The <strong>Bake to Asset</strong> button does this for you. If both were on, the streaming proxy and the manager would both write the navigation data during <code>BeginPlay</code>, in no fixed order, and you couldn't tell which one the level used. Configuration Health warns you about this.
 </p>
 <h3 id="generation-strategy-read-only-infinite-only"><code>Generation Strategy</code>: read-only <em>(infinite only)</em>
 </h3>
-<p>Shows which streaming strategy was selected automatically.
+<p>Shows which streaming strategy the plugin picked.
 </p>
 <hr />
 <h2 id="2-voxels">2. Voxels
 </h2>
 <h3 id="world-extent-default-10000-cm-finite-only"><code>World Extent</code>: default <strong>10000 cm</strong> <em>(finite only)</em>
 </h3>
-<p>Half-width of the navigation volume, measured outward from <strong>the world origin</strong>. The default gives a 200 m cube spanning <code>-10000 ... +10000</code> on each axis.
+<p>Half the width of the navigation volume, measured from <strong>the world origin</strong>. The default gives a 200 m cube, from <code>-10000</code> to <code>+10000</code> on each axis.
 </p>
 <p><em>Range: 500-400000. Recommended UI range (slider): 2000-20000.</em>
 </p>
 <blockquote>
-<p><strong>Anything outside this box has no navigation data.</strong> Paths to targets outside it fail. Size it to cover your play space.
+<p><strong>There is no navigation data outside this box</strong>, so paths to targets outside it fail. Make it big enough to cover your play space.
 </p>
 </blockquote>
 <blockquote>
-<p><strong>How big can it actually be? It depends on <code>Min Voxel Size</code>, not on a fixed distance.</strong> The real limit is a voxel <em>count</em>: the world is <code>2 × World Extent</code> wide and holds <code>(2 × World Extent / Min Voxel Size)³</code> voxels against a 64 M ceiling, which is 400³. So the largest legal half-extent is <code>200 × Min Voxel Size</code>:
+<p><strong>How big can it be?</strong> That depends on <code>Min Voxel Size</code>. The real limit is the number of voxels. The world is <code>2 × World Extent</code> wide and holds <code>(2 × World Extent / Min Voxel Size)³</code> voxels, and the limit is 64 M (400³). So the largest World Extent you can use is <code>200 × Min Voxel Size</code>:
 </p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
@@ -392,30 +392,28 @@
 </tbody>
 </table>
 </div>
-<p>The property clamp used to be a flat <strong>20000</strong>, which is the row for the <em>default</em> <code>Min Voxel Size</code> and wrong everywhere else: it blocked a perfectly legal 40 000 at 200 cm voxels, and allowed 8× over budget at 50 cm. A per-property clamp cannot express a rule that depends on another property, so the clamp is now just a sanity ceiling and <strong>Configuration Health reports the real budget live</strong> at whatever <code>Min Voxel Size</code> you are using. Exceeding it does not fail: the generator silently coarsens <code>Min Voxel Size</code> to fit, so you get less precision than you configured.
+<p>The field used to stop at <strong>20000</strong>. That is only right for the default <code>Min Voxel Size</code>: it blocked a valid 40 000 at 200 cm voxels, and allowed 8× too much at 50 cm. The field's own limit is now just an upper bound, and <strong>Configuration Health shows the real budget</strong> for your <code>Min Voxel Size</code> as you edit. Going over the budget doesn't cause an error. The build quietly makes <code>Min Voxel Size</code> coarser until it fits, so you get less detail than you asked for.
 </p>
-<p>Trading voxel precision for area is a real choice, not a workaround: a 2 km flying-combat arena at 500 cm voxels is a sensible configuration. Just make it deliberately.
+<p>Using bigger voxels to cover a bigger area is a fair trade. A 2 km arena for flying combat at 500 cm voxels is a sensible setup, as long as you choose it on purpose.
 </p>
 </blockquote>
 <blockquote>
-<p><strong>Note: The volume does NOT follow the manager actor.</strong> The manager is a logical singleton with no root component, so its position is ignored; moving it does not move the navigation volume. Build your playable space around the world origin, or switch to an infinite world. The manager's Details panel reports the resolved bounds under <strong>What You Get</strong> so you can see them directly.
+<p><strong>Note: the volume does not follow the manager actor.</strong> The manager has no root component, so its position is ignored, and moving it doesn't move the navigation volume. Build your level around the world origin, or switch to an infinite world. The manager's Details panel shows the actual bounds under <strong>What You Get</strong>.
 </p>
 </blockquote>
 <h3 id="chunk-size-default-8000-cm-infinite-only"><code>Chunk Size</code>: default <strong>8000 cm</strong> <em>(infinite only)</em>
 </h3>
-<p>Edge length of one streaming chunk.
+<p>The length of one side of a streaming chunk.
 </p>
-<p><em>Range: 1000-800000. Recommended UI range (slider): 3000-8000.</em> The clamp carries the same caveat as <code>World Extent</code> above: it is a sanity ceiling, not the real budget, which depends on <code>Min Voxel Size</code> and is reported live in Configuration Health. <strong>Here the slider range is the number to follow:</strong> it is the range that tested reliably, and values outside it make long-range routing worse whatever the budget is.
+<p><em>Range: 1000-800000. Recommended UI range (slider): 3000-8000.</em> As with <code>World Extent</code>, the field's limit is only an upper bound; the real budget depends on <code>Min Voxel Size</code> and is shown in Configuration Health. <strong>Stay within the slider range.</strong> Those values worked reliably in testing, and values outside it make long-range routing worse, whatever the budget.
 </p>
 <blockquote>
-<p><strong>Note: be careful when changing this.</strong> It affects memory, generation cost, <em>and</em> whether long routes can be found at all. <strong>8000 is the tested default.</strong> If you change it, re-test long-range routing specifically: a value that looks fine for short hops can break distant paths.
+<p><strong>Note: be careful when changing this.</strong> It affects memory, build time, <em>and</em> whether long routes can be found at all. <strong>8000 is the tested default.</strong> If you change it, test long routes again. A value that works for short trips can break long ones.
 </p>
 </blockquote>
-<h4 id="-chunk-size-changes-navigation-precision-and-not-in-the-direction-you-expect">Chunk Size changes navigation <em>precision</em>, and not in the direction you expect
+<h4 id="-chunk-size-changes-navigation-precision-and-not-in-the-direction-you-expect">Smaller chunks don't always mean finer navigation
 </h4>
-<p>This surprises a lot of people, so here is how it works.
-</p>
-<p>Subdivision stops when a child's half-extent falls below <code>Min Voxel Size</code>, starting from <code>Chunk Size / 2</code>. The finest leaf edge you actually get is therefore <code>Chunk Size / 2ᵏ</code>. It lands somewhere between <strong>2× and 4× <code>Min Voxel Size</code></strong>, and it does <strong>not</strong> improve as Chunk Size shrinks. Measured on a real level at <code>Min Voxel Size = 100</code>:
+<p>This surprises a lot of people. The octree starts at <code>Chunk Size / 2</code> and keeps halving until the next half would be smaller than <code>Min Voxel Size</code>. So the finest leaf you get is <code>Chunk Size / 2ᵏ</code>. It lands somewhere between <strong>2× and 4× <code>Min Voxel Size</code></strong>, and it does <strong>not</strong> get finer just because Chunk Size gets smaller. These are the values on a real level at <code>Min Voxel Size = 100</code>:
 </p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
@@ -473,57 +471,57 @@
 </tbody>
 </table>
 </div>
-<p>So a smaller Chunk Size can give you a <strong>coarser</strong> octree. At <code>Chunk Size 3000</code> you get 375 cm leaves from a 100 cm setting, and <strong>an opening that stays navigable at 250 cm can voxelize shut at 375 cm.</strong> That is felt as <em>"the agent refuses to path"</em>, which reads like a bug rather than a setting.
+<p>So a smaller Chunk Size can give you a <strong>coarser</strong> octree. At <code>Chunk Size 3000</code> you get 375 cm leaves from a 100 cm setting, and <strong>an opening that is open at 250 cm can close at 375 cm.</strong> You see that as an agent that won't find a path, and it looks like a bug even though it comes from a setting.
 </p>
-<p><strong>What to do:</strong> leave it at 8000 unless you have a measured reason. If you must change it, use the <strong>Auto-Tuner</strong> (Editor Tools). It <em>measures</em> the leaf edge from the built octree for each candidate rather than deriving it, and gates on whether a route exists at all before comparing quality or cost.
+<p><strong>What to do:</strong> leave it at 8000 unless testing shows you need something else. If you do change it, use the <strong>Auto-Tuner</strong> (Editor Tools). It builds the octree for each candidate and measures the leaf size, and it checks that your routes can be planned before it compares quality or cost.
 </p>
 <h3 id="min-voxel-size-default-100-cm"><code>Min Voxel Size</code>: default <strong>100 cm</strong>
 </h3>
-<p>The finest resolution the octree will subdivide to. <strong>The dominant quality/cost control.</strong>
+<p>The smallest size the octree will subdivide to. <strong>This setting has the biggest effect on quality and cost.</strong>
 </p>
 <p><em>Range: 10-2000. Recommended UI range: 25-500.</em>
 </p>
 <ul>
-<li>Smaller → finds tighter gaps; more memory; longer builds.
+<li>Smaller: finds tighter gaps, but uses more memory and takes longer to build.
 </li>
-<li>Larger → cheaper; narrow openings disappear.
+<li>Larger: cheaper, but narrow openings disappear.
 </li>
 </ul>
-<p><strong>Rule of thumb:</strong> about <strong>half the narrowest gap</strong> agents must pass through.
+<p><strong>Rule of thumb:</strong> use about <strong>half the narrowest gap</strong> your agents must fly through.
 </p>
 <blockquote>
-<p><strong>It's a floor, not an exact size.</strong> The octree halves down from the world/chunk size, so effective resolution snaps to powers of two. 100 → 90 may change nothing; 100 → 60 may double memory. Tune by testing.
+<p><strong>This is a lower limit, not an exact size.</strong> The octree halves down from the world or chunk size, so the real size jumps in powers of two. Going from 100 to 90 may change nothing, and going from 100 to 60 may double the memory. Test your changes.
 </p>
 </blockquote>
 <h3 id="world-scale-default-standard"><code>World Scale</code>: default <strong>Standard</strong>
 </h3>
-<p>Which set of centimetre constants the manager uses. <code>Standard</code> is the default tuning for metre-scale worlds at a 100 cm leaf, and it behaves exactly like earlier releases. <code>Small</code> derives those constants from the finest leaf this manager produces: Clearance Padding becomes half the leaf (written into the property, which turns read-only), and the start-rescue probe distances and the large-node cost threshold scale with it, so a centimetre-scale world such as a 120 × 70 × 40 cm aquarium at 1 cm voxels gets defaults that mean the same thing. <code>Custom</code> keeps whatever you set. Change <code>Min Voxel Size</code>, <code>World Extent</code> or <code>Chunk Size</code> under <code>Small</code> and the padding is re-derived; it is re-derived again at BeginPlay so config-driven setups match the editor.
+<p>Sets which group of built-in centimetre values the manager uses. <code>Standard</code> is tuned for metre-scale worlds at a 100 cm leaf, and works exactly like earlier releases. <code>Small</code> works these values out from the finest leaf this manager produces. Clearance Padding becomes half the leaf (it is written into the field, which becomes read-only), and a few internal distances scale with it, so a centimetre-scale world, such as a 120 × 70 × 40 cm aquarium at 1 cm voxels, gets sensible defaults. <code>Custom</code> keeps whatever you set. Under <code>Small</code>, the padding is worked out again when you change <code>Min Voxel Size</code>, <code>World Extent</code> or <code>Chunk Size</code>, and again at BeginPlay, so setups that come from config files match the editor.
 </p>
-<p><code>Min Voxel Size</code> now accepts down to <strong>0.5 cm</strong> and <code>World Extent</code> down to <strong>50 cm</strong>. The finest leaf is 2-4× <code>Min Voxel Size</code>, so set half the leaf you want and make the world edge a power-of-two multiple of it. Small worlds are small in <em>leaves</em> too: below ~32 leaves across, node count grows nearly with volume as the leaf shrinks (the panel says so). See <a href="small-worlds.html">Small Worlds</a>.
+<p><code>Min Voxel Size</code> now goes down to <strong>0.5 cm</strong> and <code>World Extent</code> down to <strong>50 cm</strong>. The finest leaf is 2-4× <code>Min Voxel Size</code>, so set half the leaf you want, and make the world size a power-of-two multiple of it. In a world less than about 32 leaves across, memory grows quickly as the leaf gets smaller, and the panel tells you so. See <a href="small-worlds.html">Small Worlds</a>.
 </p>
-<p>A few centimetre constants follow the leaf on every profile, because they live in the generator and the solver rather than on the manager: the neighbour-probe offset, the voxel line-of-sight sampling step, the waypoint-merge tolerance and the route executor's sampling floors are bounded by the finest leaf of the navigation data itself. They keep their previous values at production leaf sizes; there is nothing to set.
+<p>A few internal distances in the builder and the path solver scale with the finest leaf on every profile. They keep their usual values at normal leaf sizes, and there is nothing for you to set.
 </p>
 <h3 id="padding-mode-default-centimetres"><code>Padding Mode</code>: default <strong>Centimetres</strong>
 </h3>
-<p>How <code>Clearance Padding</code> is expressed. <code>Centimetres</code> keeps the value you enter. <code>Leaves</code> derives it as <code>Clearance Padding Leaves</code> × the finest leaf whenever the leaf changes (and again at BeginPlay), so the blocked band around every surface stays the same number of leaves thick at every <code>Min Voxel Size</code>. That is the condition under which halving the leaf grows the octree by the surface law (about 4× per halving) instead of by a band that thickens, in leaves, as the leaf shrinks, which keeps the growth per halving under about 4.5×. <code>World Scale = Small</code> already derives half a leaf and takes precedence.
+<p>Sets how <code>Clearance Padding</code> is given. <code>Centimetres</code> uses the value you type. <code>Leaves</code> sets it to <code>Clearance Padding Leaves</code> × the finest leaf whenever the leaf changes (and again at BeginPlay), so the padding around every surface is always the same number of leaves thick. That keeps memory growth to about 4× each time you halve the leaf. <code>World Scale = Small</code> already uses half a leaf, and it takes priority.
 </p>
 <h3 id="clearance-padding-leaves-default-05"><code>Clearance Padding Leaves</code>: default <strong>0.5</strong>
 </h3>
-<p>The multiple used under <code>Padding Mode = Leaves</code>. 0.5 inflates every surface by half a leaf, which is what <code>Small</code> derives. <em>Range: 0-4.</em>
+<p>The number of leaves used when <code>Padding Mode = Leaves</code>. 0.5 grows every surface by half a leaf, the same as <code>Small</code>. <em>Range: 0-4.</em>
 </p>
 <h3 id="clearance-padding-default-100-cm"><code>Clearance Padding</code>: default <strong>100 cm</strong>
 </h3>
-<p>Inflates obstacles during voxelization so agents keep clear of surfaces.
+<p>Grows obstacles during voxelization, so agents keep clear of surfaces.
 </p>
 <p><em>Range: 0-1000. Recommended UI range: 0-300.</em>
 </p>
 <blockquote>
-<p><strong>Note: Keep this well below <code>Min Voxel Size</code>.</strong> Padding that approaches voxel size fills in doorways and corridors completely, and the pathfinder reports no route through openings you can clearly see. <strong>This is the most common reason for "it says there's no path but I can see the gap".</strong>
+<p><strong>Note: keep this well below <code>Min Voxel Size</code>.</strong> When the padding gets close to the voxel size, doorways and corridors fill in, and the pathfinder reports no route through openings you can clearly see. <strong>This is the most common reason for "it says there's no path but I can see the gap".</strong>
 </p>
 </blockquote>
 <h3 id="coarse-cell-size-default-2500-cm"><code>Coarse Cell Size</code>: default <strong>2500 cm</strong>
 </h3>
-<p>Cell size of the coarse long-range routing layer. Larger = cheaper long-range planning, less precise. The default suits most levels.
+<p>The cell size of the coarse layer used to plan long routes. Larger cells make long-range planning cheaper but less precise. The default suits most levels.
 </p>
 <p><em>Range: 100-20000.</em>
 </p>
@@ -532,56 +530,56 @@
 </h2>
 <h3 id="obstacle-query-channels"><code>Obstacle Query Channels</code>
 </h3>
-<p>Which collision channels count as obstacles. Anything on these channels is voxelized as solid. Defaults to <code>WorldStatic</code> + <code>WorldDynamic</code>.
+<p>The collision channels that count as obstacles. Anything on these channels is voxelized as solid. The default is <code>WorldStatic</code> and <code>WorldDynamic</code>.
 </p>
 <blockquote>
-<p><strong>Empty means <em>nothing</em>, not <em>everything</em>.</strong> Unlike <code>Allowed Obstacle Classes</code> below, clearing this list does not widen the query: it voxelizes an empty world, and you get navigation data that says every point is open air. That passes every metric and shows up only as agents flying through walls. <strong>Bake to Asset</strong> refuses to run on an empty list for exactly this reason.
-</p>
-</blockquote>
-<blockquote>
-<p>If a wall isn't blocking agents, check that its collision channel is in this list <strong>and</strong> that the mesh actually has collision enabled.
+<p><strong>An empty list means no obstacles at all.</strong> This is the opposite of <code>Allowed Obstacle Classes</code> below. With no channels, the whole world is voxelized as open air. Nothing warns you; you only notice when agents fly through walls. That is why <strong>Bake to Asset</strong> won't run with an empty list.
 </p>
 </blockquote>
 <blockquote>
-<p><strong>Moving obstacles are usually <code>WorldDynamic</code>.</strong> A mover whose object type is not in this list never reaches the octree: <code>Draw Debug Volumes</code> shows the level but not the mover.
+<p>If a wall doesn't block agents, check that its collision channel is in this list <strong>and</strong> that the mesh has collision turned on.
+</p>
+</blockquote>
+<blockquote>
+<p><strong>Moving obstacles are usually <code>WorldDynamic</code>.</strong> If a mover's object type isn't in this list, it is never added to the octree, and <code>Draw Debug Volumes</code> shows the level without it.
 </p>
 </blockquote>
 <h3 id="allowed-obstacle-classes"><code>Allowed Obstacle Classes</code>
 </h3>
-<p>Optional filter. Leave <strong>empty</strong> to consider all actors (normal). Populate it to restrict voxelization to specific actor classes (useful when you want to ignore scenery entirely).
+<p>An optional filter. Leave it <strong>empty</strong> to include all actors, which is the normal setting. Add classes to voxelize only those actor classes, for example to ignore scenery.
 </p>
 <hr />
 <h2 id="4-performance">4. Performance
 </h2>
 <h3 id="voxelization-method-default-auto"><code>Voxelization Method</code>: default <strong>Auto</strong>
 </h3>
-<p>Where the octree is built. <code>Auto</code> builds it on the GPU, which is substantially faster, once this machine's GPU has proved its voxels: a capability check, a self-test through the real pipeline (run once per GPU, driver and build, then remembered), and sampled checks of the chunks it builds while it runs. A GPU that fails any of them voxelizes on the CPU for the rest of the session: the log says which check failed and why, and the manager's <strong>On Voxelization Changed</strong> event fires. <code>GPU</code> always builds on the GPU, and <code>CPU</code> always builds on the CPU. Choose <code>CPU</code> only to force deterministic, reproducible builds.
+<p>Where the octree is built. <code>Auto</code> builds it on the GPU, which is much faster, after testing this machine's GPU. There is a capability check, a self-test through the real pipeline (run once per GPU, driver and build, then remembered), and spot checks of the chunks it builds while the game runs. If the GPU fails any of them, the rest of the session voxelizes on the CPU. The log says which check failed and why, and the manager's <strong>On Voxelization Changed</strong> event fires. <code>GPU</code> always builds on the GPU, and <code>CPU</code> always builds on the CPU. Only choose <code>CPU</code> when you need builds that are exactly the same every time.
 </p>
 <p>Levels saved with the older <code>Use GPU Voxelization</code> checkbox are converted to this setting when they load.
 </p>
 <h3 id="max-generations-per-frame-default-1"><code>Max Generations Per Frame</code>: default <strong>1</strong>
 </h3>
-<p>Chunk builds allowed per frame. Higher fills the world faster but can cause hitches. <em>Range: 1+, UI up to 8.</em>
+<p>How many chunks can be built per frame. A higher value fills the world faster but can cause hitches. <em>Range: 1+, UI up to 8.</em>
 </p>
 <h3 id="max-path-requests-per-frame-default-64"><code>Max Path Requests Per Frame</code>: default <strong>64</strong>
 </h3>
-<p>Path queries dequeued per frame. Raise for many agents replanning at once; lower to protect frame time. <em>Range: 1-256.</em>
+<p>How many path requests are handled per frame. Raise it when many agents replan at once, or lower it to protect the frame rate. <em>Range: 1-256.</em>
 </p>
 <h3 id="max-requests-per-frame-default-50"><code>Max Requests Per Frame</code>: default <strong>50</strong>
 </h3>
-<p>General request throttle. <em>Range: 1-200.</em>
+<p>A general limit on requests per frame. <em>Range: 1-200.</em>
 </p>
 <h3 id="max-flow-solves-per-frame-default-4"><code>Max Flow Solves Per Frame</code>: default <strong>4</strong>
 </h3>
-<p>Flow-field solves per frame. <em>Range: 0-16.</em>
+<p>How many flow fields can be solved per frame. <em>Range: 0-16.</em>
 </p>
 <h3 id="finite-obstacle-update-interval-default-01-s-finite-only"><code>Finite Obstacle Update Interval</code>: default <strong>0.1 s</strong> <em>(finite only)</em>
 </h3>
-<p>How often dynamic obstacle changes are folded into the octree. Lower = more reactive, more CPU. <em>Range: 0-2 s.</em> See <a href="dynamic-obstacles.html">Tutorial 05</a>.
+<p>How often changes from dynamic obstacles are written into the octree. A lower value reacts faster but uses more CPU. <em>Range: 0-2 s.</em> See <a href="dynamic-obstacles.html">Tutorial 05</a>.
 </p>
 <h3 id="chunk-quantized-macro-cache-default-off"><code>Chunk Quantized Macro Cache</code>: default <strong>off</strong>
 </h3>
-<p>Caches long-range routes quantized to chunk boundaries. Helps when many agents share similar long-range routes (large crowds spawning together).
+<p>Caches long routes, rounded to chunk borders. This helps when many agents take similar long routes, for example a large crowd that spawns together.
 </p>
 <h3 id="pawn-agents-bt--statetree-subcategory">Pawn Agents (BT &amp; StateTree) subcategory
 </h3>
@@ -626,36 +624,36 @@
 </table>
 </div>
 <blockquote>
-<p>Flow fields are for <strong>swarms heading to the same place</strong>. For a handful of agents with individual goals they are pure overhead, so leave it off.
+<p>Flow fields are for <strong>many agents going to the same place</strong>. For a few agents with their own goals they only add cost, so leave this off.
 </p>
 </blockquote>
 <hr />
 <h2 id="5-coarse-skeleton-optional">5. Coarse Skeleton (optional)
 </h2>
-<p>Two independent, composable ways to keep <strong>long-range</strong> macro routing complete in a streamed world. <strong>Both are opt-in and default off.</strong> They are not part of the base configuration; turn one on only when an agent must route to somewhere it cannot currently see. Agents operating inside their streaming bubble need neither.
+<p>Two options, which you can use separately or together, that help agents plan <strong>long routes</strong> in a streamed world. <strong>Both are off by default.</strong> Only turn one on when an agent has to plan a route to a place that isn't loaded. Agents that stay inside the area around them don't need either.
 </p>
 <h3 id="persistent-skeleton-runtime-no-bake-default-off-infinite-only"><code>Persistent Skeleton (runtime, no bake)</code>: default <strong>off</strong> <em>(infinite only)</em>
 </h3>
-<p>Keeps a lightweight long-range connectivity graph in memory so distant routes can be planned before the detailed chunks exist. No bake required; works on any world, including procedural ones.
+<p>Keeps a small map of how the world connects in memory, so long routes can be planned before the detailed chunks exist. It needs no bake and works in any world, including procedural ones.
 </p>
-<p>Turn it on when an agent <strong>returns across ground it has already covered</strong> and must not lose routability over it. The cost is memory that grows with how much ground has been covered: one compact node per visited-then-evicted chunk, bounded by <code>r.LcmNav.MaxSkeletonNodes</code>, not by the size of the resident set.
+<p>Turn it on when an agent <strong>comes back over ground it has already flown across</strong> and must still be able to plan routes there. It uses more memory the more ground has been covered: one small node for each chunk that was visited and then unloaded, up to <code>r.LcmNav.MaxSkeletonNodes</code>.
 </p>
 <h3 id="use-baked-skeleton-frame-0-completeness-default-off-infinite-only"><code>Use Baked Skeleton (frame-0 completeness)</code>: default <strong>off</strong> <em>(infinite only)</em>
 </h3>
-<p>Loads a pre-baked skeleton so long-range routing is complete from the very first frame, including into <strong>never-visited</strong> space.
+<p>Loads a baked skeleton, so long routes can be planned from the very first frame, including into places <strong>no agent has visited</strong>.
 </p>
-<p><strong>Tick this on first.</strong> The <strong>Bake Skeleton</strong> button only appears in the banner once it is on; nothing else reads a bake, so the button stays hidden until you have asked for one. Then click it Rebake after changing the level or the voxel settings; a stale bake is refused at load, and the <code>Baked Skeleton (auto)</code> line under <strong>7. Runtime State</strong> will say so.
+<p><strong>Tick this first.</strong> The <strong>Bake Skeleton</strong> button only appears in the banner once it is on, because nothing else uses the bake. Then click the button. Bake again after you change the level or the voxel settings. An out-of-date bake is not loaded, and the <code>Baked Skeleton (auto)</code> line under <strong>7. Runtime State</strong> tells you so.
 </p>
-<p><code>Baked Skeleton (auto)</code> under <strong>7. Runtime State</strong> always reports which of the two, if either, is actually active.
+<p><code>Baked Skeleton (auto)</code> under <strong>7. Runtime State</strong> shows which of the two is in use, if either.
 </p>
 <hr />
 <h2 id="6-debug">6. Debug
 </h2>
 <h3 id="draw-debug-volumes-default-off"><code>Draw Debug Volumes</code>: default <strong>off</strong>
 </h3>
-<p>Draws the octree. <strong>The most useful diagnostic in the plugin</strong>: if a gap shows no fine voxels, the pathfinder can't route through it either. Expensive; turn it off when you're done.
+<p>Draws the octree. <strong>Use this first when something looks wrong.</strong> If a gap has no small voxels in it, the pathfinder can't use it either. It is slow to draw, so turn it off when you're done.
 </p>
-<p>Also available from Blueprint via <code>SetDrawDebugVolumes</code> / <code>ToggleDrawDebugVolumes</code>.
+<p>You can also turn it on from Blueprint with <code>SetDrawDebugVolumes</code> or <code>ToggleDrawDebugVolumes</code>.
 </p>
 <h3 id="draw-pathfinding-debug-default-off"><code>Draw Pathfinding Debug</code>: default <strong>off</strong>
 </h3>
@@ -667,7 +665,7 @@
 </p>
 <h3 id="debug-redraw-coalesce-seconds-default-025-s"><code>Debug Redraw Coalesce Seconds</code>: default <strong>0.25 s</strong>
 </h3>
-<p>How long debug redraws are batched. Raise it if debug drawing itself is hurting frame rate.
+<p>How long debug redraws are collected before drawing. Raise it if the debug drawing slows the frame rate.
 </p>
 <h3 id="cost-areas-subcategory">Cost Areas subcategory
 </h3>
@@ -697,7 +695,7 @@
 </td>
 <td><em>none</em>
 </td>
-<td>Whose eyes the view looks through: a stock Navigation Query Filter class. Empty = each area's own defaults
+<td>Which agent's filter the view uses: a stock Navigation Query Filter class. Empty = each area's own defaults
 </td>
 </tr>
 </tbody>
@@ -706,13 +704,13 @@
 <p>See <a href="nav-links-and-areas.html">Tutorial 10</a> for cost areas themselves.
 </p>
 <blockquote>
-<p><strong><code>Force Redraw SVO</code> was removed.</strong> It was a checkbox that instantly unchecked itself, and it was destructive: on a level with no baked data it <em>deleted</em> the editor preview it was meant to refresh. Reloading a bake into the preview now happens automatically when you bake, and the manual action is the <strong>Refresh Preview</strong> button, which appears on the manager only when the level actually has baked navigation to reload.
+<p><strong><code>Force Redraw SVO</code> has been removed.</strong> It was a checkbox that unticked itself straight away, and on a level with no baked data it <em>deleted</em> the editor preview it was meant to refresh. The preview now reloads by itself when you bake. To reload it by hand, use the <strong>Refresh Preview</strong> button, which appears on the manager when the level has baked navigation.
 </p>
 </blockquote>
 <hr />
 <h2 id="7-runtime-state">7. Runtime State
 </h2>
-<p>Read-only diagnostics showing live counts of resident chunks, skeleton state and staleness. Useful when tuning an infinite world; nothing to set.
+<p>Read-only information: how many chunks are loaded, the skeleton state, and whether bakes are out of date. It is useful when tuning an infinite world. There is nothing to set here.
 </p>
 <hr />
 <h2 id="build--tools-blueprint-callable">Build &amp; Tools (Blueprint-callable)
@@ -794,7 +792,7 @@
 <hr />
 <h2 id="per-agent-settings">Per-agent settings
 </h2>
-<p>These live on the <strong>Fly To</strong> BT task / <strong>Fly To</strong> StateTree task, not the manager. Both tasks expose the identical surface, in six numbered sections:
+<p>These settings are on the <strong>Fly To</strong> Behavior Tree task and the <strong>Fly To</strong> StateTree task, not on the manager. Both tasks have the same settings, in six numbered sections:
 </p>
 <p><strong>1. Goal</strong>
 </p>
@@ -947,7 +945,7 @@
 </table>
 </div>
 <blockquote>
-<p><strong>Whoever owns the body owns its caps.</strong> Tick <code>Use Flight Movement Component</code> and this section collapses to that one checkbox: speed, acceleration, flight style and banking are set on the component's <strong>Flight Config</strong> instead, and the task reads them from there for its guidance, braking and chase-lead maths. Untick it and the task's own values apply. Exactly one place is ever live.
+<p><strong>Speed and handling are set in one place.</strong> When you tick <code>Use Flight Movement Component</code>, this section shrinks to that one checkbox. Speed, acceleration, flight style and banking then come from the component's <strong>Flight Config</strong>, and the task reads them from there. When it is unticked, the task's own values are used.
 </p>
 </blockquote>
 <p><strong>3. Pathfinding</strong>
@@ -1052,7 +1050,7 @@
 </td>
 <td><code>600</code>
 </td>
-<td>0 = free drift, high = train-on-tracks
+<td>0 = the agent drifts freely, high = it stays tightly on the path
 </td>
 </tr>
 <tr>
@@ -1175,13 +1173,13 @@
 </table>
 </div>
 <blockquote>
-<p><code>Frontier Stall Recovery</code> is the <strong>locomotion</strong> half only. Pinning chunks <em>ahead</em> of the agent is a separate world-level setting: <strong><code>Agent Corridor Prefetch</code></strong> on the LCM Nav3D Manager. They used to be one checkbox named for the half it mostly wasn't.
+<p><code>Frontier Stall Recovery</code> only controls how the agent moves. Loading chunks <em>ahead</em> of the agent is a separate setting for the whole world: <strong><code>Agent Corridor Prefetch</code></strong> on the LCM Nav3D Manager. These used to be one checkbox.
 </p>
 </blockquote>
 <p>Solver and smoothing choices are described in <a href="core-concepts.html#6-how-a-path-is-actually-found">Tutorial 02 §6</a>.
 </p>
 <blockquote>
-<p><strong>StateTree tasks that finish at once.</strong> On UE 5.2 a task that completes, completes its whole state, so a FlyTo beside it stops. Find Cover, Chunk Prewarm, Streaming Aware, Find Actor By Tag and Pick Random Goal have <strong>Stay Running After Resolve</strong>: tick it when the task shares a state with a FlyTo, and the state runs until the FlyTo completes.
+<p><strong>StateTree tasks that finish at once.</strong> On UE 5.2, when one task finishes, its whole state finishes, so a FlyTo in the same state stops too. Find Cover, Chunk Prewarm, Streaming Aware, Find Actor By Tag and Pick Random Goal have a <strong>Stay Running After Resolve</strong> option. Tick it when the task shares a state with a FlyTo, and the state keeps running until the FlyTo finishes.
 </p>
 </blockquote>
 <h2 id="console-variables-new-in-34">Console variables new in 3.4
@@ -1379,7 +1377,7 @@
 </tbody>
 </table>
 </div>
-<p>Start here, then confirm with <code>Draw Debug Volumes</code> that the gaps you care about actually have voxels in them.
+<p>Start with these, then use <code>Draw Debug Volumes</code> to check that the gaps you care about have voxels in them.
 </p>
 <div class="pager"><a href="editor-tools.html">&larr; Editor tools</a><a href="troubleshooting.html">Troubleshooting &rarr;</a></div>
   <footer>
