@@ -18,7 +18,7 @@ const ROOT = process.argv[2];
 const SITE = 'https://lcmnav3d.github.io';
 const OG_IMG = `${SITE}/og.jpg`;
 const OG_W = 1200, OG_H = 675;
-const BUILD_DATE = '2026-10-24';
+const BUILD_DATE = '2026-11-22';
 const VERSION = '3.6.0';
 const PLATFORMS = 'Windows, macOS, Linux, Android, iOS, PlayStation 5, Xbox Series X|S';
 const AUTHOR = 'L. Charitha Madhushanka';
