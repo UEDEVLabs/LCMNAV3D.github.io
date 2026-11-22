@@ -294,17 +294,21 @@ Shortcuts</strong>.</p>
 <p>Opens once per plugin version, and any time from <strong>Nav3D ▸
 Welcome / Getting Started</strong>.</p>
 <p><img src="images/welcome-screen.png"
-alt="The LCM Nav3D welcome screen: brand header, three getting-started steps, required plugin checklist, and help links" width="903" height="923" loading="lazy" decoding="async"></p>
-<p><strong>Figure 2: Welcome screen.</strong> The part worth reading is
-<strong>REQUIRED PLUGINS</strong>: it checks the dependencies declared
-in <code>LCMNav3D.uplugin</code> against what your project actually has
-enabled, and offers an <strong>Enable</strong> button on any that are
-off. If one is missing, the plugin's modules will fail to load; this
-panel is where you find that out, rather than from a startup error.</p>
+alt="The LCM Nav3D welcome screen: version, the free demo levels, what is new in 3.6.0, three getting-started steps, the required plugin checklist and help links" width="1186" height="1196" loading="lazy" decoding="async"></p>
+<p><strong>Figure 2: Welcome screen.</strong> From the top: the version,
+<strong>DEMO LEVELS</strong> (download the free demo levels or open the
+QuickStart level), <strong>NEW IN 3.6.0</strong>, three
+<strong>GET STARTED</strong> steps that open the Setup Wizard, the Health
+Check and the tutorials, <strong>REQUIRED PLUGINS</strong> and help
+links. <strong>REQUIRED PLUGINS</strong> checks the dependencies in
+<code>LCMNav3D.uplugin</code> against what your project has enabled, and
+shows an <strong>Enable</strong> button next to any that are off. If one
+is missing, the plugin's modules fail to load, and this list tells you
+which one.</p>
 <blockquote>
 <p>Links under <strong>HELP &amp; COMMUNITY</strong> are read from the
-<code>.uplugin</code> descriptor, so the UI and the store listing cannot
-drift apart. A greyed link means that field is empty in the descriptor,
+<code>.uplugin</code> descriptor, so the window and the store listing
+always match. A greyed link means that field is empty in the descriptor,
 not that the link is broken.</p>
 </blockquote>
 <hr />
@@ -807,15 +811,17 @@ back into the editor manager, so both paths look the same. Tick
 <h2 id="setup-wizard">Setup Wizard</h2>
 <p>One page, because every control feeds the same live readout.</p>
 <p><img src="images/setup-wizard.png"
-alt="The Setup Wizard: five numbered sections from What&#39;s in this level through to Configuration check" width="855" height="966" loading="lazy" decoding="async"></p>
-<p><strong>Figure 4: Setup Wizard.</strong> Note what section 1 has
-already worked out on its own: this is a World Partition map, so section
-2 tells you Infinite is the only correct choice and says <em>why</em>:
-a finite octree would be built over cells that are not loaded. Section 4
-is an explicit checklist, so nothing happens that is not written on
-screen, and section 5 re-runs the configuration check against the
-settings you are <em>proposing</em> rather than the ones currently
-saved.</p>
+alt="The Setup Wizard on a level with no Nav3D Manager: five numbered sections from What&#39;s in this level through to Configuration check" width="998" height="883" loading="lazy" decoding="async"></p>
+<p><strong>Figure 4: Setup Wizard, on a small level with no manager
+yet.</strong> Section 1 has already looked at the level: no World
+Partition, 3 × 3 × 3 m of geometry, and no Nav3D Manager, so one will be
+created. Section 2 uses a finite world and says what that means, and
+section 3 asks for World Extent instead of Chunk Size. On a World
+Partition map it picks Infinite instead, and says why. Section 4 is a
+checklist, so nothing happens that isn't written there. Section 5 checks
+the settings you are <em>proposing</em>, not the ones currently saved.
+Here it reports the missing manager, which <strong>Set Up This
+Level</strong> creates.</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
@@ -905,15 +911,16 @@ you.</p>
 <p>A dockable panel that reports anything which would stop agents
 moving, with a <strong>Fix</strong> button on each row.</p>
 <p><img src="images/health-check.png"
-alt="The Health Check panel showing READY, with Set Up Level, Fix All, Show In Viewport and Refresh" width="1015" height="606" loading="lazy" decoding="async"></p>
-<p><strong>Figure 5: Health Check, on a level that passes.</strong> The
-verdict is one word (<strong>READY</strong>, <strong>WORKS, WITH
-WARNINGS</strong> or <strong>NOT READY</strong>) coloured and sized so
-it reads from across the room. <code>Fix All</code> greys out when there
-is nothing to bulk-fix, which is the state you want to end up in and
-then stop thinking about. Dock this panel and leave it open; it
-re-inspects itself whenever the map, its actors or any Nav3D setting
-changes.</p>
+alt="The Health Check panel showing NOT READY for a level with no Nav3D Manager, with a Create Manager button on the finding" width="1002" height="603" loading="lazy" decoding="async"></p>
+<p><strong>Figure 5: Health Check, on a level with a problem.</strong>
+The verdict is one word (<strong>READY</strong>, <strong>WORKS, WITH
+WARNINGS</strong> or <strong>NOT READY</strong>), large and coloured so
+you can read it from across the room. Under it are the level's name and
+the number of errors and warnings. Each finding is a row, with a button
+when the plugin can fix it for you. Here the level has no Nav3D Manager,
+and <strong>Create Manager</strong> adds one. Dock this panel and leave
+it open: it checks the level again whenever the map, its actors or any
+Nav3D setting changes.</p>
 <ul>
 <li><strong>Fix All</strong> applies every automatic repair,
 <em>except</em> ones that edit a Blueprint asset; those keep their own
@@ -968,13 +975,12 @@ Measurement</strong>, which advances to the results when it finishes. On
 step 3 it becomes <strong>Measure Again</strong>.</li>
 </ul>
 <p><img src="images/tuner-1-routes-empty.png"
-alt="Auto-Tuner step 1 with no routes: the toolbar, and a panel listing the three ways to add one" width="1068" height="611" loading="lazy" decoding="async"></p>
+alt="Auto-Tuner step 1 with no routes: the toolbar, and a panel listing the three ways to add one" width="1245" height="738" loading="lazy" decoding="async"></p>
 <p><strong>Figure 6: Step 1, before you have added anything.</strong>
-The empty state is the screen every user sees first, so it does the
-teaching: three numbered ways in, each naming <em>what must already be
-in your level</em> for it to work. Note the footer: the
-<strong>Next</strong> button is disabled and the reason is printed
-beside it in amber rather than hidden in a tooltip.</p>
+This is what you see first. It lists three ways to add a route, and each
+one says <em>what must already be in your level</em> for it to work. At
+the bottom, the <strong>Next</strong> button is disabled, and the reason
+is shown next to it in amber.</p>
 <h3 id="choosing-routes">Choosing routes</h3>
 <p>A route is a journey your agents actually make. <strong>Every one
 must complete</strong> for a configuration to be considered, so use the
