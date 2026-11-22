@@ -22,12 +22,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Behaviour Nodes: Engage, Perch, Land, Flee | LCM Nav3D">
 <meta name="twitter:description" content="Ready-made flying-agent behaviours for Behavior Tree, StateTree and Mass: Engage, Investigate, Flee, Scan Area, Perch, Land and Take Off, with their settings.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -346,59 +346,59 @@
 <p><strong>Settings</strong> (<code>LcmBTTask_EngageTarget</code>)
 </p>
 <ul>
-<li><code>TargetKey</code> - The actor to engage.
+<li><code>TargetKey</code>: The actor to engage.
 </li>
-<li><code>FireAllowedKey</code> - Optional (Bool): true while a shot is good. Drive the weapon task's decorator with it.
+<li><code>FireAllowedKey</code>: Optional (Bool): true while a shot is good. Drive the weapon task's decorator with it.
 </li>
-<li><code>AimPointKey</code> - Optional (Vector): where to shoot - leads the target by the projectile's flight time.
+<li><code>AimPointKey</code>: Optional (Vector): where to shoot. Leads the target by the projectile's flight time.
 </li>
-<li><code>Position</code> - Where to take position (range and altitude bands, weights).
+<li><code>Position</code>: Where to take position (range and altitude bands, weights).
 </li>
-<li><code>Route</code> - How the route there is flown.
+<li><code>Route</code>: How the route there is flown.
 </li>
-<li><code>Tracking</code> - How the target is tracked.
+<li><code>Tracking</code>: How the target is tracked.
 </li>
-<li><code>Sighting</code> - Where sightings come from: the node's own line of sight, or the AI Perception sight sense.
+<li><code>Sighting</code>: Where sightings come from: the node's own line of sight, or the AI Perception sight sense.
 </li>
-<li><code>TargetWalks</code> - The target walks (a character): predictions stop at walls and follow the ground. Off for a flyer.
+<li><code>TargetWalks</code>: The target walks (a character): predictions stop at walls and follow the ground. Off for a flyer.
 </li>
-<li><code>TargetRadiusCm</code> - Body radius of the target, for the walker prediction.
+<li><code>TargetRadiusCm</code>: Body radius of the target, for the walker prediction.
 </li>
-<li><code>MaxSightRangeCm</code> - Farthest the agent can see the target from.
+<li><code>MaxSightRangeCm</code>: Farthest the agent can see the target from.
 </li>
-<li><code>PositionLeadSeconds</code> - Choose the firing position around where the target will be this far ahead.
+<li><code>PositionLeadSeconds</code>: Choose the firing position around where the target will be this far ahead.
 </li>
-<li><code>FiringPositionQuery</code> - Optional: an EQS query chooses the firing position instead of the built-in rings (querier = the pawn). Use the "LCM Nav3D | Engaged Target" / "Engaged Target (Predicted)" contexts to build it around the target. Asked every RechooseIntervalSeconds; when it finds nothing the built-in choice is used for that interval.
+<li><code>FiringPositionQuery</code>: Optional: an EQS query chooses the firing position instead of the built-in rings (querier = the pawn). Use the "LCM Nav3D | Engaged Target" / "Engaged Target (Predicted)" contexts to build it around the target. Asked every RechooseIntervalSeconds; when it finds nothing the built-in choice is used for that interval.
 </li>
-<li><code>RechooseIntervalSeconds</code> - Re-choose the firing position this often (seconds).
+<li><code>RechooseIntervalSeconds</code>: Re-choose the firing position this often (seconds).
 </li>
-<li><code>ProjectileSpeedCmS</code> - Projectile speed for aim lead (cm/s). 0 = hitscan: aim at the target itself.
+<li><code>ProjectileSpeedCmS</code>: Projectile speed for aim lead (cm/s). 0 = hitscan: aim at the target itself.
 </li>
-<li><code>AimToleranceDegrees</code> - The envelope: aim error, range band, and how long it must hold before firing is allowed.
+<li><code>AimToleranceDegrees</code>: The envelope: aim error, range band, and how long it must hold before firing is allowed.
 </li>
-<li><code>GimbalMinPitchDegrees</code> - The weapon sits on a GIMBAL that pitches independently of the body - a multirotor can only yaw its body, and a drone above a walking target must aim DOWN. The envelope therefore checks the body's YAW error against AimToleranceDegrees and the PITCH the shot needs against these limits (degrees, negative = down).
+<li><code>GimbalMinPitchDegrees</code>: The weapon sits on a GIMBAL that pitches independently of the body: a multirotor can only yaw its body, and a drone above a walking target must aim DOWN. The envelope therefore checks the body's YAW error against AimToleranceDegrees and the PITCH the shot needs against these limits (degrees, negative = down).
 </li>
-<li><code>GimbalMaxPitchDegrees</code> - The highest the weapon can aim (degrees above level; negative = below).
+<li><code>GimbalMaxPitchDegrees</code>: The highest the weapon can aim (degrees above level; negative = below).
 </li>
-<li><code>MinEngageRangeCm</code> - Closest a firing position may be to the target (cm).
+<li><code>MinEngageRangeCm</code>: Closest a firing position may be to the target (cm).
 </li>
-<li><code>MaxEngageRangeCm</code> - Farthest a firing position may be from the target (cm).
+<li><code>MaxEngageRangeCm</code>: Farthest a firing position may be from the target (cm).
 </li>
-<li><code>SettleSeconds</code> - How long (seconds) the aim must hold inside the firing envelope before Fire Allowed turns on.
+<li><code>SettleSeconds</code>: How long (seconds) the aim must hold inside the firing envelope before Fire Allowed turns on.
 </li>
-<li><code>LostTrackSeconds</code> - Not seen for this long: go to where it was last predicted to be.
+<li><code>LostTrackSeconds</code>: Not seen for this long: go to where it was last predicted to be.
 </li>
-<li><code>MaxInvestigateSeconds</code> - How long to look around the last-known position before giving up (Failed).
+<li><code>MaxInvestigateSeconds</code>: How long to look around the last-known position before giving up (Failed).
 </li>
-<li><code>SearchTurnRateDegPerSec</code> - Turn rate while looking around during Investigate (deg/s).
+<li><code>SearchTurnRateDegPerSec</code>: Turn rate while looking around during Investigate (deg/s).
 </li>
-<li><code>MaxRouteFailures</code> - Consecutive route failures (no path to any chosen position) before the task fails.
+<li><code>MaxRouteFailures</code>: Consecutive route failures (no path to any chosen position) before the task fails.
 </li>
-<li><code>DrawDebug</code> - Draw the chosen position, the route, the aim line and the envelope state.
+<li><code>DrawDebug</code>: Draw the chosen position, the route, the aim line and the envelope state.
 </li>
-<li><code>MaxDurationSeconds</code> - Engagement window (seconds): the node succeeds when it has engaged this long. 0 = until aborted.
+<li><code>MaxDurationSeconds</code>: Engagement window (seconds): the node succeeds when it has engaged this long. 0 = until aborted.
 </li>
-<li><code>UseFlightMovementComponent</code> - Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
+<li><code>UseFlightMovementComponent</code>: Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
 </li>
 </ul>
 <h3 id="investigate">Investigate
@@ -406,39 +406,39 @@
 <p><strong>Settings</strong> (<code>LcmBTTask_Investigate</code>)
 </p>
 <ul>
-<li><code>SearchLocationKey</code> - Where to search: a Vector key, or an Object key (the actor's location when the search begins).
+<li><code>SearchLocationKey</code>: Where to search: a Vector key, or an Object key (the actor's location when the search begins).
 </li>
-<li><code>SearchVelocityKey</code> - Optional (Vector): which way the target was heading - the search goes on that way.
+<li><code>SearchVelocityKey</code>: Optional (Vector): which way the target was heading; the search goes on that way.
 </li>
-<li><code>TargetKey</code> - Optional (Object): the actor being looked for - seeing it ends the search (Succeeded, FoundKey set).
+<li><code>TargetKey</code>: Optional (Object): the actor being looked for; seeing it ends the search (Succeeded, FoundKey set).
 </li>
-<li><code>FoundKey</code> - Optional (Bool): true when the search ended because the target was seen.
+<li><code>FoundKey</code>: Optional (Bool): true when the search ended because the target was seen.
 </li>
-<li><code>ClearSearchKeyWhenDone</code> - Clear SearchLocationKey when the search ends by itself (so the branch does not run it again).
+<li><code>ClearSearchKeyWhenDone</code>: Clear SearchLocationKey when the search ends by itself (so the branch does not run it again).
 </li>
-<li><code>Vantage</code> - Where to look FROM: a point in this band round each search point with a clear view of it.
+<li><code>Vantage</code>: Where to look FROM: a point in this band round each search point with a clear view of it.
 </li>
-<li><code>Route</code> - How the route is flown.
+<li><code>Route</code>: How the route is flown.
 </li>
-<li><code>ExtraSearchPoints</code> - After the last-known position, search this many more points on along the way the target was heading (or round it, when the heading is unknown).
+<li><code>ExtraSearchPoints</code>: After the last-known position, search this many more points on along the way the target was heading (or round it, when the heading is unknown).
 </li>
-<li><code>SearchSpacingCm</code> - Spacing of those points (cm).
+<li><code>SearchSpacingCm</code>: Spacing of those points (cm).
 </li>
-<li><code>LookSeconds</code> - Time spent looking round each search point (seconds).
+<li><code>LookSeconds</code>: Time spent looking round each search point (seconds).
 </li>
-<li><code>SweepHalfAngleDegrees</code> - Half-angle of the look-round sweep, either side of the search point (degrees).
+<li><code>SweepHalfAngleDegrees</code>: Half-angle of the look-round sweep, either side of the search point (degrees).
 </li>
-<li><code>Sighting</code> - How the target is looked for (when there is one to look for).
+<li><code>Sighting</code>: How the target is looked for (when there is one to look for).
 </li>
-<li><code>MaxSightRangeCm</code> - How far the agent can see the target (cm).
+<li><code>MaxSightRangeCm</code>: How far the agent can see the target (cm).
 </li>
-<li><code>FailIfNotFound</code> - Fail (instead of succeed) when the whole search ends without seeing the target.
+<li><code>FailIfNotFound</code>: Fail (instead of succeed) when the whole search ends without seeing the target.
 </li>
-<li><code>DrawDebug</code> - Draw what the node is doing in the level (Play-in-Editor debugging).
+<li><code>DrawDebug</code>: Draw what the node is doing in the level (Play-in-Editor debugging).
 </li>
-<li><code>MaxDurationSeconds</code> - Time limit (seconds): the search ends when it runs this long - Succeeded, or Failed with Fail If Not Found. 0 = until aborted.
+<li><code>MaxDurationSeconds</code>: Time limit (seconds): the search ends when it runs this long: Succeeded, or Failed with Fail If Not Found. 0 = until aborted.
 </li>
-<li><code>UseFlightMovementComponent</code> - Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
+<li><code>UseFlightMovementComponent</code>: Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
 </li>
 </ul>
 <h3 id="flee">Flee
@@ -446,45 +446,45 @@
 <p><strong>Settings</strong> (<code>LcmBTTask_Flee</code>)
 </p>
 <ul>
-<li><code>ThreatKey</code> - The actor to get away from.
+<li><code>ThreatKey</code>: The actor to get away from.
 </li>
-<li><code>SearchRadiusCm</code> - Cover is looked for within this distance of the agent (cm).
+<li><code>SearchRadiusCm</code>: Cover is looked for within this distance of the agent (cm).
 </li>
-<li><code>MinDistanceCm</code> - Distance from the threat the cover should be at (cm); nearer than MinDistanceCm is refused.
+<li><code>MinDistanceCm</code>: Distance from the threat the cover should be at (cm); nearer than MinDistanceCm is refused.
 </li>
-<li><code>PreferredDistanceCm</code> - Cover at about this distance from the threat is preferred (cm).
+<li><code>PreferredDistanceCm</code>: Cover at about this distance from the threat is preferred (cm).
 </li>
-<li><code>RequireCover</code> - Cover must be out of the threat's sight (a collision line from its eyes). Off: exposure is only a cost.
+<li><code>RequireCover</code>: Cover must be out of the threat's sight (a collision line from its eyes). Off: exposure is only a cost.
 </li>
-<li><code>RelativeHeightsCm</code> - Heights tried round the agent's own (cm, relative): e.g. -300, 0, +300.
+<li><code>RelativeHeightsCm</code>: Heights tried round the agent's own (cm, relative): e.g. -300, 0, +300.
 </li>
-<li><code>AzimuthSamples</code> - Candidate density: azimuths per ring (rings every SearchRadiusCm / 4).
+<li><code>AzimuthSamples</code>: Candidate density: azimuths per ring (rings every SearchRadiusCm / 4).
 </li>
-<li><code>AgentRadiusCm</code> - Radius of the fleeing body (cm), used to fit it into the cover.
+<li><code>AgentRadiusCm</code>: Radius of the fleeing body (cm), used to fit it into the cover.
 </li>
-<li><code>CoverClearanceCm</code> - Clear air round a cover beyond the body (cm): the route planner cannot end a route in a surface's shell, and a body that cannot hold still (a bird circles its cover) needs room for the circle.
+<li><code>CoverClearanceCm</code>: Clear air round a cover beyond the body (cm): the route planner cannot end a route in a surface's shell, and a body that cannot hold still (a bird circles its cover) needs room for the circle.
 </li>
-<li><code>DistanceWeight</code> - Cost weights: staying far from the threat, a short run, not running TOWARD it, being seen.
+<li><code>DistanceWeight</code>: Cost weights: staying far from the threat, a short run, not running TOWARD it, being seen.
 </li>
-<li><code>TravelWeight</code> - Cost weight: a short run to the cover.
+<li><code>TravelWeight</code>: Cost weight: a short run to the cover.
 </li>
-<li><code>TowardThreatWeight</code> - Cost weight: not running toward the threat to get there.
+<li><code>TowardThreatWeight</code>: Cost weight: not running toward the threat to get there.
 </li>
-<li><code>ExposureWeight</code> - Cost weight: a cover the threat can see into.
+<li><code>ExposureWeight</code>: Cost weight: a cover the threat can see into.
 </li>
-<li><code>SwitchImprovement</code> - A new cover must beat the kept one by this fraction.
+<li><code>SwitchImprovement</code>: A new cover must beat the kept one by this fraction.
 </li>
-<li><code>RecheckSeconds</code> - Re-check the chosen cover this often (seconds): the threat moves.
+<li><code>RecheckSeconds</code>: Re-check the chosen cover this often (seconds): the threat moves.
 </li>
-<li><code>HideSeconds</code> - Hidden and unseen this long: done (seconds).
+<li><code>HideSeconds</code>: Hidden and unseen this long: done (seconds).
 </li>
-<li><code>Route</code> - How the body follows its route: speeds, arrival and replanning.
+<li><code>Route</code>: How the body follows its route: speeds, arrival and replanning.
 </li>
-<li><code>DrawDebug</code> - Draw what the node is doing in the level (Play-in-Editor debugging).
+<li><code>DrawDebug</code>: Draw what the node is doing in the level (Play-in-Editor debugging).
 </li>
-<li><code>MaxDurationSeconds</code> - Time limit (seconds): the flee ends (Succeeded) when it runs this long. 0 = until aborted.
+<li><code>MaxDurationSeconds</code>: Time limit (seconds): the flee ends (Succeeded) when it runs this long. 0 = until aborted.
 </li>
-<li><code>UseFlightMovementComponent</code> - Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
+<li><code>UseFlightMovementComponent</code>: Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
 </li>
 </ul>
 <h3 id="scan-area">Scan Area
@@ -492,47 +492,47 @@
 <p><strong>Settings</strong> (<code>LcmBTTask_ScanArea</code>)
 </p>
 <ul>
-<li><code>AreaActorKey</code> - Optional (Object): an actor whose bounds are the volume (a box, a volume, a room). Unset: the settings' AreaCenter / AreaExtent.
+<li><code>AreaActorKey</code>: Optional (Object): an actor whose bounds are the volume (a box, a volume, a room). Unset: the settings' AreaCenter / AreaExtent.
 </li>
-<li><code>WatchForKey</code> - Optional (Object): an actor to watch for - seeing it ends the scan (Succeeded, FoundKey set).
+<li><code>WatchForKey</code>: Optional (Object): an actor to watch for; seeing it ends the scan (Succeeded, FoundKey set).
 </li>
-<li><code>FoundKey</code> - Optional (Bool): true when the scan ended because the watched-for actor was seen.
+<li><code>FoundKey</code>: Optional (Bool): true when the scan ended because the watched-for actor was seen.
 </li>
-<li><code>AreaActorTag</code> - The area by actor tag, when no key is set (the first actor carrying it).
+<li><code>AreaActorTag</code>: The area by actor tag, when no key is set (the first actor carrying it).
 </li>
-<li><code>AreaCenter</code> - The volume swept, when no area actor is given (world space).
+<li><code>AreaCenter</code>: The volume swept, when no area actor is given (world space).
 </li>
-<li><code>AreaExtent</code> - Half-size of the swept volume (cm), when no area actor is given.
+<li><code>AreaExtent</code>: Half-size of the swept volume (cm), when no area actor is given.
 </li>
-<li><code>ViewpointSpacingCm</code> - Viewpoints are sampled through the volume's free space this far apart (cm).
+<li><code>ViewpointSpacingCm</code>: Viewpoints are sampled through the volume's free space this far apart (cm).
 </li>
-<li><code>MaxViewpoints</code> - At most this many viewpoints (the farthest-apart are kept).
+<li><code>MaxViewpoints</code>: At most this many viewpoints (the farthest-apart are kept).
 </li>
-<li><code>AgentRadiusCm</code> - Radius of the scanning body (cm), used to keep its viewpoints clear of geometry.
+<li><code>AgentRadiusCm</code>: Radius of the scanning body (cm), used to keep its viewpoints clear of geometry.
 </li>
-<li><code>ViewRangeCm</code> - What the agent can see: range and horizontal field of view (degrees).
+<li><code>ViewRangeCm</code>: What the agent can see: range and horizontal field of view (degrees).
 </li>
-<li><code>ViewFovDegrees</code> - Horizontal field of view (degrees) of what the agent can see.
+<li><code>ViewFovDegrees</code>: Horizontal field of view (degrees) of what the agent can see.
 </li>
-<li><code>LookAroundDegrees</code> - At each viewpoint: turn round this far (degrees) at this rate.
+<li><code>LookAroundDegrees</code>: At each viewpoint: turn round this far (degrees) at this rate.
 </li>
-<li><code>TurnRateDegPerSec</code> - How fast the agent turns to look round each viewpoint (deg/s).
+<li><code>TurnRateDegPerSec</code>: How fast the agent turns to look round each viewpoint (deg/s).
 </li>
-<li><code>CoverageProbeSpacingCm</code> - Coverage is measured on probe points this far apart through the volume (cm).
+<li><code>CoverageProbeSpacingCm</code>: Coverage is measured on probe points this far apart through the volume (cm).
 </li>
-<li><code>TargetCoverage</code> - Done once this fraction has been seen (1 = fly the whole tour).
+<li><code>TargetCoverage</code>: Done once this fraction has been seen (1 = fly the whole tour).
 </li>
-<li><code>Loop</code> - Fly the tour again and again (until aborted, a target is seen, or MaxDurationSeconds).
+<li><code>Loop</code>: Fly the tour again and again (until aborted, a target is seen, or MaxDurationSeconds).
 </li>
-<li><code>Sighting</code> - How a watched-for actor is looked for.
+<li><code>Sighting</code>: How a watched-for actor is looked for.
 </li>
-<li><code>Route</code> - How the body follows its route: speeds, arrival and replanning.
+<li><code>Route</code>: How the body follows its route: speeds, arrival and replanning.
 </li>
-<li><code>DrawDebug</code> - Draw what the node is doing in the level (Play-in-Editor debugging).
+<li><code>DrawDebug</code>: Draw what the node is doing in the level (Play-in-Editor debugging).
 </li>
-<li><code>MaxDurationSeconds</code> - Time limit (seconds): the scan ends (Succeeded) when it runs this long. 0 = until aborted.
+<li><code>MaxDurationSeconds</code>: Time limit (seconds): the scan ends (Succeeded) when it runs this long. 0 = until aborted.
 </li>
-<li><code>UseFlightMovementComponent</code> - Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
+<li><code>UseFlightMovementComponent</code>: Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
 </li>
 </ul>
 <h3 id="perch">Perch
@@ -540,27 +540,27 @@
 <p><strong>Settings</strong> (<code>LcmBTTask_Perch</code>)
 </p>
 <ul>
-<li><code>PerchTag</code> - Surfaces (actor or component tag) that are perches: rack tops, beams, ledges, rails.
+<li><code>PerchTag</code>: Surfaces (actor or component tag) that are perches: rack tops, beams, ledges, rails.
 </li>
-<li><code>SearchRadiusCm</code> - Perches are looked for within this distance (cm).
+<li><code>SearchRadiusCm</code>: Perches are looked for within this distance (cm).
 </li>
-<li><code>FacePerchForward</code> - Face the way the perch actor faces once down (a ledge looks out); off keeps the arrival heading.
+<li><code>FacePerchForward</code>: Face the way the perch actor faces once down (a ledge looks out); off keeps the arrival heading.
 </li>
-<li><code>AllowCoveredPerches</code> - Perches under something (a shelf under the one above) are entered sideways.
+<li><code>AllowCoveredPerches</code>: Perches under something (a shelf under the one above) are entered sideways.
 </li>
-<li><code>KeepClearOfOthersCm</code> - Stay away from perches another body is on or heading for within this distance (cm).
+<li><code>KeepClearOfOthersCm</code>: Stay away from perches another body is on or heading for within this distance (cm).
 </li>
-<li><code>Profile</code> - How the body lands: approach height, footprint, flare and touchdown speed.
+<li><code>Profile</code>: How the body lands: approach height, footprint, flare and touchdown speed.
 </li>
-<li><code>DescentRate</code> - Descent speed on the final approach (cm/s).
+<li><code>DescentRate</code>: Descent speed on the final approach (cm/s).
 </li>
-<li><code>AgentRadiusCm</code> - Radius of the landing body (cm), used to test the perch is big enough.
+<li><code>AgentRadiusCm</code>: Radius of the landing body (cm), used to test the perch is big enough.
 </li>
-<li><code>MaxSlopeDegrees</code> - Steepest surface (degrees) the body may land on.
+<li><code>MaxSlopeDegrees</code>: Steepest surface (degrees) the body may land on.
 </li>
-<li><code>MaxDurationSeconds</code> - Time limit (seconds): the node fails when it has not perched within this time. 0 = until aborted.
+<li><code>MaxDurationSeconds</code>: Time limit (seconds): the node fails when it has not perched within this time. 0 = until aborted.
 </li>
-<li><code>UseFlightMovementComponent</code> - Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
+<li><code>UseFlightMovementComponent</code>: Drive the pawn through its LCM Flight Movement component when it has one; off moves the pawn directly.
 </li>
 </ul>
 <h3 id="perceived-actor-service">Perceived Actor (service)
@@ -568,17 +568,17 @@
 <p><strong>Settings</strong> (<code>LcmBTService_PerceivedActor</code>)
 </p>
 <ul>
-<li><code>ResultKey</code> - Receives the perceived actor (the closest, when several are).
+<li><code>ResultKey</code>: Receives the perceived actor (the closest, when several are).
 </li>
-<li><code>RequiredTag</code> - Only actors with this tag count (None = any perceived actor).
+<li><code>RequiredTag</code>: Only actors with this tag count (None = any perceived actor).
 </li>
-<li><code>SightOnly</code> - Only the SIGHT sense counts (off: any configured sense - hearing, damage...).
+<li><code>SightOnly</code>: Only the SIGHT sense counts (off: any configured sense, hearing, damage...).
 </li>
-<li><code>ForgetAfterSeconds</code> - Keep the key this long after the last sighting, so the node using it can run its own search before the branch is abandoned (seconds).
+<li><code>ForgetAfterSeconds</code>: Keep the key this long after the last sighting, so the node using it can run its own search before the branch is abandoned (seconds).
 </li>
-<li><code>LastKnownLocationKey</code> - Optional (Vector): where the actor was last SEEN - kept after the actor key is forgotten, so an Investigate branch can search there. Cleared by whoever finishes the search.
+<li><code>LastKnownLocationKey</code>: Optional (Vector): where the actor was last SEEN. It is kept after the actor key is forgotten, so an Investigate branch can search there. Cleared by whoever finishes the search.
 </li>
-<li><code>LastKnownVelocityKey</code> - Optional (Vector): the velocity it was last seen moving with (cm/s) - which way to search.
+<li><code>LastKnownVelocityKey</code>: Optional (Vector): the velocity it was last seen moving with (cm/s), showing which way to search.
 </li>
 </ul> <!-- END GENERATED -->
 <div class="pager"><a href="stock-navigation.html">&larr; Stock Move To and EQS</a><a href="bt-wait.html">Wait &rarr;</a></div>

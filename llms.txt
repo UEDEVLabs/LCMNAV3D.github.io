@@ -62,7 +62,7 @@ client-side rendering, so the URLs can be fetched directly.
 - [Look At](https://lcmnav3d.github.io/bt-look-at.html): When Unreal's stock Rotate to Face BB Entry task is right, why it misses targets above or below a flying agent, and when to use the LCM LookAt task.
 - [Turn In Place](https://lcmnav3d.github.io/bt-turn-in-place.html): Turn a flying LCM Nav3D agent at a constant rate with the LCM TurnInPlace task, or keep facing a target across other tasks with the stock DefaultFocus service.
 - [Health Below](https://lcmnav3d.github.io/bt-health-below.html): Unreal ships all you need: a Float blackboard key plus a Blackboard-Compare decorator. The pattern, a GameplayTag variant, and why no LCM Nav3D node ships.
-- [Perception Relay](https://lcmnav3d.github.io/bt-perception-relay.html): UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key - no custom BT service needed.
+- [Perception Relay](https://lcmnav3d.github.io/bt-perception-relay.html): UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key. No custom BT service needed.
 - [Memory Decay](https://lcmnav3d.github.io/bt-memory-decay.html): Unreal's UAIPerceptionComponent already tracks per-actor last-known stimulus location with age. Use it as a BT service instead of a hand-rolled decay timer.
 
 ## Reference
@@ -85,7 +85,7 @@ client-side rendering, so the URLs can be fetched directly.
 
 ## The product site
 
-- [3D pathfinding for Unreal Engine 5](https://uedevlabs.github.io/unreal-engine-3d-pathfinding/): the product page - features, demo worlds, specifications and FAQ.
+- [3D pathfinding for Unreal Engine 5](https://uedevlabs.github.io/unreal-engine-3d-pathfinding/): the product page, with features, demo worlds, specifications and FAQ.
 - [Flying AI and drones](https://uedevlabs.github.io/unreal-engine-flying-ai/), [underwater and fish AI](https://uedevlabs.github.io/unreal-engine-underwater-ai/), [space combat AI](https://uedevlabs.github.io/unreal-engine-space-combat-ai/), [open-world navigation](https://uedevlabs.github.io/unreal-engine-open-world-navigation/), [Mass Entity crowds](https://uedevlabs.github.io/unreal-engine-mass-entity-crowds/) and [moving-obstacle avoidance](https://uedevlabs.github.io/unreal-engine-moving-obstacle-avoidance/): one page per use case.
 - [Product facts as JSON](https://uedevlabs.github.io/facts.json) and [the product site's llms.txt](https://uedevlabs.github.io/llms.txt).
 

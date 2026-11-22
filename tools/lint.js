@@ -55,7 +55,7 @@ for (const f of files) {
       if (heads.length && cells !== heads.length)
         add('table column mismatch', `${f}: ${heads.length} headers vs ${cells} cells`);
     }
-    // A column that is empty in every row is dead weight — but only report it when
+    // A column that is empty in every row is dead weight, but only report it when
     // it carries a header, or trails the table. An unlabelled interior column is a
     // deliberate gutter between two side-by-side pairs (see settings.html).
     heads.forEach((h, i) => {

@@ -22,12 +22,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AI Perception to Volumetric Threat Tracking | LCM Nav3D">
 <meta name="twitter:description" content="Wire Unreal's UAIPerceptionComponent into LCM Nav3D through the AI Perception Bridge, so perceived threats feed true-3D EQS queries for flanking and cover.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -144,7 +144,7 @@
   {
    "@type": "TechArticle",
    "@id": "https://lcmnav3d.github.io/ai-perception.html#article",
-   "headline": "Tutorial 08 - Perception-driven tactical AI",
+   "headline": "Tutorial 08: Perception-driven tactical AI",
    "name": "AI Perception to Volumetric Threat Tracking | LCM Nav3D",
    "description": "Wire Unreal's UAIPerceptionComponent into LCM Nav3D through the AI Perception Bridge, so perceived threats feed true-3D EQS queries for flanking and cover.",
    "url": "https://lcmnav3d.github.io/ai-perception.html",
@@ -237,7 +237,7 @@
  </nav>
  <main id="content">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-ii-going-further">Going Further</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">AI Perception</span></nav>
-  <h1 id="tutorial-08---perception-driven-tactical-ai">Tutorial 08 -
+  <h1 id="tutorial-08---perception-driven-tactical-ai">Tutorial 08:
 Perception-driven tactical AI</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-11-22">22 November 2026</time></p>
 <p><strong>In short:</strong> Add an <strong>LCM Nav3D AI Perception
@@ -264,18 +264,18 @@ tests use come straight from Unreal's own perception system.</p>
 with a built SVO in the level.</li>
 <li>An AI agent with an <code>AAIController</code> and a
 <code>UAIPerceptionComponent</code> configured with an
-<strong>AISense_Sight</strong> config (the standard UE setup - LCM Nav3D
+<strong>AISense_Sight</strong> config (the standard UE setup; LCM Nav3D
 doesn't change this).</li>
 <li>Threats set up so perception can sense them (registered stimuli
 source / pawns on a hostile team), per your normal UE perception
 configuration.</li>
 </ul>
 <hr />
-<h2 id="part-a---uactor-agent-bt--statetree">Part A - UActor agent (BT /
+<h2 id="part-a---uactor-agent-bt--statetree">Part A: UActor agent (BT /
 StateTree)</h2>
-<h3 id="step-1---add-the-perception-bridge">Step 1 - Add the perception
+<h3 id="step-1---add-the-perception-bridge">Step 1: Add the perception
 bridge</h3>
-<p>On your agent (the pawn or its controller - wherever the
+<p>On your agent (the pawn or its controller, wherever the
 <code>UAIPerceptionComponent</code> lives), <strong>Add Component → "LCM
 Nav3D AI Perception Bridge"</strong>
 (<code>ULcmAIPerceptionBridge</code>).</p>
@@ -289,7 +289,7 @@ to suit your game.</li>
 and lost ones are dropped after the decay time.</li>
 </ul>
 <p>That is all you need to connect perception to LCM Nav3D.</p>
-<h3 id="step-2---build-the-tactical-eqs-query">Step 2 - Build the
+<h3 id="step-2---build-the-tactical-eqs-query">Step 2: Build the
 tactical EQS query</h3>
 <p>Create an EQS query (e.g. <code>EQS_FindFlankingApproach</code>) and
 assemble it from these nodes:</p>
@@ -375,7 +375,7 @@ don't need to tag anything by hand. (For non-perception workflows, <strong>LCM N
 Threats</strong> returns actors tagged <code>ApexThreat</code>
 instead.)</p>
 </blockquote>
-<h3 id="step-3---wire-it-into-bt-or-statetree-then-verify">Step 3 - Wire
+<h3 id="step-3---wire-it-into-bt-or-statetree-then-verify">Step 3: Wire
 it into BT or StateTree, then verify</h3>
 <ul>
 <li><strong>Behavior Tree:</strong> add a <code>Run EQS Query</code>
@@ -394,12 +394,12 @@ threat about 5 s after losing sight of it</strong> (the decay window). Walk a th
 of the sight cone and watch the chosen position shift once it
 decays.</p>
 <hr />
-<h2 id="part-b---mass-crowd-variant">Part B - Mass crowd variant</h2>
+<h2 id="part-b---mass-crowd-variant">Part B: Mass crowd variant</h2>
 <p>For crowd-scale tactical perception, use the native LCM Nav3D Mass
 perception (Tutorial 06 covers Mass setup):</p>
 <ol type="1">
 <li>Add the <strong>LCM Nav3D Mass Perception Agent</strong> trait
-(<code>ULcmMassPerceptionTrait</code>) to your Mass entity config - set
+(<code>ULcmMassPerceptionTrait</code>) to your Mass entity config. Set
 <code>FactionId</code>, <code>SightRadius</code>,
 <code>FOVDegrees</code>. Agents perceive different-faction agents within
 range + FOV + <strong>true-3D SVO line of sight</strong>.</li>
@@ -413,7 +413,7 @@ closest visible hostile into its
 drive evade / engage / regroup behaviour.</li>
 </ol>
 <p>Mass agents consume the perceived-threats fragment
-<strong>directly</strong> - they don't issue EQS queries (there is no
+<strong>directly</strong>. They don't issue EQS queries (there is no
 Mass-native EQS querier). EQS tactical queries are the UActor path (Part
 A). If you want both, make your hero NPC an actor-based agent and query
 with <code>Apex: Known Threats</code>. Tag the threats the crowd cares
@@ -430,13 +430,13 @@ test, the active-flow-field context, and the portal-proximity
 generator.</p>
 <h2 id="related">Related</h2>
 <ul>
-<li><a href="statetree-agent.html">Tutorial 04 - StateTree</a>, the
+<li><a href="statetree-agent.html">Tutorial 04: StateTree</a>, the
 move-task side of step 3.</li>
-<li><a href="mass-entity-crowds.html">Tutorial 06 - Mass Entity</a>, for
+<li><a href="mass-entity-crowds.html">Tutorial 06: Mass Entity</a>, for
 the Part B agent setup.</li>
-<li><a href="tactical-eqs.html">Tutorial 07 - Tactical EQS</a>,
+<li><a href="tactical-eqs.html">Tutorial 07: Tactical EQS</a>,
 authoring queries from these nodes.</li>
-<li><code>ULcmTacticalQueryLibrary</code> - the Blueprint tactical
+<li><code>ULcmTacticalQueryLibrary</code>: the Blueprint tactical
 primitives (<code>Is Segment LOS Clear</code>,
 <code>Find Best Cover</code>, ...) the EQS tests wrap.</li>
 </ul>

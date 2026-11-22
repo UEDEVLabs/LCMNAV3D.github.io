@@ -22,12 +22,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="6-DOF Flight and Swim Locomotion Reference | LCM Nav3D">
 <meta name="twitter:description" content="Physically plausible 6-DOF locomotion for drones, birds and fish, layered on LCM Nav3D guidance. Archetypes, the animation contract, tuning and determinism.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -144,7 +144,7 @@
   {
    "@type": "TechArticle",
    "@id": "https://lcmnav3d.github.io/flight-locomotion.html#article",
-   "headline": "LCM Nav3D - Realistic Flight/Swim Locomotion Reference",
+   "headline": "LCM Nav3D: Realistic Flight/Swim Locomotion Reference",
    "name": "6-DOF Flight and Swim Locomotion Reference | LCM Nav3D",
    "description": "Physically plausible 6-DOF locomotion for drones, birds and fish, layered on LCM Nav3D guidance. Archetypes, the animation contract, tuning and determinism.",
    "url": "https://lcmnav3d.github.io/flight-locomotion.html",
@@ -237,12 +237,12 @@
  </nav>
  <main id="content">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-iii-reference">Reference</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Flight and Locomotion</span></nav>
-<h1 id="lcm-nav3d---realistic-flightswim-locomotion-reference">LCM Nav3D - Realistic Flight/Swim Locomotion Reference
+<h1 id="lcm-nav3d---realistic-flightswim-locomotion-reference">LCM Nav3D: Realistic Flight/Swim Locomotion Reference
 </h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-11-22">22 November 2026</time></p>
 <p>Ultra-realistic 6-DOF locomotion for flying/swimming pawns (drones, birds, fish), layered on top of LCMNav3D navigation. The nav system provides <strong>guidance</strong> (where to go); this layer provides physically-plausible <strong>dynamics</strong> (how the body moves).
 </p>
-<h2 id="concept---guidance--control--dynamics">Concept - Guidance → Control → Dynamics
+<h2 id="concept---guidance--control--dynamics">Concept: Guidance → Control → Dynamics
 </h2>
 <ul>
 <li><strong>Nav (unchanged):</strong> SVO path / flow field → pure-pursuit + CBS/ORCA avoidance → a <em>desired velocity</em>.
@@ -266,9 +266,9 @@
 </ul>
 </li>
 </ol>
-<p>Off by default: with <code>bEnabled=false</code> (or the task flag off) nothing changes - motion is the legacy kinematic FlyTo.
+<p>Off by default: with <code>bEnabled=false</code> (or the task flag off) nothing changes: motion is the legacy kinematic FlyTo.
 </p>
-<p><strong>Already have a movement component on the pawn?</strong> Leave it there - nothing to remove. While the flight component is enabled it takes <strong>sole movement authority</strong>: any other movement component driving the same root (<code>FloatingPawnMovement</code>, <code>CharacterMovement</code>, <code>ULcmNavMovementComponent</code>) is automatically paused (velocity zeroed, deactivated, tick off) and restored exactly as found the moment flight stops driving (<code>bEnabled=false</code>, the component deactivated, or the pawn torn down). Without this, UE runs both integrators against one body and the last ticker overwrites the pawn's velocity readout - and a <code>CharacterMovement</code> keeps applying gravity against the flight dynamics. Opt out per-instance with <strong>Pause Conflicting Movement Components</strong>, or globally with <code>r.LcmNav.Flight.MovementAuthority 0</code>. Two notes: stock <code>MoveTo</code> path-following still binds the pawn's original movement component, so drive an enabled flight component with <strong>FlyTo</strong> (or <code>RequestVelocity</code>) - and the pawn's root primitive must not have <strong>Simulate Physics</strong> enabled (the component warns in the log if it does).
+<p><strong>Already have a movement component on the pawn?</strong> Leave it there; nothing to remove. While the flight component is enabled it takes <strong>sole movement authority</strong>: any other movement component driving the same root (<code>FloatingPawnMovement</code>, <code>CharacterMovement</code>, <code>ULcmNavMovementComponent</code>) is automatically paused (velocity zeroed, deactivated, tick off) and restored exactly as found the moment flight stops driving (<code>bEnabled=false</code>, the component deactivated, or the pawn torn down). Without this, UE runs both integrators against one body and the last ticker overwrites the pawn's velocity readout, and a <code>CharacterMovement</code> keeps applying gravity against the flight dynamics. Opt out per-instance with <strong>Pause Conflicting Movement Components</strong>, or globally with <code>r.LcmNav.Flight.MovementAuthority 0</code>. Two notes: stock <code>MoveTo</code> path-following still binds the pawn's original movement component, so drive an enabled flight component with <strong>FlyTo</strong> (or <code>RequestVelocity</code>), and the pawn's root primitive must not have <strong>Simulate Physics</strong> enabled (the component warns in the log if it does).
 </p>
 <h3 id="stopping-at-the-goal-hold-station-when-idle">Stopping at the goal (Hold Station When Idle)
 </h3>
@@ -276,7 +276,7 @@
 </p>
 <p><strong>Hold Station When Idle</strong> (on by default, <code>r.LcmNav.Flight.HoldStation</code>) makes an unguided component steer back to the point guidance handed it over at, on a gentle brake-shaped approach with a deadband so a parked body is fully at rest. Any <code>RequestVelocity</code> call takes over immediately, so it only ever governs an otherwise-idle body. With it on, all four archetypes now settle within ~2 m of the goal and stay there.
 </p>
-<h2 id="debugging-the-flight-path---planned-vs-predicted-vs-flown">Debugging the flight path - planned vs predicted vs flown
+<h2 id="debugging-the-flight-path---planned-vs-predicted-vs-flown">Debugging the flight path: planned vs predicted vs flown
 </h2>
 <p>Turn on the navigation manager's <strong><code>bDrawPathfindingDebug</code></strong> (the master switch for all path debug) and a flight-component pawn draws three distinct lines:
 </p>
@@ -304,7 +304,7 @@
 <tr>
 <td><strong>Magenta</strong> arc ahead of the pawn
 </td>
-<td>the PREDICTED dynamic flight path - the component's real dynamics rolled forward along the remaining route (look-ahead, banking, braking included)
+<td>the PREDICTED dynamic flight path: the component's real dynamics rolled forward along the remaining route (look-ahead, banking, braking included)
 </td>
 <td>component <code>bDrawDebugPrediction</code> (default on) / <code>r.LcmNav.Flight.DebugPredict</code>, horizon <code>r.LcmNav.Flight.DebugPredictSec</code>
 </td>
@@ -320,7 +320,7 @@
 </tbody>
 </table>
 </div>
-<p>How to read them: the gap between orange and magenta is the body's <em>physics</em> (corner-cutting, brake distance - expected and correct); the gap between magenta and the trail is <em>live avoidance</em> (neighbours, walls - the prediction deliberately excludes what depends on other agents' futures). A lone agent whose trail leaves the magenta line is a tracking defect worth reporting. All three draw nothing in Shipping builds.
+<p>How to read them: the gap between orange and magenta is the body's <em>physics</em> (corner-cutting, brake distance; expected and correct); the gap between magenta and the trail is <em>live avoidance</em> (neighbours, walls; the prediction deliberately excludes what depends on other agents' futures). A lone agent whose trail leaves the magenta line is a tracking defect worth reporting. All three draw nothing in Shipping builds.
 </p>
 <h2 id="archetypes-key-flightconfig-params">Archetypes (key <code>FlightConfig</code> params)
 </h2>
@@ -374,16 +374,16 @@
 </div>
 <p>Shared: <code>MaxSpeed</code>, <code>MaxAcceleration</code>, <code>MaxTiltAngleDeg</code> (Multirotor), <code>MaxTurnRateDeg</code>, <code>SubSteps</code> (integration sub-steps; higher = stiffer + smoother), <code>BankingAmount</code>/<code>MaxBankingAngle</code> (kinematic-mode roll).
 </p>
-<h3 id="winged-bodies-jet-bird---how-they-fly-and-how-to-tune-them">Winged bodies (Jet, Bird) - how they fly, and how to tune them
+<h3 id="winged-bodies-jet-bird---how-they-fly-and-how-to-tune-them">Winged bodies (Jet, Bird): how they fly, and how to tune them
 </h3>
 <p>Both share one wing model, and it behaves like an aircraft rather than a hovering body:
 </p>
 <ul>
-<li><strong>Turns are made by banking.</strong> The heading error commands a bank; the banked lift supplies the centripetal force; the nose then follows the <em>velocity</em>. So a winged body has a genuine minimum turn radius, <code>v² / (g·tan(MaxBankAngleDeg))</code> - 212 cm at 600 cm/s and 60°. Raise <code>MaxBankAngleDeg</code> (and <code>MaxLiftFactor</code> with it) for tighter turns; lower it for a heavy bomber.
+<li><strong>Turns are made by banking.</strong> The heading error commands a bank; the banked lift supplies the centripetal force; the nose then follows the <em>velocity</em>. So a winged body has a genuine minimum turn radius, <code>v² / (g·tan(MaxBankAngleDeg))</code>, 212 cm at 600 cm/s and 60°. Raise <code>MaxBankAngleDeg</code> (and <code>MaxLiftFactor</code> with it) for tighter turns; lower it for a heavy bomber.
 </li>
 <li><strong>Lift carries the weight, thrust only fights drag.</strong> At cruise the throttle sits near <code>drag/MaxThrust</code> (~0.12 at defaults). <code>LiftCoeff</code> sets how much airspeed the wing needs: weight is balanced when <code>LiftCoeff·v² = Mass·980</code>.
 </li>
-<li><strong>They cannot pinpoint-stop on aerodynamics alone.</strong> Commanded to a hard stop, a wing has nothing to push against. The <strong>Jet</strong> answers this with a thrust-vectored blend below <code>WingBorneSpeed</code>; the <strong>Bird</strong> flares to shed speed and hover-flaps to hold. Both rely on the nav layer's arrival ramp - with a constant full-speed command any fast forward-flyer orbits its goal, which is expected.
+<li><strong>They cannot pinpoint-stop on aerodynamics alone.</strong> Commanded to a hard stop, a wing has nothing to push against. The <strong>Jet</strong> answers this with a thrust-vectored blend below <code>WingBorneSpeed</code>; the <strong>Bird</strong> flares to shed speed and hover-flaps to hold. Both rely on the nav layer's arrival ramp: with a constant full-speed command any fast forward-flyer orbits its goal, which is expected.
 </li>
 <li><strong>Arriving is not the same as staying.</strong> When a FlyTo task arrives it stops feeding guidance, and an unguided flight component <strong>holds the position it was left at</strong> rather than coasting to wherever momentum runs out (see <em>Hold Station When Idle</em> below). Without that a winged body sails past its goal and never comes back.
 </li>
@@ -402,7 +402,7 @@
 </p>
 </li>
 <li>
-<p><strong>The two control loops are a cascade - tune them as a pair, never one alone.</strong> <code>VelocityP</code> is the outer loop (time constant <code>1/VelocityP</code>); it commands a <em>tilt</em> that the inner <code>AttitudeP</code>/<code>AttitudeD</code> loop must then achieve. Keep the inner loop <strong>~4× faster</strong> than the outer one, or the body wanders side to side and hunts back and forth around its goal:
+<p><strong>The two control loops are a cascade: tune them as a pair, never one alone.</strong> <code>VelocityP</code> is the outer loop (time constant <code>1/VelocityP</code>); it commands a <em>tilt</em> that the inner <code>AttitudeP</code>/<code>AttitudeD</code> loop must then achieve. Keep the inner loop <strong>~4× faster</strong> than the outer one, or the body wanders side to side and hunts back and forth around its goal:
 </p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
@@ -452,11 +452,11 @@
 </tbody>
 </table>
 </div>
-<p><strong>Note:</strong> <code>AngularDrag</code> adds to <code>AttitudeD</code> - the integrator applies <code>-AttitudeD*w</code> and then <code>-AngularDrag*w</code>, so the loop's real damping is the <strong>sum</strong>. Raising <code>AttitudeP</code> for a snappier body without raising <code>AttitudeD</code> with it drops <code>z</code> below ~0.7 and the body visibly rings after every heading change. Damping must scale as <code>2*z*sqrt(AttitudeP)</code>.
+<p><strong>Note:</strong> <code>AngularDrag</code> adds to <code>AttitudeD</code>: the integrator applies <code>-AttitudeD*w</code> and then <code>-AngularDrag*w</code>, so the loop's real damping is the <strong>sum</strong>. Raising <code>AttitudeP</code> for a snappier body without raising <code>AttitudeD</code> with it drops <code>z</code> below ~0.7 and the body visibly rings after every heading change. Damping must scale as <code>2*z*sqrt(AttitudeP)</code>.
 </p>
 </li>
 </ul>
-<h3 id="altitude-while-manoeuvring---maxtiltangledeg-and-the-thrust-budget">Altitude while manoeuvring - <code>MaxTiltAngleDeg</code> and the thrust budget
+<h3 id="altitude-while-manoeuvring---maxtiltangledeg-and-the-thrust-budget">Altitude while manoeuvring: <code>MaxTiltAngleDeg</code> and the thrust budget
 </h3>
 <p>A tilt-to-translate body (Generic6DOF / Multirotor) keeps only <code>cos(tilt)</code> of its thrust opposing gravity, so holding height while tilted needs a thrust-to-weight ratio of <code>1/cos(tilt)</code>:
 </p>
@@ -508,15 +508,15 @@
 </tbody>
 </table>
 </div>
-<p><code>MaxTiltAngleDeg</code> caps this so the body cannot ask for a manoeuvre that costs it altitude, and when the thrust budget saturates the <strong>vertical axis is served first</strong> and the lateral axis takes the remainder. <strong>Note:</strong> raising the tilt limit without raising <code>MaxThrust</code> to match makes the body descend under hard lateral commands - the harder you ask it to move, the faster it sinks. Keep <code>MaxThrust ≳ Mass * 980 / cos(MaxTiltAngleDeg)</code>; at the shipped 1 kg / 3000 / 60° there is 2× margin.
+<p><code>MaxTiltAngleDeg</code> caps this so the body cannot ask for a manoeuvre that costs it altitude, and when the thrust budget saturates the <strong>vertical axis is served first</strong> and the lateral axis takes the remainder. <strong>Note:</strong> raising the tilt limit without raising <code>MaxThrust</code> to match makes the body descend under hard lateral commands: the harder you ask it to move, the faster it sinks. Keep <code>MaxThrust ≳ Mass * 980 / cos(MaxTiltAngleDeg)</code>; at the shipped 1 kg / 3000 / 60° there is 2× margin.
 </p>
-<h3 id="reaching-the-commanded-speed---drag-is-fed-forward">Reaching the commanded speed - drag is fed forward
+<h3 id="reaching-the-commanded-speed---drag-is-fed-forward">Reaching the commanded speed: drag is fed forward
 </h3>
 <p>The velocity loop cancels the drag it is about to apply, in the same way it cancels gravity. This is important, because drag is a <em>constant disturbance</em> for a proportional-only loop, and such a loop leaves a <strong>permanent offset</strong> of <code>|drag| / (Mass * VelocityP)</code>. Without the cancellation, at the default settings that offset is 336 cm/s against a 600 cm/s command, so the body would cruise at 44 % of the speed it was given. No gain setting fixes that (raising <code>VelocityP</code> makes the error smaller, but the body then leans less visibly). Kill switch <code>r.LcmNav.Flight.DragFeedForward 0</code>.
 </p>
 <h3 id="making-a-body-lean-tilt-to-translate-look">Making a body <em>lean</em> (tilt-to-translate look)
 </h3>
-<p>A thrust-vector body leans because thrust must point along <code>Mass*accel + weight</code>. There is no cosmetic lean parameter in <code>FlightDynamics</code> mode - the attitude is physical, so you get lean by changing what the body has to <em>do</em>. Three separate mechanisms, commonly confused:
+<p>A thrust-vector body leans because thrust must point along <code>Mass*accel + weight</code>. There is no cosmetic lean parameter in <code>FlightDynamics</code> mode; the attitude is physical, so you get lean by changing what the body has to <em>do</em>. Three separate mechanisms, commonly confused:
 </p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
@@ -552,7 +552,7 @@
 </td>
 <td><code>YawP</code> ⬇ (keep ≪ <code>AttitudeP</code>)
 </td>
-<td>The body banks only while its velocity error is <em>lateral</em>. Fast yaw whips the nose onto the new heading first, making the error forward instead - pivot-then-go, no bank.
+<td>The body banks only while its velocity error is <em>lateral</em>. Fast yaw whips the nose onto the new heading first, making the error forward instead: pivot-then-go, no bank.
 </td>
 </tr>
 </tbody>
@@ -573,14 +573,14 @@
 <ul>
 <li><code>FVector::Rotation</code> yaws by <code>atan2(Y, X)</code>, which at <code>X = Y = 0</code> is <code>atan2(0,0) = 0</code>: a body climbing straight up snaps its heading to world +X, then swings with any lateral noise.
 </li>
-<li><code>FRotationMatrix::MakeFromXZ</code> <strong>substitutes</strong> <code>(1,0,0)</code> for its up reference once <code>|Fwd.Z|</code> passes <code>1 - KINDA_SMALL_NUMBER</code> - the frame teleports rather than degrading.
+<li><code>FRotationMatrix::MakeFromXZ</code> <strong>substitutes</strong> <code>(1,0,0)</code> for its up reference once <code>|Fwd.Z|</code> passes <code>1 - KINDA_SMALL_NUMBER</code>, so the frame teleports rather than degrading.
 </li>
 </ul>
 <p>Either one makes a climbing or diving agent roll hard for reasons invisible in its flight path. World-up levelling is still applied, weighted by how horizontal the travel is, so it fades out exactly where the reference stops being meaningful and the body simply holds its roll through vertical. Applies to Kinematic, Bird, Fish and both FlyTo tasks. Kill switch <code>r.LcmNav.Flight.ContinuousFrame 0</code>.
 </p>
-<h3 id="the-vertical-axis-has-its-own-gain---velocitypz">The vertical axis has its own gain - <code>VelocityPZ</code>
+<h3 id="the-vertical-axis-has-its-own-gain---velocitypz">The vertical axis has its own gain: <code>VelocityPZ</code>
 </h3>
-<p><code>VelocityP</code> is held low on purpose: horizontally it commands a <strong>tilt</strong> the attitude loop then has to achieve, so it must stay ~4× slower than that loop. The vertical axis has no such constraint - thrust acts on it <strong>directly</strong>, with no attitude change in between - so making it share the slow gain costs bandwidth for nothing. Every production multirotor controller splits these (PX4 <code>MPC_Z_VEL_P</code> vs <code>MPC_XY_VEL_P</code>; ArduPilot <code>PSC_VELZ_P</code> vs <code>PSC_VELXY_P</code>).
+<p><code>VelocityP</code> is held low on purpose: horizontally it commands a <strong>tilt</strong> the attitude loop then has to achieve, so it must stay ~4× slower than that loop. The vertical axis has no such constraint (thrust acts on it <strong>directly</strong>, with no attitude change in between) so making it share the slow gain costs bandwidth for nothing. Every production multirotor controller splits these (PX4 <code>MPC_Z_VEL_P</code> vs <code>MPC_XY_VEL_P</code>; ArduPilot <code>PSC_VELZ_P</code> vs <code>PSC_VELXY_P</code>).
 </p>
 <p>Measured on a closed-loop rig flying a <strong>dead-level</strong> path, so any altitude motion is controller-generated:
 </p>
@@ -638,7 +638,7 @@
 </h3>
 <p>If the last waypoint of the path is more than <strong>2 × Acceptance Radius</strong> from the goal, the task used to reset its index to that waypoint <em>every tick</em>. The agent was already within the acceptance radius of it, so on the next tick the waypoint was marked as reached and the index was reset again. In one test this happened <strong>1750 times in 40 s</strong>, and the task never succeeded or failed. Now it does this once, holds position, replans twice, and then reports <strong>Failed</strong> with a log line that names the likely cause. Common causes of a short path: the goal quantises to a leaf centre, or <code>r.LcmNav.SeamSafe.TruncateUnprovable</code> (default ON) truncated the route at its first unprovable leg.
 </p>
-<h2 id="troubleshooting---symptom-to-cause">Troubleshooting - symptom to cause
+<h2 id="troubleshooting---symptom-to-cause">Troubleshooting: symptom to cause
 </h2>
 <p>Each row below is a cause in the design with its own console switch, so you can turn each one on or off separately. Go down the list in order. Don't start by re-tuning gains, because none of these problems comes from the gains.
 </p>
@@ -658,7 +658,7 @@
 <tr>
 <td><strong>Altitude swings up and down continuously, even in level flight</strong>
 </td>
-<td><strong>The vertical axis shared the (deliberately slow) horizontal <code>VelocityP</code>, leaving the pure-pursuit position loop at ζ≈0.61 - underdamped, with nothing to damp it</strong>
+<td><strong>The vertical axis shared the (deliberately slow) horizontal <code>VelocityP</code>, leaving the pure-pursuit position loop at ζ≈0.61, underdamped, with nothing to damp it</strong>
 </td>
 <td><strong><code>VelocityPZ</code> (default 4; set 0 for the legacy shared gain)</strong>
 </td>
@@ -732,7 +732,7 @@
 </td>
 <td>Wall whiskers cast off the <em>nose</em> (which lags travel), binary, no forward or vertical coverage
 </td>
-<td><code>r.LcmNav.WallAvoidV2 1</code> (⚠ default 0 - see below)
+<td><code>r.LcmNav.WallAvoidV2 1</code> (default 0; see below)
 </td>
 </tr>
 <tr>
@@ -772,11 +772,11 @@
 </div>
 <p><strong>Note: <code>r.LcmNav.WallAvoidV2</code> is off (0) by default on purpose.</strong> An earlier attempt to weaken this push made one agent fail to arrive (it orbited, with 33 loop events), because a planned route sometimes points into a wall and only a full-strength push gets the agent clear. V2 keeps the full push at contact and only reduces it further away, but it hasn't been re-tested in that case yet. Turn it on if flyers judder near geometry, and check that they still arrive.
 </p>
-<h2 id="agent-scale---flying-a-body-in-a-centimetre-world">Agent scale - flying a body in a centimetre world
+<h2 id="agent-scale---flying-a-body-in-a-centimetre-world">Agent scale: flying a body in a centimetre world
 </h2>
-<p><code>ULcmFlightMovementComponent::AgentScale</code> (default <code>0</code>) makes a body authored for a metre-scale world fly in a centimetre-scale one without retuning anything. The integrator runs in <strong>agent units</strong>: every <code>FlightConfig</code> value and every internal constant (gravity, the airspeed thresholds, the station-hold deadband) keeps its production meaning, and positions and velocities are converted at the component's boundary - world = agent x scale. <code>0</code> adopts the scale of the FlyTo task that drives the body (its own <code>Agent Scale</code>, or the navigation manager's <strong>World Scale</strong>); a positive value is explicit. At <code>0.01</code> a 1 m drone tuned for 600 cm/s flies as a 1 cm one at 6 cm/s, through the same path shape, in the same time - a similarity transform, not a retune. Two things follow from that: <code>FLcmFlightState</code> is reported in agent units (<code>Speed01</code> is unchanged, <code>Airspeed</code> and <code>VerticalSpeed</code> read 600 at full speed whatever the scale), and the pawn's own collision and mesh must be scaled by the user - the plugin scales motion, not geometry. In a 120 x 70 x 40 cm aquarium at a 1 cm leaf, a drone at actor scale 0.01 flies the cave route it flies at 100:1.
+<p><code>ULcmFlightMovementComponent::AgentScale</code> (default <code>0</code>) makes a body authored for a metre-scale world fly in a centimetre-scale one without retuning anything. The integrator runs in <strong>agent units</strong>: every <code>FlightConfig</code> value and every internal constant (gravity, the airspeed thresholds, the station-hold deadband) keeps its production meaning, and positions and velocities are converted at the component's boundary: world = agent x scale. <code>0</code> adopts the scale of the FlyTo task that drives the body (its own <code>Agent Scale</code>, or the navigation manager's <strong>World Scale</strong>); a positive value is explicit. At <code>0.01</code> a 1 m drone tuned for 600 cm/s flies as a 1 cm one at 6 cm/s, through the same path shape, in the same time: a similarity transform, not a retune. Two things follow from that: <code>FLcmFlightState</code> is reported in agent units (<code>Speed01</code> is unchanged, <code>Airspeed</code> and <code>VerticalSpeed</code> read 600 at full speed whatever the scale), and the pawn's own collision and mesh must be scaled by the user. The plugin scales motion, not geometry. In a 120 x 70 x 40 cm aquarium at a 1 cm leaf, a drone at actor scale 0.01 flies the cave route it flies at 100:1.
 </p>
-<h2 id="animation-contract---flcmflightstate">Animation contract - <code>FLcmFlightState</code>
+<h2 id="animation-contract---flcmflightstate">Animation contract: <code>FLcmFlightState</code>
 </h2>
 <p>Every tick the component produces <code>FLcmFlightState</code> (archetype-agnostic where possible):
 </p>
@@ -794,25 +794,25 @@
 <tr>
 <td><code>Speed01</code>
 </td>
-<td>Normalized airspeed (|velocity| / MaxSpeed) - blendspace axis
+<td>Normalized airspeed (|velocity| / MaxSpeed): blendspace axis
 </td>
 </tr>
 <tr>
 <td><code>VerticalSpeed</code>
 </td>
-<td>cm/s, climb + / dive − - climb/dive pose blend
+<td>cm/s, climb + / dive −: climb/dive pose blend
 </td>
 </tr>
 <tr>
 <td><code>BankAngleDeg</code> / <code>PitchDeg</code>
 </td>
-<td>Body roll / pitch - additive lean/pitch
+<td>Body roll / pitch: additive lean/pitch
 </td>
 </tr>
 <tr>
 <td><code>YawRateDeg</code>
 </td>
-<td>Turn rate - lean/tilt into turns
+<td>Turn rate: lean/tilt into turns
 </td>
 </tr>
 <tr>
@@ -864,9 +864,9 @@
 </ul>
 <h2 id="mass-crowds--scale-p7-p8">Mass crowds &amp; scale
 </h2>
-<p>The <strong>LCM Nav3D Agent</strong> trait (NavMode = PathFollowing) carries the same flight options (<code>LocomotionModel</code>, <code>FlightArchetype</code>, <code>FlightConfig</code>) - set them and a whole crowd flies with the identical 6-DOF physics as a pawn, still pathing, avoiding and arriving. With the default <code>Kinematic</code>, crowds behave exactly as before.
+<p>The <strong>LCM Nav3D Agent</strong> trait (NavMode = PathFollowing) carries the same flight options (<code>LocomotionModel</code>, <code>FlightArchetype</code>, <code>FlightConfig</code>): set them and a whole crowd flies with the identical 6-DOF physics as a pawn, still pathing, avoiding and arriving. With the default <code>Kinematic</code>, crowds behave exactly as before.
 </p>
-<p><strong>Dynamics LOD (the scale knob).</strong> Full 6-DOF per agent is expensive; set <code>FlightDynamicsLODDistance</code> (cm) so only agents within that distance of the viewer run full dynamics - everyone else uses the cheap kinematic integrator (face-velocity, no roll). So a 10K crowd keeps only the on-screen agents on the expensive path. <code>0</code> = always full. Global kill switch: <code>r.LcmNav.Mass.FlightLOD</code> (1 default / 0 = full everywhere). LOD switching is seamless - a far agent's integrator state re-syncs from its live transform when it returns to range.
+<p><strong>Dynamics LOD (the scale knob).</strong> Full 6-DOF per agent is expensive; set <code>FlightDynamicsLODDistance</code> (cm) so only agents within that distance of the viewer run full dynamics; everyone else uses the cheap kinematic integrator (face-velocity, no roll). So a 10K crowd keeps only the on-screen agents on the expensive path. <code>0</code> = always full. Global kill switch: <code>r.LcmNav.Mass.FlightLOD</code> (1 default / 0 = full everywhere). LOD switching is seamless: a far agent's integrator state re-syncs from its live transform when it returns to range.
 </p>
 <p><strong>Deferred (documented) scale extensions:</strong>
 </p>
@@ -882,9 +882,9 @@
 </p>
 <h2 id="bird-and-fish-do-not-share-the-drone-control-cascade">Bird and Fish do not share the drone control cascade
 </h2>
-<p><strong>Note: <code>StepBird</code> and <code>StepFish</code> are separate integrators - they never call <code>RunStep6DOF</code>.</strong> That is on purpose (a bird doesn't move sideways by tilting a rotor), but it meant they also didn't have its velocity-tracking loop. Thrust only pushes along the body's forward axis, so in older versions <strong>nothing corrected a velocity error at right angles to the nose</strong>. The bodies pointed in the guidance direction and waited for drag, so errors across the path and in altitude only faded slowly and never reached zero. That was the cause of birds and fish "drifting away from the path points".
+<p><strong>Note: <code>StepBird</code> and <code>StepFish</code> are separate integrators: they never call <code>RunStep6DOF</code>.</strong> That is on purpose (a bird doesn't move sideways by tilting a rotor), but it meant they also didn't have its velocity-tracking loop. Thrust only pushes along the body's forward axis, so in older versions <strong>nothing corrected a velocity error at right angles to the nose</strong>. The bodies pointed in the guidance direction and waited for drag, so errors across the path and in altitude only faded slowly and never reached zero. That was the cause of birds and fish "drifting away from the path points".
 </p>
-<p>They now generate the perpendicular force a banked wing or a flexing body actually produces, bounded by what the body can physically supply - <strong>lift</strong> for the bird, <strong>tail/fin thrust scaled by swim effort</strong> for the fish. <code>BankTurnGain</code> is the rate (1/s) that converts a cm/s error into that demand, which is what its own description always claimed. Measured on one corner path, same guidance:
+<p>They now generate the perpendicular force a banked wing or a flexing body actually produces, bounded by what the body can physically supply: <strong>lift</strong> for the bird, <strong>tail/fin thrust scaled by swim effort</strong> for the fish. <code>BankTurnGain</code> is the rate (1/s) that converts a cm/s error into that demand, which is what its own description always claimed. Measured on one corner path, same guidance:
 </p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
@@ -1004,7 +1004,7 @@
 </p>
 <h2 id="fish-schooling-on-pawns">Fish schooling on pawns
 </h2>
-<p>The Flight Movement component has a <strong>Schooling</strong> group (<code>LCM Flight|Schooling</code>). Turn on <strong>Enabled</strong> and, whichever node drives the body - <strong>Fly To</strong>, <strong>Patrol</strong>, <strong>Follow</strong>, <strong>Orbit</strong> or <strong>Follow Flow Field</strong> - it steers as a school member instead of by the node's avoidance (reactive push, wall whiskers, flock separation): personal space, collision anticipation, heading matching and closing up with other agents (pawns and a Mass school alike), and turning away from rocks and glass before reaching them. The node's route still says where to go, and the fish's nose follows its travel (a Patrol's facing request is not made for it). Nodes that must be exact - Land, Take Off, Move To And Face, Use Smart Object, the evasions - keep their own steering.
+<p>The Flight Movement component has a <strong>Schooling</strong> group (<code>LCM Flight|Schooling</code>). Turn on <strong>Enabled</strong> and, whichever node drives the body (<strong>Fly To</strong>, <strong>Patrol</strong>, <strong>Follow</strong>, <strong>Orbit</strong> or <strong>Follow Flow Field</strong>), it steers as a school member instead of by the node's avoidance (reactive push, wall whiskers, flock separation): personal space, collision anticipation, heading matching and closing up with other agents (pawns and a Mass school alike), and turning away from rocks and glass before reaching them. The node's route still says where to go, and the fish's nose follows its travel (a Patrol's facing request is not made for it). Nodes that must be exact (Land, Take Off, Move To And Face, Use Smart Object, the evasions) keep their own steering.
 </p>
 <p>On <strong>Patrol</strong> a schooling fish counts a waypoint as reached once the school has carried it past (beyond the waypoint along the leg into it, within 3 x the Arrival Radius), so a fish on the school's flank never turns back for a point it passed abeam.
 </p>
@@ -1018,9 +1018,9 @@
 <li>A predator is any body half again the fish's size or more that is not schooling with it, so a larger pawn on its own flight model (the Fish Tank's predator) sets off the escape.
 </li>
 </ul>
-<p><strong>A school on a loop (Feature Examples 2.7).</strong> Thirty fish on one Patrol loop, measured: give the loop <strong>dense</strong> waypoints (about a body length or two apart along the curve, the turns at least a metre in radius) and an <strong>Arrival Radius</strong> of about two spacings - each fish then makes for a point just ahead along the curve and its neighbours aim nearly alike. On twelve coarse points, fish at the same turn chased points 90-180 degrees apart and the school broke up at every end. <strong>Speed Coupling</strong> 0.4 keeps the school's shape along the straights; <strong>Threat Time Seconds</strong> 1.5 with <strong>Threat Range BL</strong> 2.5-3 lets it part round a predator without touching it.
+<p><strong>A school on a loop (Feature Examples 2.7).</strong> Thirty fish on one Patrol loop, measured: give the loop <strong>dense</strong> waypoints (about a body length or two apart along the curve, the turns at least a metre in radius) and an <strong>Arrival Radius</strong> of about two spacings; each fish then makes for a point just ahead along the curve and its neighbours aim nearly alike. On twelve coarse points, fish at the same turn chased points 90-180 degrees apart and the school broke up at every end. <strong>Speed Coupling</strong> 0.4 keeps the school's shape along the straights; <strong>Threat Time Seconds</strong> 1.5 with <strong>Threat Range BL</strong> 2.5-3 lets it part round a predator without touching it.
 </p>
-<p>With <strong>Enabled</strong> off, a <strong>Fish</strong>-archetype body still keeps its personal space - repulsion, collision anticipation and contact push, no heading matching, closing up, wall term, leadership or escape (<code>r.LcmNav.FishSchool.PersonalSpace 0</code> turns that off). Every flight body is a neighbour to the others whether or not its pawn carries a Navigation Invoker.
+<p>With <strong>Enabled</strong> off, a <strong>Fish</strong>-archetype body still keeps its personal space: repulsion, collision anticipation and contact push, no heading matching, closing up, wall term, leadership or escape (<code>r.LcmNav.FishSchool.PersonalSpace 0</code> turns that off). Every flight body is a neighbour to the others whether or not its pawn carries a Navigation Invoker.
 </p>
 <p>Three more Fish-archetype rules, each with a kill switch:
 </p>
@@ -1029,9 +1029,9 @@
 </li>
 <li><strong>Stay in the water</strong> (<code>r.LcmNav.Flight.FishStayInWater</code>): a fish inside a Water Volume never leaves it; a step that would ends just under the surface, its velocity out through it dropped. A step into another Water Volume that carries on from it is water all the way: the fish swims on.
 </li>
-<li><strong>The water is a boundary</strong> (<code>r.LcmNav.WaterSurfaceIsBoundary</code>, <code>r.LcmNav.WaterVolumeIsClosed</code>): every face of a Water Volume - its surface, its sides and its floor - is blocked in the octree, so a swimmer's routes stay in the water and a flyer's stay out of it, glass or no glass. A face, or the part of one, that another Water Volume carries on from stays open. (Until 3.5 only the surface was: a route to a goal above the water left an open tank through its side, and the fish was held against that invisible wall for the rest of the run.) Volumes wider than <code>r.LcmNav.WaterSurfaceMaxSizeCm</code> (200 m - a sea) get no boundary.
+<li><strong>The water is a boundary</strong> (<code>r.LcmNav.WaterSurfaceIsBoundary</code>, <code>r.LcmNav.WaterVolumeIsClosed</code>): every face of a Water Volume (its surface, its sides and its floor) is blocked in the octree, so a swimmer's routes stay in the water and a flyer's stay out of it, glass or no glass. A face, or the part of one, that another Water Volume carries on from stays open. (Until 3.5 only the surface was: a route to a goal above the water left an open tank through its side, and the fish was held against that invisible wall for the rest of the run.) Volumes wider than <code>r.LcmNav.WaterSurfaceMaxSizeCm</code> (200 m, a sea) get no boundary.
 </li>
-<li><strong>A target out of the water</strong> (<code>r.LcmNav.Flight.FishGoalInWater</code>): a fish in a Water Volume chasing a target actor (a Fly To's goal object, the Fly To Location node's Target Actor) or patrolling a waypoint that is out of its water makes for the point of its water nearest it, a radius and a quarter in from the faces - up under bait over the surface, to the glass nearest a target beyond it. A fixed Fly To destination out of the water is the caller's mistake to hear about: it still fails with <strong>No Path</strong>. In sight of its goal (same water, nothing solid between) the fish swims straight at it, so it reaches the surface and the glass that the octree's padding (sized for the level's largest flyer) keeps routes off, and arrives there. Its route requests start and end on free water inside its own volume, never on the far side of the water's padded wall.
+<li><strong>A target out of the water</strong> (<code>r.LcmNav.Flight.FishGoalInWater</code>): a fish in a Water Volume chasing a target actor (a Fly To's goal object, the Fly To Location node's Target Actor) or patrolling a waypoint that is out of its water makes for the point of its water nearest it, a radius and a quarter in from the faces: up under bait over the surface, to the glass nearest a target beyond it. A fixed Fly To destination out of the water is the caller's mistake to hear about: it still fails with <strong>No Path</strong>. In sight of its goal (same water, nothing solid between) the fish swims straight at it, so it reaches the surface and the glass that the octree's padding (sized for the level's largest flyer) keeps routes off, and arrives there. Its route requests start and end on free water inside its own volume, never on the far side of the water's padded wall.
 </li>
 </ul>
 <p>Console multipliers for tuning without editing assets: <code>r.LcmNav.FishSchool.ScaleRepulsion</code>, <code>ScaleAnticipation</code>, <code>ScaleAlign</code>, <code>ScaleAttract</code>, <code>ScaleWall</code>, <code>ScaleEscape</code>, <code>ScaleContactPush</code>, <code>ScaleBrake</code> (all 1 = as authored), <code>r.LcmNav.FishSchool.MaxCommandDeg</code> (-1 = the config's) and <code>r.LcmNav.FishSchool.Leadership</code> (0 = every fish steers for the goal).

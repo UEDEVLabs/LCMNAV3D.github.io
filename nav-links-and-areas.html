@@ -22,12 +22,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cost Areas and Query Filters for Flying AI | LCM Nav3D">
 <meta name="twitter:description" content="Price 3D volumes per agent with stock NavArea classes and Navigation Query Filters: storms, preferred lanes, toll gates, no-fly zones, plus 3D NavLinks.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -144,7 +144,7 @@
   {
    "@type": "TechArticle",
    "@id": "https://lcmnav3d.github.io/nav-links-and-areas.html#article",
-   "headline": "Tutorial 10 - Cost areas, query filters and 3D NavLinks",
+   "headline": "Tutorial 10: Cost areas, query filters and 3D NavLinks",
    "name": "Cost Areas and Query Filters for Flying AI | LCM Nav3D",
    "description": "Price 3D volumes per agent with stock NavArea classes and Navigation Query Filters: storms, preferred lanes, toll gates, no-fly zones, plus 3D NavLinks.",
    "url": "https://lcmnav3d.github.io/nav-links-and-areas.html",
@@ -238,7 +238,7 @@
  <main id="content">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-ii-going-further">Going Further</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Cost Areas and NavLinks</span></nav>
   <h1 id="tutorial-10---cost-areas-query-filters-and-3d-navlinks">Tutorial
-10 - Cost areas, query filters and 3D NavLinks</h1>
+10: Cost areas, query filters and 3D NavLinks</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-11-22">22 November 2026</time></p>
 <p><strong>In short:</strong> Drop an <code>ALcmNavAreaModifier</code>
 volume, give it a stock NavArea class, and every LCM Nav3D planner
@@ -288,7 +288,7 @@ predator's territory while the predator ignores it.</p>
 <p>Routes follow the cheapest total, not the shortest distance. An agent
 goes round a storm when going round is cheaper, and flies straight
 through when the detour costs more than the storm.</p>
-<h2 id="step-1---place-a-cost-area">Step 1 - Place a cost area</h2>
+<h2 id="step-1---place-a-cost-area">Step 1: Place a cost area</h2>
 <ol type="1">
 <li>Place an <strong>LCM Nav3D Nav Area Modifier (Volumetric)</strong>
 actor.</li>
@@ -349,7 +349,7 @@ plan against where it will be over <strong>Prediction Seconds</strong>.
 demos and tests. After changing a class, shape, priority or size at
 runtime, call <strong>Notify Area Changed</strong>. Moving the actor
 needs no call.</p>
-<h2 id="step-2---give-an-agent-a-filter">Step 2 - Give an agent a
+<h2 id="step-2---give-an-agent-a-filter">Step 2: Give an agent a
 filter</h2>
 <p>A filter is a stock <code>NavigationQueryFilter</code> Blueprint or
 class. Add <strong>Areas</strong> entries to override or exclude
@@ -387,7 +387,7 @@ Agent</strong> trait.</td>
 </table>
 </div>
 <p>With no filter, each area uses its own class defaults.</p>
-<h2 id="step-3---see-what-an-agent-sees">Step 3 - See what an agent
+<h2 id="step-3---see-what-an-agent-sees">Step 3: See what an agent
 sees</h2>
 <p>On the <strong>LCM Nav3D Manager</strong>, under <strong>6. Debug
 &gt; Cost Areas</strong>:</p>
@@ -433,7 +433,7 @@ paid, and the areas it crosses.</p>
 </div>
 <p>A FlyTo task reports these as <strong>Failed</strong>, with a Warning
 in the log, never an Error.</p>
-<h2 id="step-4---query-costs-yourself">Step 4 - Query costs
+<h2 id="step-4---query-costs-yourself">Step 4: Query costs
 yourself</h2>
 <p>The query library prices a route the same way the planner does:</p>
 <pre class="cpp"><code>// The travel multiplier at a point, and a route&#39;s cost, as a given filter sees them:

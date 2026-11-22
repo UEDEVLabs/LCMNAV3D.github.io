@@ -30,7 +30,7 @@
     <summary>Why Unreal's Recast navmesh cannot represent open air, where each flying-AI workaround breaks down, and when volumetric SVO navigation is the right answer instead.</summary>
   </entry>
   <entry>
-    <title>Install LCM Nav3D in Unreal Engine 5 - Fab or Manual Setup</title>
+    <title>Install LCM Nav3D in Unreal Engine 5: Fab or Manual Setup</title>
     <link href="https://lcmnav3d.github.io/installation.html"/>
     <id>https://lcmnav3d.github.io/installation.html</id>
     <updated>2026-11-22T00:00:00Z</updated>
@@ -167,7 +167,7 @@
     <link href="https://lcmnav3d.github.io/bt-perception-relay.html"/>
     <id>https://lcmnav3d.github.io/bt-perception-relay.html</id>
     <updated>2026-11-22T00:00:00Z</updated>
-    <summary>UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key - no custom BT service needed.</summary>
+    <summary>UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key. No custom BT service needed.</summary>
   </entry>
   <entry>
     <title>BT MemoryDecay: Use GetLastStimulusLocation | LCM Nav3D</title>

@@ -22,12 +22,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Troubleshooting 3D Navigation Problems | LCM Nav3D">
 <meta name="twitter:description" content="Common LCM Nav3D problems and fixes: agents that will not move, &quot;no path found&quot;, ignored geometry, dynamic obstacles that do nothing, and performance.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -189,7 +189,7 @@
      "name": "Why does my LCM Nav3D agent not move at all?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "The usual cause is that there is no navigation manager in the level. If the Output Log shows \"LCMBTTask_FlyTo: No SVO Manager found in the level!\", drag an LcmNavigationManagerSVO into the level - one per level, required. Then check that the AI possessed the pawn (Auto Possess AI is set, an AI Controller Class is assigned, and the controller actually runs the tree), that the pawn has a movement component supporting flight with a non-zero Max Speed, and that the goal was actually set."
+      "text": "The usual cause is that there is no navigation manager in the level. If the Output Log shows \"LCMBTTask_FlyTo: No SVO Manager found in the level!\", drag an LcmNavigationManagerSVO into the level. Every level needs exactly one. Then check that the AI possessed the pawn (Auto Possess AI is set, an AI Controller Class is assigned, and the controller actually runs the tree), that the pawn has a movement component supporting flight with a non-zero Max Speed, and that the goal was actually set."
      }
     },
     {
@@ -197,7 +197,7 @@
      "name": "Why does LCM Nav3D report \"no path found\" through a gap I can clearly see?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Clearance Padding sealed the opening. When Clearance Padding is close to Min Voxel Size, obstacle inflation fills narrow openings completely - a 2 m doorway with 100 cm voxels and 100 cm padding can vanish entirely. Lower Clearance Padding, or lower Min Voxel Size so the opening survives the inflation, then confirm with Draw Debug Volumes that free voxels run through the opening."
+      "text": "Clearance Padding sealed the opening. When Clearance Padding is close to Min Voxel Size, obstacle inflation fills narrow openings completely, and a 2 m doorway with 100 cm voxels and 100 cm padding can vanish entirely. Lower Clearance Padding, or lower Min Voxel Size so the opening survives the inflation, then confirm with Draw Debug Volumes that free voxels run through the opening."
      }
     },
     {
@@ -205,7 +205,7 @@
      "name": "Why do short paths work while long ones fail?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "This is almost always an infinite-world issue: the route crosses chunks that have not generated yet. Turn on Persistent Skeleton under section 5, Coarse Skeleton - it is off by default and is what allows long-range planning before the detail exists. For routing to be complete on the first frame, tick Use Baked Skeleton and click Bake Skeleton. Tick Assist Infinite Streaming on the Fly To task for agents that must traverse the frontier."
+      "text": "This is almost always an infinite-world issue: the route crosses chunks that have not generated yet. Turn on Persistent Skeleton under section 5, Coarse Skeleton. It is off by default, and it allows long-range planning before the detail exists. For routing to be complete on the first frame, tick Use Baked Skeleton and click Bake Skeleton. Tick Assist Infinite Streaming on the Fly To task for agents that must traverse the frontier."
      }
     },
     {
@@ -237,7 +237,7 @@
      "name": "Why did my frame rate drop after adding LCM Nav3D?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Voxel resolution is too fine. Raise Min Voxel Size - finer voxels multiply the node count sharply - and re-measure before tuning anything else."
+      "text": "Voxel resolution is too fine. Raise Min Voxel Size (finer voxels multiply the node count sharply) and re-measure before tuning anything else."
      }
     },
     {

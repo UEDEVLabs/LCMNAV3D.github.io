@@ -17,7 +17,7 @@
   var status = document.getElementById('q-status');
   if (!box || !out) return;
 
-  var index = null;      // loaded lazily — the index is ~40 KB gzipped and most
+  var index = null;      // loaded lazily: the index is ~40 KB gzipped and most
   var pending = null;    // visitors never open the search box at all.
   var sel = -1;
 

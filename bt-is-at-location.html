@@ -22,12 +22,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="BT IsAtLocation: Use the Stock UE5 Decorator | LCM Nav3D">
 <meta name="twitter:description" content="UBTDecorator_IsAtLocation already works on LCM Nav3D pawns. Three-step usage, why no plugin-specific variant exists, and when the path-finding variant helps.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -144,7 +144,7 @@
   {
    "@type": "TechArticle",
    "@id": "https://lcmnav3d.github.io/bt-is-at-location.html#article",
-   "headline": "BT IsAtLocation - use the stock UE5 decorator",
+   "headline": "BT IsAtLocation: use the stock UE5 decorator",
    "name": "BT IsAtLocation: Use the Stock UE5 Decorator | LCM Nav3D",
    "description": "UBTDecorator_IsAtLocation already works on LCM Nav3D pawns. Three-step usage, why no plugin-specific variant exists, and when the path-finding variant helps.",
    "url": "https://lcmnav3d.github.io/bt-is-at-location.html",
@@ -237,7 +237,7 @@
  </nav>
  <main id="content">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#chapter-12-behaviour-tree-stock-patterns">Behaviour Tree Patterns</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Is At Location</span></nav>
-  <h1 id="bt-isatlocation---use-the-stock-ue5-decorator">BT IsAtLocation -
+  <h1 id="bt-isatlocation---use-the-stock-ue5-decorator">BT IsAtLocation:
 use the stock UE5 decorator</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-11-22">22 November 2026</time></p>
 <p><strong>In short:</strong> Unreal Engine already ships
@@ -265,7 +265,7 @@ LCM Nav3D pawn</h2>
 node</strong> in your BT graph. Right-click → Add Decorator → "Is At
 Location".</p></li>
 <li><p><strong>Set the blackboard key.</strong> Vector key (a goal
-position) or Object key (an AActor whose location is the goal -
+position) or Object key (an AActor whose location is the goal;
 <code>bUseNavAgentGoalLocation</code> projects to nav-agent location).
 For LCM Nav3D flying pawns where you want the literal world position,
 use Vector.</p></li>
@@ -277,26 +277,26 @@ and you don't need any LCM Nav3D settings for it.</p>
 <h2 id="when-to-use-the-path-finding-variant">When to use the
 path-finding variant</h2>
 <p><code>UBTDecorator_IsAtLocation::bPathFindingBasedTest</code> makes
-the decorator consistent with whatever was used to reach the location -
-useful when the move was via <code>UBTTask_MoveTo</code> (Recast) so the
+the decorator consistent with whatever was used to reach the location.
+That is useful when the move was via <code>UBTTask_MoveTo</code> (Recast) so the
 "arrived" check matches.</p>
 <p><strong>For LCM Nav3D moves</strong>, this option will fall through
-to Recast even if your goal was inside an LCM Nav3D volume - leave it
+to Recast even if your goal was inside an LCM Nav3D volume, so leave it
 OFF and use straight geometric distance.</p>
 <h2 id="related-lcm-nav3d-unique-decorators">Related LCM Nav3D-unique
 decorators</h2>
 <p>For predicates that <strong>don't</strong> have a stock equivalent,
 see the LCM Nav3D-unique decorators we did ship:</p>
 <ul>
-<li><code>LCM_BTDecorator_PathLengthBelow</code> - true-3D LCM Nav3D
+<li><code>LCM_BTDecorator_PathLengthBelow</code>: true-3D LCM Nav3D
 path-length check (stock <code>DoesPathExist</code> is binary +
 Recast)</li>
-<li><code>LCM_BTDecorator_HasLineOfSight</code> - voxel-aware Lazy
+<li><code>LCM_BTDecorator_HasLineOfSight</code>: voxel-aware Lazy
 Theta* LOS (stock uses raycasts only)</li>
-<li><code>LCM_BTDecorator_IsInCover</code> - composite SweepPenalty +
+<li><code>LCM_BTDecorator_IsInCover</code>: composite SweepPenalty +
 LOS predicate</li>
-<li><code>LCM_BTDecorator_ChunkLoaded</code> - SVO streaming probe</li>
-<li><code>LCM_BTDecorator_ThreatVisibleViaPerception</code> -
+<li><code>LCM_BTDecorator_ChunkLoaded</code>: SVO streaming probe</li>
+<li><code>LCM_BTDecorator_ThreatVisibleViaPerception</code>:
 AIPerception + LCM Nav3D LOS composite</li>
 </ul>
 <p>These do things the stock nodes can't. "IsAtLocation" doesn't, so use

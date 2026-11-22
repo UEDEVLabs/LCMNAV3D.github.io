@@ -1,6 +1,6 @@
 # LCM Nav3D Documentation
 
-Documentation site for **LCM Nav3D** — true volumetric 3D navigation for Unreal Engine.
+Documentation site for **LCM Nav3D**, true volumetric 3D navigation for Unreal Engine.
 
 Live at **https://lcmnav3d.github.io/**
 
@@ -16,17 +16,17 @@ Live at **https://lcmnav3d.github.io/**
 | `search-index.json` | Full-text search index, generated |
 | `sitemap.xml`, `robots.txt`, `feed.xml` | Crawler files, generated |
 | `llms.txt` | Site map for AI crawlers, generated |
-| `google*.html` | Search Console ownership token — do not delete |
+| `google*.html` | Search Console ownership token. Do not delete |
 | `og.jpg` | Social share image (1200x675) |
 | `pdf/` | Manual and quick start as PDFs |
 | `images/` | Screenshots |
-| `tools/` | Build scripts — not part of the published site |
+| `tools/` | Build scripts, not part of the published site |
 
 ## Regenerating metadata
 
 Page titles, meta descriptions, canonical URLs, Open Graph and Twitter tags,
 JSON-LD structured data, breadcrumbs, image dimensions, the sitemap, the Atom
-feed and the search index are all **generated**. Do not hand-edit them — edit the
+feed and the search index are all **generated**. Do not hand-edit them. Edit the
 source and re-run the build:
 
 ```bash
@@ -40,7 +40,7 @@ second time. `verify.js` and `lint.js` both exit non-zero on a problem, so they 
 gate a commit. Run all three before every push.
 
 `lint.js` exists because the Markdown-to-HTML conversion silently dropped several
-tables — any table cell containing a literal `|` (Unreal's `Category | Node`
+tables: any table cell containing a literal `|` (Unreal's `Category | Node`
 naming) broke the Markdown parser and the table came through as a paragraph of raw
 pipes. The lint catches that, plus unconverted `**bold**`, `](links)`, empty table
 columns, mismatched column counts, unbalanced tags and mojibake.
@@ -58,7 +58,7 @@ new text.
 **Adding a page** takes two edits, both in `tools/seo-pages.js`: add an entry to
 `PAGES` (title, description, breadcrumb, sidebar label) and drop the filename into
 the right group in `NAV`. Then create the HTML with a minimal skeleton and run the
-build — the sidebar, the prev/next pager, the breadcrumb, the whole `<head>`, the
+build: the sidebar, the prev/next pager, the breadcrumb, the whole `<head>`, the
 sitemap, the feed, `llms.txt` and the search index are all regenerated from those
 two definitions, on every page. The build refuses to run if `PAGES` and `NAV`
 disagree, so a page can never be half-registered.

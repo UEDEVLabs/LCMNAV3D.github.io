@@ -22,12 +22,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hybrid Recast + 3D Navigation in One Level | LCM Nav3D">
 <meta name="twitter:description" content="Run walking agents on Recast and flying agents on the SVO in one level. The Crowd Avoidance Bridge lets Detour RVO steer Recast agents around LCM Nav3D pawns.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -144,7 +144,7 @@
   {
    "@type": "TechArticle",
    "@id": "https://lcmnav3d.github.io/hybrid-recast.html#article",
-   "headline": "Tutorial 09 - Hybrid LCM Nav3D + Recast crowd avoidance",
+   "headline": "Tutorial 09: Hybrid LCM Nav3D + Recast crowd avoidance",
    "name": "Hybrid Recast + 3D Navigation in One Level | LCM Nav3D",
    "description": "Run walking agents on Recast and flying agents on the SVO in one level. The Crowd Avoidance Bridge lets Detour RVO steer Recast agents around LCM Nav3D pawns.",
    "url": "https://lcmnav3d.github.io/hybrid-recast.html",
@@ -238,7 +238,7 @@
  <main id="content">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-ii-going-further">Going Further</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Hybrid Recast + Nav3D</span></nav>
   <h1 id="tutorial-09---hybrid-lcm-nav3d--recast-crowd-avoidance">Tutorial
-09 - Hybrid LCM Nav3D + Recast crowd avoidance</h1>
+09: Hybrid LCM Nav3D + Recast crowd avoidance</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-11-22">22 November 2026</time></p>
 <p><strong>In short:</strong> Add <code>ULcmCrowdAvoidanceBridge</code> to
 your LCM Nav3D flying pawn → stock UE5 <code>UCrowdManager</code> Detour
@@ -254,7 +254,7 @@ AIController).</li>
 <li>An <code>ALcmFlyingPawn</code> (or your own LCM Nav3D flying
 pawn).</li>
 </ul>
-<h2 id="step-1---add-the-bridge-to-your-lcm-nav3d-pawn">Step 1 - Add the
+<h2 id="step-1---add-the-bridge-to-your-lcm-nav3d-pawn">Step 1: Add the
 bridge to your LCM Nav3D pawn</h2>
 <p>In the editor, select your LCM Nav3D pawn → Add Component → search
 "LCM Crowd Avoidance Bridge".</p>
@@ -269,7 +269,7 @@ uses</li>
 <code>ULcmNavMovementComponent</code> default</li>
 </ul>
 <p>Nothing else is needed on the LCM Nav3D side.</p>
-<h2 id="step-2---add-recast-crowd-agents-existing-ue5-pattern">Step 2 -
+<h2 id="step-2---add-recast-crowd-agents-existing-ue5-pattern">Step 2:
 Add Recast crowd agents (existing UE5 pattern)</h2>
 <p>Your Recast ground crowd agents should already use
 <code>UCrowdFollowingComponent</code> instead of the default
@@ -282,7 +282,7 @@ GetCharacterMovement()-&gt;bUseAccelerationForPaths = true;
 <p>Or in Blueprint: the AIController's
 <code>UCrowdFollowingComponent</code> is auto-registered as the
 agent.</p>
-<h2 id="step-3---play">Step 3 - Play</h2>
+<h2 id="step-3---play">Step 3: Play</h2>
 <p>Hit Play. Your LCM Nav3D flying pawn and Recast ground crowd agents
 now avoid each other (per the Z-band filter rules below).</p>
 <h2 id="how-the-z-band-filter-works">How the Z-band filter works</h2>
@@ -373,7 +373,7 @@ circle.</li>
 <li><strong>Expected</strong>: ground agents continue their pathing
 without dodging the airborne pawn (Z-band separation &gt; 200cm
 default).</li>
-<li>Now fly the LCM Nav3D pawn down to Z=100 - ground agents dodge
+<li>Now fly the LCM Nav3D pawn down to Z=100, and ground agents dodge
 it.</li>
 </ol>
 <p>If step 4 fails (ground agents dodge the airborne pawn), check
@@ -400,11 +400,11 @@ crowd avoidance for LCM Nav3D and Recast agents.</p>
 <p>A Mass Entity equivalent is not available in this release.</p>
 <h2 id="related-lcm-nav3d-surfaces">Related LCM Nav3D classes</h2>
 <ul>
-<li><code>LCM_BTTask_FlyTo</code> - already has CBS+ORCA built-in for
+<li><code>LCM_BTTask_FlyTo</code>: already has CBS+ORCA built-in for
 LCM Nav3D-internal avoidance</li>
-<li><code>LCM_BTTask_EvadeCBS</code> - a defensive evade that uses the
+<li><code>LCM_BTTask_EvadeCBS</code>: a defensive evade that uses the
 same CBS context</li>
-<li><code>ULcmNavMovementComponent</code> - LCM Nav3D-aware flying-pawn
+<li><code>ULcmNavMovementComponent</code>: LCM Nav3D-aware flying-pawn
 movement component</li>
 </ul>
 

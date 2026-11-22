@@ -22,12 +22,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Centimetre-Scale Small Worlds and 1 cm Voxels | LCM Nav3D">
 <meta name="twitter:description" content="Navigate aquariums and other centimetre-scale volumes at a true 1 cm leaf, either at 100:1 or at 1:1 with the Small world-scale profile and scaled agents.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -144,7 +144,7 @@
   {
    "@type": "TechArticle",
    "@id": "https://lcmnav3d.github.io/small-worlds.html#article",
-   "headline": "Tutorial 12 - Small worlds (centimetre-scale navigation)",
+   "headline": "Tutorial 12: Small worlds (centimetre-scale navigation)",
    "name": "Centimetre-Scale Small Worlds and 1 cm Voxels | LCM Nav3D",
    "description": "Navigate aquariums and other centimetre-scale volumes at a true 1 cm leaf, either at 100:1 or at 1:1 with the Small world-scale profile and scaled agents.",
    "url": "https://lcmnav3d.github.io/small-worlds.html",
@@ -237,7 +237,7 @@
  </nav>
  <main id="content">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-ii-going-further">Going Further</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Small Worlds</span></nav>
-<h1 id="tutorial-12---small-worlds-centimetre-scale-navigation">Tutorial 12 - Small worlds (centimetre-scale navigation)
+<h1 id="tutorial-12---small-worlds-centimetre-scale-navigation">Tutorial 12: Small worlds (centimetre-scale navigation)
 </h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-11-22">22 November 2026</time></p>
 <p><strong>In short:</strong> the plugin voxelizes in Unreal units (1 uu = 1 cm). A 120 × 70 × 40 cm aquarium with 5 cm cave openings navigates at a 1 cm leaf with either of two setups: at 100:1 on any release, or at 1:1 with the <em>World Scale</em> profile set to <em>Small</em>. Both were tested in the same tank.
@@ -250,7 +250,7 @@
 <li><strong>Make the world edge a power-of-two multiple of the leaf.</strong> <code>World Extent</code> is a cube half-extent centred on the world origin (the manager actor's location is ignored). With <code>World Extent</code> 64 and <code>Min Voxel Size</code> 0.5 the halving chain lands exactly on 1 cm; with 60 it lands on 0.94.
 </li>
 </ol>
-<h2 id="option-a---build-at-1001-works-on-every-release">Option A - build at 100:1 (works on every release)
+<h2 id="option-a---build-at-1001-works-on-every-release">Option A: build at 100:1 (works on every release)
 </h2>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
@@ -310,7 +310,7 @@
 </div>
 <p>In testing, agents found and used a 5 cm cave mouth, a blocked cave was correctly reported as unreachable, and an agent crossed the tank in 3 s.
 </p>
-<h2 id="option-b---build-at-11-with-world-scale--small">Option B - build at 1:1 with World Scale = Small
+<h2 id="option-b---build-at-11-with-world-scale--small">Option B: build at 1:1 with World Scale = Small
 </h2>
 <p>Set <code>World Scale</code> to <code>Small</code>, <code>World Extent</code> to 64, <code>Min Voxel Size</code> to 0.5. Clearance Padding is derived for you (half the leaf); the start-rescue distances and the large-node cost threshold scale with the leaf as well. The Details panel will tell you that the world is only 128 leaves across. That is normal for a small world. The line-of-sight sampler, the neighbour probe and the route executor's sampling floors follow the leaf on their own, on every profile.
 </p>
@@ -339,9 +339,9 @@
 <p>The demo tanks already have all of this set up. In your own tank, check each item.
 </p>
 <ol type="1">
-<li><strong>Agent Scale matches the fish.</strong> Every Flight Config value describes a ~1 m agent. Set the Flight Movement component's <strong>Agent Scale</strong> to the fish's length / 100 (0.08 for an 8 cm fish), and the same on its Fly To nodes - or set the navigation manager's <strong>World Scale</strong> instead. If you leave it at 1, an 8 cm fish swims at 280 cm/s like a metre-sized agent, with a turning circle of about 1.4 m. It then circles its targets and crashes into the rest of the school. The component says so in the Output Log, once per Blueprint, with the value to set.
+<li><strong>Agent Scale matches the fish.</strong> Every Flight Config value describes a ~1 m agent. Set the Flight Movement component's <strong>Agent Scale</strong> to the fish's length / 100 (0.08 for an 8 cm fish), and the same on its Fly To nodes, or set the navigation manager's <strong>World Scale</strong> instead. If you leave it at 1, an 8 cm fish swims at 280 cm/s like a metre-sized agent, with a turning circle of about 1.4 m. It then circles its targets and crashes into the rest of the school. The component says so in the Output Log, once per Blueprint, with the value to set.
 </li>
-<li><strong>A Water Volume round the water.</strong> Add a <em>Physics Volume</em>, tick <strong>Water Volume</strong>, and size it to the water. A Fish-archetype body inside it never leaves it, and its top face is a navigation boundary, so routes stay under the surface. Without one, the plugin doesn't know where the water ends. A route between two points can then go through the air above a rock or over the glass, and a fish can swim out of the tank. (The demo tanks have one; <code>r.LcmNav.WaterSurfaceIsBoundary</code>, <code>r.LcmNav.Flight.FishStayInWater</code>. A water volume wider than 200 m - a sea - gets no surface boundary, <code>r.LcmNav.WaterSurfaceMaxSizeCm</code>: its sheet would split the octree along the whole surface.)
+<li><strong>A Water Volume round the water.</strong> Add a <em>Physics Volume</em>, tick <strong>Water Volume</strong>, and size it to the water. A Fish-archetype body inside it never leaves it, and its top face is a navigation boundary, so routes stay under the surface. Without one, the plugin doesn't know where the water ends. A route between two points can then go through the air above a rock or over the glass, and a fish can swim out of the tank. (The demo tanks have one; <code>r.LcmNav.WaterSurfaceIsBoundary</code>, <code>r.LcmNav.Flight.FishStayInWater</code>. A water volume wider than 200 m (a sea) gets no surface boundary, <code>r.LcmNav.WaterSurfaceMaxSizeCm</code>: its sheet would split the octree along the whole surface.)
 </li>
 <li><strong>Glass that is solid to the octree.</strong> The panes need collision that blocks WorldStatic and at least two leaves of thickness (2 x Min Voxel Size); a pane one leaf thick can voxelize open.
 </li>

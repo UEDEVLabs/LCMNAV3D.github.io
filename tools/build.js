@@ -1,4 +1,4 @@
-/*  LCM Nav3D docs — SEO + correctness pass.
+/*  LCM Nav3D docs: SEO + correctness pass.
  *  Idempotent: regenerates the <head> block and normalises breadcrumbs/images/nav.
  *  Run (from the site root):  node tools/build.js .
  */
@@ -93,7 +93,7 @@ const SOFTWARE = {
     'LCM Nav3D',
     'LCM 3D Navigation',
     'Nav3D',
-    'LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5',
+    'LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5',
   ],
   applicationCategory: 'DeveloperApplication',
   applicationSubCategory: 'Game Engine Plugin',
@@ -174,7 +174,7 @@ function jsonLd(file, meta, h1) {
       dependencies: 'Unreal Engine 5.2 to 5.8',
     });
     // Google restricted FAQ rich results to authoritative sites in 2023, so this
-    // earns no snippet there — it is still read by Bing and by AI answer engines.
+    // earns no snippet there, but it is still read by Bing and by AI answer engines.
     if (meta.faq) graph.push({
       '@type': 'FAQPage', '@id': `${url}#faq`,
       mainEntity: meta.faq.map(([q, a]) => ({
@@ -211,12 +211,12 @@ function head(file, meta, h1) {
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="${OG_W}">
 <meta property="og:image:height" content="${OG_H}">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(meta.title)}">
 <meta name="twitter:description" content="${esc(meta.desc)}">
 <meta name="twitter:image" content="${OG_IMG}">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="${SITE}/feed.xml">
@@ -309,7 +309,7 @@ for (const [file, meta] of Object.entries(PAGES)) {
   html = html.replace(/(<a href="[^"]+" data-slug="[^"]+")( class="on")(?: aria-current="page")?>/,
     '$1$2 aria-current="page">');
 
-  // 4. breadcrumb — the generator left a dangling "Documentation / " with no page name
+  // 4. breadcrumb: the generator left a dangling "Documentation / " with no page name
   html = html.replace(
     /[ \t]*<p style="color:var\(--muted\);font-size:13\.5px;margin:0 0 6px">[\s\S]*?<\/p>\n|[ \t]*<nav class="crumbs"[\s\S]*?<\/nav>\n/,
     () => { const c = breadcrumb(file, meta); return c ? c + '\n' : ''; });
@@ -432,7 +432,7 @@ ${NAV.map(sec => `## ${sec.heading}\n\n` + sec.items.map(f =>
 
 ## The product site
 
-- [3D pathfinding for Unreal Engine 5](${PRODUCT_PAGE}): the product page - features, demo worlds, specifications and FAQ.
+- [3D pathfinding for Unreal Engine 5](${PRODUCT_PAGE}): the product page, with features, demo worlds, specifications and FAQ.
 - [Flying AI and drones](${PUBLISHER_URL}unreal-engine-flying-ai/), [underwater and fish AI](${PUBLISHER_URL}unreal-engine-underwater-ai/), [space combat AI](${PUBLISHER_URL}unreal-engine-space-combat-ai/), [open-world navigation](${PUBLISHER_URL}unreal-engine-open-world-navigation/), [Mass Entity crowds](${PUBLISHER_URL}unreal-engine-mass-entity-crowds/) and [moving-obstacle avoidance](${PUBLISHER_URL}unreal-engine-moving-obstacle-avoidance/): one page per use case.
 - [Product facts as JSON](${PUBLISHER_URL}facts.json) and [the product site's llms.txt](${PUBLISHER_URL}llms.txt).
 

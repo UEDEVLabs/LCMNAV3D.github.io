@@ -48,7 +48,7 @@ Enforce HTTPS. `.nojekyll` is present, so files are served exactly as committed.
 6. **URL Inspection** → paste the home page URL → **Request indexing**. Do this once
    for the home page; the rest follows from the sitemap and internal links.
 
-Domain-level verification via DNS is not available on a `github.io` subdomain — the
+Domain-level verification via DNS is not available on a `github.io` subdomain, so the
 HTML tag method is the one to use.
 
 ## 4. Bing
@@ -77,7 +77,7 @@ from Search Console, which is the fastest route. Bing also feeds DuckDuckGo.
 
 - **`FAQPage` earns no rich result on Google.** Google restricted FAQ rich results to
   recognised government and health sites in August 2023. The markup is still correct
-  and is consumed by Bing and by AI answer engines, which is why it is there — but do
+  and is consumed by Bing and by AI answer engines, which is why it is there. Do
   not expect FAQ accordions in Google results.
 - **`rel="prev"`/`rel="next"` is deliberately absent.** Google announced in 2019 that
   it does not use those hints for indexing, so they would be dead weight.
@@ -87,7 +87,7 @@ from Search Console, which is the fastest route. Bing also feeds DuckDuckGo.
 - **Ranking needs links.** On-page SEO makes the site eligible; it does not make it
   rank. The highest-value next step is a link to `https://lcmnav3d.github.io/` from
   the Fab listing, the YouTube video description, the Discord server, and
-  `uedevlabs.github.io` — that last one especially, since it is an already-indexed
+  `uedevlabs.github.io`. That last one matters most, since it is an already-indexed
   site on a related topic.
 - **Do not hand-edit generated metadata.** `tools/build.js` will overwrite it. Edit
   `tools/seo-pages.js` instead.

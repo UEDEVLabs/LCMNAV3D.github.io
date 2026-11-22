@@ -40,7 +40,7 @@ const PAGES = {
   },
   'installation.html': {
     crumb: 'Installation', section: 'gs', nav: "Installation",
-    title: 'Install LCM Nav3D in Unreal Engine 5 - Fab or Manual Setup',
+    title: 'Install LCM Nav3D in Unreal Engine 5: Fab or Manual Setup',
     desc: 'Step-by-step install of the LCM Nav3D plugin into an Unreal Engine 5.2-5.8 project, from Fab or by hand, plus how to verify the install with a demo map.',
   },
   'core-concepts.html': {
@@ -136,7 +136,7 @@ const PAGES = {
   'bt-perception-relay.html': {
     crumb: 'Perception Relay', section: 'bt', nav: "Perception Relay",
     title: 'BT PerceptionRelay: Bind the Delegate Directly | LCM Nav3D',
-    desc: 'UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key - no custom BT service needed.',
+    desc: 'UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key. No custom BT service needed.',
   },
   'bt-memory-decay.html': {
     crumb: 'Memory Decay', section: 'bt', nav: "Memory Decay",
@@ -171,11 +171,11 @@ const PAGES = {
     // the page itself. Structured data must not assert anything the page does not.
     faq: [
       ['Why does my LCM Nav3D agent not move at all?',
-       'The usual cause is that there is no navigation manager in the level. If the Output Log shows "LCMBTTask_FlyTo: No SVO Manager found in the level!", drag an LcmNavigationManagerSVO into the level - one per level, required. Then check that the AI possessed the pawn (Auto Possess AI is set, an AI Controller Class is assigned, and the controller actually runs the tree), that the pawn has a movement component supporting flight with a non-zero Max Speed, and that the goal was actually set.'],
+       'The usual cause is that there is no navigation manager in the level. If the Output Log shows "LCMBTTask_FlyTo: No SVO Manager found in the level!", drag an LcmNavigationManagerSVO into the level. Every level needs exactly one. Then check that the AI possessed the pawn (Auto Possess AI is set, an AI Controller Class is assigned, and the controller actually runs the tree), that the pawn has a movement component supporting flight with a non-zero Max Speed, and that the goal was actually set.'],
       ['Why does LCM Nav3D report "no path found" through a gap I can clearly see?',
-       'Clearance Padding sealed the opening. When Clearance Padding is close to Min Voxel Size, obstacle inflation fills narrow openings completely - a 2 m doorway with 100 cm voxels and 100 cm padding can vanish entirely. Lower Clearance Padding, or lower Min Voxel Size so the opening survives the inflation, then confirm with Draw Debug Volumes that free voxels run through the opening.'],
+       'Clearance Padding sealed the opening. When Clearance Padding is close to Min Voxel Size, obstacle inflation fills narrow openings completely, and a 2 m doorway with 100 cm voxels and 100 cm padding can vanish entirely. Lower Clearance Padding, or lower Min Voxel Size so the opening survives the inflation, then confirm with Draw Debug Volumes that free voxels run through the opening.'],
       ['Why do short paths work while long ones fail?',
-       'This is almost always an infinite-world issue: the route crosses chunks that have not generated yet. Turn on Persistent Skeleton under section 5, Coarse Skeleton - it is off by default and is what allows long-range planning before the detail exists. For routing to be complete on the first frame, tick Use Baked Skeleton and click Bake Skeleton. Tick Assist Infinite Streaming on the Fly To task for agents that must traverse the frontier.'],
+       'This is almost always an infinite-world issue: the route crosses chunks that have not generated yet. Turn on Persistent Skeleton under section 5, Coarse Skeleton. It is off by default, and it allows long-range planning before the detail exists. For routing to be complete on the first frame, tick Use Baked Skeleton and click Bake Skeleton. Tick Assist Infinite Streaming on the Fly To task for agents that must traverse the frontier.'],
       ['Why do my agents fly straight through walls?',
        'If agents fly through a wall, the wall is not in the octree. Voxelization uses collision, not visual geometry, so a mesh set to No Collision is invisible to navigation. Check that the mesh has collision and that its channel is listed in Obstacle Query Channels under section 3, Collision.'],
       ['Why are my moving obstacles ignored by LCM Nav3D agents?',
@@ -183,7 +183,7 @@ const PAGES = {
       ['Why can I not find the LCM Nav3D demo maps?',
        'Show Plugin Content is switched off in the Content Browser. Enable it, and the worked examples appear under the plugin’s Content/Demo/ folder, grouped by Behaviour Tree, StateTree and Mass Entity.'],
       ['Why did my frame rate drop after adding LCM Nav3D?',
-       'Voxel resolution is too fine. Raise Min Voxel Size - finer voxels multiply the node count sharply - and re-measure before tuning anything else.'],
+       'Voxel resolution is too fine. Raise Min Voxel Size (finer voxels multiply the node count sharply) and re-measure before tuning anything else.'],
       ['Why does my agent jitter or vibrate in place?',
        'Physics is fighting navigation. Set the mesh collision to No Collision to confirm that is the cause, then re-add collision carefully.'],
     ],

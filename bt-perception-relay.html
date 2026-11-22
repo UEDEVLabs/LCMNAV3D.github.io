@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BT PerceptionRelay: Bind the Delegate Directly | LCM Nav3D</title>
-<meta name="description" content="UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key - no custom BT service needed.">
+<meta name="description" content="UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key. No custom BT service needed.">
 <link rel="canonical" href="https://lcmnav3d.github.io/bt-perception-relay.html">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta name="author" content="L. Charitha Madhushanka">
@@ -17,17 +17,17 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://lcmnav3d.github.io/bt-perception-relay.html">
 <meta property="og:title" content="BT PerceptionRelay: Bind the Delegate Directly | LCM Nav3D">
-<meta property="og:description" content="UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key - no custom BT service needed.">
+<meta property="og:description" content="UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key. No custom BT service needed.">
 <meta property="og:image" content="https://lcmnav3d.github.io/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="BT PerceptionRelay: Bind the Delegate Directly | LCM Nav3D">
-<meta name="twitter:description" content="UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key - no custom BT service needed.">
+<meta name="twitter:description" content="UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key. No custom BT service needed.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -144,9 +144,9 @@
   {
    "@type": "TechArticle",
    "@id": "https://lcmnav3d.github.io/bt-perception-relay.html#article",
-   "headline": "BT PerceptionRelay - bind OnTargetPerceptionUpdated directly",
+   "headline": "BT PerceptionRelay: bind OnTargetPerceptionUpdated directly",
    "name": "BT PerceptionRelay: Bind the Delegate Directly | LCM Nav3D",
-   "description": "UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key - no custom BT service needed.",
+   "description": "UAIPerceptionComponent already emits perception updates as a delegate. Bind it in your AI controller and write to a blackboard key. No custom BT service needed.",
    "url": "https://lcmnav3d.github.io/bt-perception-relay.html",
    "inLanguage": "en",
    "isPartOf": {
@@ -238,12 +238,12 @@
  <main id="content">
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#chapter-12-behaviour-tree-stock-patterns">Behaviour Tree Patterns</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Perception Relay</span></nav>
   <h1 id="bt-perceptionrelay---bind-ontargetperceptionupdated-directly">BT
-PerceptionRelay - bind <code>OnTargetPerceptionUpdated</code>
+PerceptionRelay: bind <code>OnTargetPerceptionUpdated</code>
 directly</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-11-22">22 November 2026</time></p>
 <p><strong>In short:</strong> Unreal Engine's
 <code>UAIPerceptionComponent</code> already emits perception updates as
-a delegate. You don't need a custom BT service - just bind the delegate
+a delegate. You don't need a custom BT service. Just bind the delegate
 in your AI controller and write to a blackboard key.</p>
 <h2 id="pattern-in-your-aicontroller-subclass">Pattern (in your
 AIController subclass)</h2>
@@ -307,16 +307,16 @@ To use it:</p>
     }
 }</code></pre>
 <p>See <code>BT_MemoryDecay_StockPattern.md</code> for the full pattern.
-<strong>Don't</strong> roll your own decay timer - perception's age
+<strong>Don't</strong> roll your own decay timer; perception's age
 tracking already does it for you.</p>
 <h2 id="related-lcm-nav3d-unique-services">Related LCM Nav3D-unique
 services</h2>
 <p>For perception-aware predicates that need <strong>LCM Nav3D
 LOS</strong> (volumetric, not raycast):</p>
 <ul>
-<li><code>LCM_BTDecorator_ThreatVisibleViaPerception</code> - composite:
+<li><code>LCM_BTDecorator_ThreatVisibleViaPerception</code>: composite:
 perception sees + LCM Nav3D Lazy Theta* LOS is clear</li>
-<li><code>LCM_BTService_SquadSnapshot</code> - aggregates perceived
+<li><code>LCM_BTService_SquadSnapshot</code>: aggregates perceived
 allies into squad centroid / cohesion radius</li>
 </ul>
 

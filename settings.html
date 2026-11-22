@@ -22,12 +22,12 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
-<meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta property="og:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Settings Reference: LcmNavigationManagerSVO | LCM Nav3D">
 <meta name="twitter:description" content="Every field on the LCM Nav3D navigation manager, with verified defaults and limits: setup, voxels, collision, performance, skeleton, debug and runtime state.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
-<meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
+<meta name="twitter:image:alt" content="LCM Nav3D: True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="alternate" type="application/atom+xml" title="LCM Nav3D Documentation" href="https://lcmnav3d.github.io/feed.xml">
@@ -73,7 +73,7 @@
     "LCM Nav3D",
     "LCM 3D Navigation",
     "Nav3D",
-    "LCM 3D Navigation AI — Infinite 3D Pathfinding & Volumetric Navigation for UE5"
+    "LCM 3D Navigation AI: Infinite 3D Pathfinding & Volumetric Navigation for UE5"
    ],
    "applicationCategory": "DeveloperApplication",
    "applicationSubCategory": "Game Engine Plugin",
@@ -253,16 +253,16 @@
 </p>
 <p><img src="images/manager-details-top.png" alt="Manager Details, upper half: header pills, Configuration Health, What You Get, section 1 Setup and section 2 Voxels" width="792" height="1074" decoding="async" fetchpriority="high">
 </p>
-<p><strong>Figure 1 - Sections 1-2, plus the three blocks above them.</strong> <em>Configuration Health</em> and <em>What You Get</em> are not settings; they are what the settings below <em>resolve to</em>. They are worth reading before you change anything - the health block in this shot is reporting a raised invoker radius, and the <em>What You Get</em> block is reporting a 250 cm finest leaf from a 100 cm <code>Min Voxel Size</code>. That difference is the one people most often misunderstand.
+<p><strong>Figure 1: Sections 1-2, plus the three blocks above them.</strong> <em>Configuration Health</em> and <em>What You Get</em> are not settings; they are what the settings below <em>resolve to</em>. They are worth reading before you change anything: the health block in this shot is reporting a raised invoker radius, and the <em>What You Get</em> block is reporting a 250 cm finest leaf from a 100 cm <code>Min Voxel Size</code>. That difference is the one people most often misunderstand.
 </p>
 <p><img src="images/manager-details-lower.png" alt="Manager Details, lower half: sections 3 Collision, 4 Performance, 5 Coarse Skeleton, 6 Debug and 7 Runtime State" width="780" height="1008" loading="lazy" decoding="async">
 </p>
-<p><strong>Figure 2 - Sections 3-7.</strong> Two things to notice:
+<p><strong>Figure 2: Sections 3-7.</strong> Two things to notice:
 </p>
 <ul>
 <li><strong>Section 7 is read-only.</strong> Every <code>(auto)</code> row is a value the Streaming Profile <em>derived</em>, shown so you can see exactly what the profile chose. <code>Frontier Stall Recovery (auto)</code> is the only place a BehaviorTree task's <code>Inherit</code> can be resolved for you, because a BT asset is not owned by a level and cannot know which manager it will run under.
 </li>
-<li><strong>Sections hide what does not apply.</strong> A finite world shows no Coarse Skeleton options, and <code>Max Generations Per Frame</code> disappears unless you are finite or on the Manual profile - the plugin does not show you a property it is going to ignore.
+<li><strong>Sections hide what does not apply.</strong> A finite world shows no Coarse Skeleton options, and <code>Max Generations Per Frame</code> disappears unless you are finite or on the Manual profile; the plugin does not show you a property it is going to ignore.
 </li>
 </ul>
 <hr />
@@ -320,7 +320,7 @@
 </div>
 <h3 id="auto-build-on-play-default-on-finite-only"><code>Auto Build On Play</code>: default <strong>on</strong> <em>(finite only)</em>
 </h3>
-<p>Builds the navigation volume at <code>BeginPlay</code> - voxelizing the whole world, on every launch, on every player's machine. Turn it off if you want to trigger <code>BuildSVO</code> yourself from Blueprint at a specific moment, or if you have baked the SVO to an asset.
+<p>Builds the navigation volume at <code>BeginPlay</code>, voxelizing the whole world, on every launch, on every player's machine. Turn it off if you want to trigger <code>BuildSVO</code> yourself from Blueprint at a specific moment, or if you have baked the SVO to an asset.
 </p>
 <p><strong>Turn it off when you bake.</strong> The <strong>Bake to Asset</strong> button does this for you, and it is not a tidiness measure: the streaming proxy and the manager both write the navigation data during <code>BeginPlay</code>, and actor order is not guaranteed, so with both enabled which one the level ends up using is undefined. The Configuration Health section flags the combination.
 </p>
@@ -342,7 +342,7 @@
 </p>
 </blockquote>
 <blockquote>
-<p><strong>How big can it actually be? It depends on <code>Min Voxel Size</code>, not on a fixed distance.</strong> The real limit is a voxel <em>count</em>: the world is <code>2 × World Extent</code> wide and holds <code>(2 × World Extent / Min Voxel Size)³</code> voxels against a 64 M ceiling - which is 400³. So the largest legal half-extent is <code>200 × Min Voxel Size</code>:
+<p><strong>How big can it actually be? It depends on <code>Min Voxel Size</code>, not on a fixed distance.</strong> The real limit is a voxel <em>count</em>: the world is <code>2 × World Extent</code> wide and holds <code>(2 × World Extent / Min Voxel Size)³</code> voxels against a 64 M ceiling, which is 400³. So the largest legal half-extent is <code>200 × Min Voxel Size</code>:
 </p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
@@ -392,20 +392,20 @@
 </tbody>
 </table>
 </div>
-<p>The property clamp used to be a flat <strong>20000</strong>, which is the row for the <em>default</em> <code>Min Voxel Size</code> and wrong everywhere else - it blocked a perfectly legal 40 000 at 200 cm voxels, and allowed 8× over budget at 50 cm. A per-property clamp cannot express a rule that depends on another property, so the clamp is now just a sanity ceiling and <strong>Configuration Health reports the real budget live</strong> at whatever <code>Min Voxel Size</code> you are using. Exceeding it does not fail - the generator silently coarsens <code>Min Voxel Size</code> to fit, so you get less precision than you configured.
+<p>The property clamp used to be a flat <strong>20000</strong>, which is the row for the <em>default</em> <code>Min Voxel Size</code> and wrong everywhere else: it blocked a perfectly legal 40 000 at 200 cm voxels, and allowed 8× over budget at 50 cm. A per-property clamp cannot express a rule that depends on another property, so the clamp is now just a sanity ceiling and <strong>Configuration Health reports the real budget live</strong> at whatever <code>Min Voxel Size</code> you are using. Exceeding it does not fail: the generator silently coarsens <code>Min Voxel Size</code> to fit, so you get less precision than you configured.
 </p>
 <p>Trading voxel precision for area is a real choice, not a workaround: a 2 km flying-combat arena at 500 cm voxels is a sensible configuration. Just make it deliberately.
 </p>
 </blockquote>
 <blockquote>
-<p><strong>Note: The volume does NOT follow the manager actor.</strong> The manager is a logical singleton with no root component, so its position is ignored - moving it does not move the navigation volume. Build your playable space around the world origin, or switch to an infinite world. The manager's Details panel reports the resolved bounds under <strong>What You Get</strong> so you can see them directly.
+<p><strong>Note: The volume does NOT follow the manager actor.</strong> The manager is a logical singleton with no root component, so its position is ignored; moving it does not move the navigation volume. Build your playable space around the world origin, or switch to an infinite world. The manager's Details panel reports the resolved bounds under <strong>What You Get</strong> so you can see them directly.
 </p>
 </blockquote>
 <h3 id="chunk-size-default-8000-cm-infinite-only"><code>Chunk Size</code>: default <strong>8000 cm</strong> <em>(infinite only)</em>
 </h3>
 <p>Edge length of one streaming chunk.
 </p>
-<p><em>Range: 1000-800000. Recommended UI range (slider): 3000-8000.</em> The clamp carries the same caveat as <code>World Extent</code> above - it is a sanity ceiling, not the real budget, which depends on <code>Min Voxel Size</code> and is reported live in Configuration Health. <strong>Here the slider range is the number to follow:</strong> it is the range that tested reliably, and values outside it make long-range routing worse whatever the budget is.
+<p><em>Range: 1000-800000. Recommended UI range (slider): 3000-8000.</em> The clamp carries the same caveat as <code>World Extent</code> above: it is a sanity ceiling, not the real budget, which depends on <code>Min Voxel Size</code> and is reported live in Configuration Health. <strong>Here the slider range is the number to follow:</strong> it is the range that tested reliably, and values outside it make long-range routing worse whatever the budget is.
 </p>
 <blockquote>
 <p><strong>Note: be careful when changing this.</strong> It affects memory, generation cost, <em>and</em> whether long routes can be found at all. <strong>8000 is the tested default.</strong> If you change it, re-test long-range routing specifically: a value that looks fine for short hops can break distant paths.
@@ -415,7 +415,7 @@
 </h4>
 <p>This surprises a lot of people, so here is how it works.
 </p>
-<p>Subdivision stops when a child's half-extent falls below <code>Min Voxel Size</code>, starting from <code>Chunk Size / 2</code>. The finest leaf edge you actually get is therefore <code>Chunk Size / 2ᵏ</code> - it lands somewhere between <strong>2× and 4× <code>Min Voxel Size</code></strong>, and it does <strong>not</strong> improve as Chunk Size shrinks. Measured on a real level at <code>Min Voxel Size = 100</code>:
+<p>Subdivision stops when a child's half-extent falls below <code>Min Voxel Size</code>, starting from <code>Chunk Size / 2</code>. The finest leaf edge you actually get is therefore <code>Chunk Size / 2ᵏ</code>. It lands somewhere between <strong>2× and 4× <code>Min Voxel Size</code></strong>, and it does <strong>not</strong> improve as Chunk Size shrinks. Measured on a real level at <code>Min Voxel Size = 100</code>:
 </p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
@@ -473,9 +473,9 @@
 </tbody>
 </table>
 </div>
-<p>So a smaller Chunk Size can give you a <strong>coarser</strong> octree. At <code>Chunk Size 3000</code> you get 375 cm leaves from a 100 cm setting - and <strong>an opening that stays navigable at 250 cm can voxelize shut at 375 cm.</strong> That is felt as <em>"the agent refuses to path"</em>, which reads like a bug rather than a setting.
+<p>So a smaller Chunk Size can give you a <strong>coarser</strong> octree. At <code>Chunk Size 3000</code> you get 375 cm leaves from a 100 cm setting, and <strong>an opening that stays navigable at 250 cm can voxelize shut at 375 cm.</strong> That is felt as <em>"the agent refuses to path"</em>, which reads like a bug rather than a setting.
 </p>
-<p><strong>What to do:</strong> leave it at 8000 unless you have a measured reason. If you must change it, use the <strong>Auto-Tuner</strong> (Editor Tools) - it <em>measures</em> the leaf edge from the built octree for each candidate rather than deriving it, and gates on whether a route exists at all before comparing quality or cost.
+<p><strong>What to do:</strong> leave it at 8000 unless you have a measured reason. If you must change it, use the <strong>Auto-Tuner</strong> (Editor Tools). It <em>measures</em> the leaf edge from the built octree for each candidate rather than deriving it, and gates on whether a route exists at all before comparing quality or cost.
 </p>
 <h3 id="min-voxel-size-default-100-cm"><code>Min Voxel Size</code>: default <strong>100 cm</strong>
 </h3>
@@ -497,7 +497,7 @@
 </blockquote>
 <h3 id="world-scale-default-standard"><code>World Scale</code>: default <strong>Standard</strong>
 </h3>
-<p>Which set of centimetre constants the manager uses. <code>Standard</code> is the default tuning for metre-scale worlds at a 100 cm leaf, and it behaves exactly like earlier releases. <code>Small</code> derives those constants from the finest leaf this manager produces - Clearance Padding becomes half the leaf (written into the property, which turns read-only), and the start-rescue probe distances and the large-node cost threshold scale with it - so a centimetre-scale world such as a 120 × 70 × 40 cm aquarium at 1 cm voxels gets defaults that mean the same thing. <code>Custom</code> keeps whatever you set. Change <code>Min Voxel Size</code>, <code>World Extent</code> or <code>Chunk Size</code> under <code>Small</code> and the padding is re-derived; it is re-derived again at BeginPlay so config-driven setups match the editor.
+<p>Which set of centimetre constants the manager uses. <code>Standard</code> is the default tuning for metre-scale worlds at a 100 cm leaf, and it behaves exactly like earlier releases. <code>Small</code> derives those constants from the finest leaf this manager produces: Clearance Padding becomes half the leaf (written into the property, which turns read-only), and the start-rescue probe distances and the large-node cost threshold scale with it, so a centimetre-scale world such as a 120 × 70 × 40 cm aquarium at 1 cm voxels gets defaults that mean the same thing. <code>Custom</code> keeps whatever you set. Change <code>Min Voxel Size</code>, <code>World Extent</code> or <code>Chunk Size</code> under <code>Small</code> and the padding is re-derived; it is re-derived again at BeginPlay so config-driven setups match the editor.
 </p>
 <p><code>Min Voxel Size</code> now accepts down to <strong>0.5 cm</strong> and <code>World Extent</code> down to <strong>50 cm</strong>. The finest leaf is 2-4× <code>Min Voxel Size</code>, so set half the leaf you want and make the world edge a power-of-two multiple of it. Small worlds are small in <em>leaves</em> too: below ~32 leaves across, node count grows nearly with volume as the leaf shrinks (the panel says so). See <a href="small-worlds.html">Small Worlds</a>.
 </p>
@@ -535,7 +535,7 @@
 <p>Which collision channels count as obstacles. Anything on these channels is voxelized as solid. Defaults to <code>WorldStatic</code> + <code>WorldDynamic</code>.
 </p>
 <blockquote>
-<p><strong>Empty means <em>nothing</em>, not <em>everything</em>.</strong> Unlike <code>Allowed Obstacle Classes</code> below, clearing this list does not widen the query - it voxelizes an empty world, and you get navigation data that says every point is open air. That passes every metric and shows up only as agents flying through walls. <strong>Bake to Asset</strong> refuses to run on an empty list for exactly this reason.
+<p><strong>Empty means <em>nothing</em>, not <em>everything</em>.</strong> Unlike <code>Allowed Obstacle Classes</code> below, clearing this list does not widen the query: it voxelizes an empty world, and you get navigation data that says every point is open air. That passes every metric and shows up only as agents flying through walls. <strong>Bake to Asset</strong> refuses to run on an empty list for exactly this reason.
 </p>
 </blockquote>
 <blockquote>
@@ -632,19 +632,19 @@
 <hr />
 <h2 id="5-coarse-skeleton-optional">5. Coarse Skeleton (optional)
 </h2>
-<p>Two independent, composable ways to keep <strong>long-range</strong> macro routing complete in a streamed world. <strong>Both are opt-in and default off.</strong> They are not part of the base configuration - turn one on only when an agent must route to somewhere it cannot currently see. Agents operating inside their streaming bubble need neither.
+<p>Two independent, composable ways to keep <strong>long-range</strong> macro routing complete in a streamed world. <strong>Both are opt-in and default off.</strong> They are not part of the base configuration; turn one on only when an agent must route to somewhere it cannot currently see. Agents operating inside their streaming bubble need neither.
 </p>
 <h3 id="persistent-skeleton-runtime-no-bake-default-off-infinite-only"><code>Persistent Skeleton (runtime, no bake)</code>: default <strong>off</strong> <em>(infinite only)</em>
 </h3>
 <p>Keeps a lightweight long-range connectivity graph in memory so distant routes can be planned before the detailed chunks exist. No bake required; works on any world, including procedural ones.
 </p>
-<p>Turn it on when an agent <strong>returns across ground it has already covered</strong> and must not lose routability over it. The cost is memory that grows with how much ground has been covered - one compact node per visited-then-evicted chunk, bounded by <code>r.LcmNav.MaxSkeletonNodes</code>, not by the size of the resident set.
+<p>Turn it on when an agent <strong>returns across ground it has already covered</strong> and must not lose routability over it. The cost is memory that grows with how much ground has been covered: one compact node per visited-then-evicted chunk, bounded by <code>r.LcmNav.MaxSkeletonNodes</code>, not by the size of the resident set.
 </p>
 <h3 id="use-baked-skeleton-frame-0-completeness-default-off-infinite-only"><code>Use Baked Skeleton (frame-0 completeness)</code>: default <strong>off</strong> <em>(infinite only)</em>
 </h3>
 <p>Loads a pre-baked skeleton so long-range routing is complete from the very first frame, including into <strong>never-visited</strong> space.
 </p>
-<p><strong>Tick this on first.</strong> The <strong>Bake Skeleton</strong> button only appears in the banner once it is on - nothing else reads a bake, so the button stays hidden until you have asked for one. Then click it Rebake after changing the level or the voxel settings - a stale bake is refused at load, and the <code>Baked Skeleton (auto)</code> line under <strong>7. Runtime State</strong> will say so.
+<p><strong>Tick this on first.</strong> The <strong>Bake Skeleton</strong> button only appears in the banner once it is on; nothing else reads a bake, so the button stays hidden until you have asked for one. Then click it Rebake after changing the level or the voxel settings; a stale bake is refused at load, and the <code>Baked Skeleton (auto)</code> line under <strong>7. Runtime State</strong> will say so.
 </p>
 <p><code>Baked Skeleton (auto)</code> under <strong>7. Runtime State</strong> always reports which of the two, if either, is actually active.
 </p>
@@ -1044,7 +1044,7 @@
 </td>
 <td><code>4000</code>
 </td>
-<td>Wall push strength - keep it strong
+<td>Wall push strength: keep it strong
 </td>
 </tr>
 <tr>
@@ -1175,7 +1175,7 @@
 </table>
 </div>
 <blockquote>
-<p><code>Frontier Stall Recovery</code> is the <strong>locomotion</strong> half only. Pinning chunks <em>ahead</em> of the agent is a separate world-level setting - <strong><code>Agent Corridor Prefetch</code></strong> on the LCM Nav3D Manager. They used to be one checkbox named for the half it mostly wasn't.
+<p><code>Frontier Stall Recovery</code> is the <strong>locomotion</strong> half only. Pinning chunks <em>ahead</em> of the agent is a separate world-level setting: <strong><code>Agent Corridor Prefetch</code></strong> on the LCM Nav3D Manager. They used to be one checkbox named for the half it mostly wasn't.
 </p>
 </blockquote>
 <p>Solver and smoothing choices are described in <a href="core-concepts.html#6-how-a-path-is-actually-found">Tutorial 02 §6</a>.
