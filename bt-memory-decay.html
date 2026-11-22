@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -242,7 +242,7 @@ id="bt-memorydecay---use-factorperceptioninfogetlaststimuluslocationoutage">BT
 MemoryDecay - use
 <code>FActorPerceptionInfo::GetLastStimulusLocation(&amp;OutAge)</code></h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> Unreal Engine's
+<p><strong>In short:</strong> Unreal Engine's
 <code>UAIPerceptionComponent</code> already tracks per-actor last-known
 stimulus location with age. No need to roll your own decay timer.</p>
 <h2 id="pattern-in-your-aicontroller-or-a-small-custom-service">Pattern
@@ -269,8 +269,8 @@ if (const FActorPerceptionInfo* Info = Perception-&gt;GetActorInfo(*ThreatActor)
         Blackboard-&gt;SetValueAsBool(&quot;bHasMemory&quot;, false);
     }
 }</code></pre>
-<p>That's it. Perception's age tracking handles refresh-on-stimulus +
-decay automatically.</p>
+<p>The perception component tracks the age for you. It resets the age on
+each new stimulus and increases it every frame.</p>
 <h2 id="how-to-integrate-as-a-bt-service">How to integrate as a BT
 service</h2>
 <p>Wrap the snippet above in a <code>UBTService_BlueprintBase</code>
@@ -287,28 +287,28 @@ key).</li>
 → write BB keys.</li>
 </ol>
 <p>Five nodes total. No C++ required.</p>
-<h2 id="why-we-didnt-ship-lcm_btservice_memorydecay">Why we didn't ship
+<h2 id="why-we-didnt-ship-lcm_btservice_memorydecay">Why there is no
 <code>LCM_BTService_MemoryDecay</code></h2>
 <p>The stock
 <code>FActorPerceptionInfo::GetLastStimulusLocation(&amp;OutAge)</code>
-provides everything our planned MemoryDecay service would - location +
-age tracked <strong>per sense, per actor</strong>, automatically
-refreshed on stimulus and aged each frame.</p>
-<p>Rolling our own decay timer would:</p>
+already gives you everything a MemoryDecay service would. It tracks
+location and age <strong>per sense and per actor</strong>, resets on each
+stimulus and ages every frame.</p>
+<p>A separate decay timer in the plugin would:</p>
 <ul>
 <li>Duplicate the perception component's bookkeeping</li>
 <li>Miss the per-sense granularity (perception tracks separately for
 Sight / Hearing / Damage / etc.)</li>
 <li>Force you to maintain two parallel "last seen" caches</li>
 </ul>
-<p>The LCM Nav3D StateTree variant <code>FLcmSTEval_Memory</code>. Same
-conclusion on both sides.</p>
+<p>In StateTree, you can use the plugin's <code>FLcmSTEval_Memory</code>
+evaluator.</p>
 <h2 id="related-lcm-nav3d-unique-services">Related LCM Nav3D-unique
 services</h2>
 <p>If you want <strong>squad-level memory</strong> (where multiple
 allies' perceived-actor lists are aggregated), use
-<code>LCM_BTService_SquadSnapshot</code> - that's a genuinely LCM
-Nav3D-additive surface.</p>
+<code>LCM_BTService_SquadSnapshot</code>. The stock nodes have nothing
+like it.</p>
 
   <div class="pager"><a href="bt-perception-relay.html">&larr; Perception Relay</a><a href="editor-tools.html">Editor tools &rarr;</a></div>
   <footer>

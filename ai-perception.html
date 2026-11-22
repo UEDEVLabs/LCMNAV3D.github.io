@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -240,7 +240,7 @@
   <h1 id="tutorial-08---perception-driven-tactical-ai">Tutorial 08 -
 Perception-driven tactical AI</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> Add an <strong>LCM Nav3D AI Perception
+<p><strong>In short:</strong> Add an <strong>LCM Nav3D AI Perception
 Bridge</strong> next to your agent's <code>UAIPerceptionComponent</code>
 → its perceived threats auto-feed the <strong>LCM Nav3D | Threats From
 AI Perception</strong> EQS context → a true-3D LCM Nav3D EQS query
@@ -249,15 +249,15 @@ picks a flanking or cover position → your BT/StateTree moves the agent
 there. Mass crowds get the same via the <strong>LCM Nav3D Mass
 Perception Agent</strong> trait, which writes a perceived-threats
 fragment.</p>
-<h2 id="why-this-exists">Why this exists</h2>
-<p>Stock UE tactical AI flows through EQS, but the stock
-generators/tests are 2.5D (navmesh-projected). A flying or multi-level
-NPC can't reason about cover, line-of-sight, or flanking in true 3D with
-them. LCM Nav3D ships <strong>true-3D EQS</strong> - candidate points
-anywhere in the navigable volume, scored by <strong>volumetric
-SVO</strong> line-of-sight, cover, and threat exposure - and a
-<strong>one-click bridge</strong> so the threats those tests score
-against come straight from UE's own perception system.</p>
+<h2 id="why-this-exists">Why you need it</h2>
+<p>Tactical AI in Unreal usually goes through EQS, but the stock
+generators and tests are 2.5D (projected onto the navmesh). With them, a
+flying or multi-level NPC can't work out cover, line of sight or
+flanking in 3D. LCM Nav3D adds <strong>3D EQS</strong> nodes, which
+place candidate points anywhere in the navigable volume and score them
+by <strong>SVO</strong> line of sight, cover and threat exposure. It
+also adds a <strong>bridge component</strong>, so the threats those
+tests use come straight from Unreal's own perception system.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>LCMNav3D plugin enabled, an <code>ALcmNavigationManagerSVO</code>
@@ -282,12 +282,13 @@ Nav3D AI Perception Bridge"</strong>
 <ul>
 <li>It auto-finds the owner's <code>UAIPerceptionComponent</code> on
 BeginPlay and subscribes to <code>OnTargetPerceptionUpdated</code>.</li>
-<li><code>DecayWindowSeconds</code> (default <code>5</code>) - how long
-a lost-sight threat stays queryable before it fades. Tune to taste.</li>
-<li>No other wiring: successfully-sensed actors are tracked; lost ones
-decay out.</li>
+<li><code>DecayWindowSeconds</code> (default <code>5</code>): how long
+a threat stays in queries after the agent loses sight of it. Adjust it
+to suit your game.</li>
+<li>Nothing else needs connecting. Actors the agent senses are tracked,
+and lost ones are dropped after the decay time.</li>
 </ul>
-<p>That's the entire perception-to-LCM Nav3D link.</p>
+<p>That is all you need to connect perception to LCM Nav3D.</p>
 <h3 id="step-2---build-the-tactical-eqs-query">Step 2 - Build the
 tactical EQS query</h3>
 <p>Create an EQS query (e.g. <code>EQS_FindFlankingApproach</code>) and
@@ -363,14 +364,14 @@ Perception</strong> where it scores against threats):</p>
 </tbody>
 </table>
 </div>
-<p>A solid "flank to cover" query: <strong>Points In SVO Volume</strong>
+<p>A good "flank to cover" query: <strong>Points In SVO Volume</strong>
 → <strong>Reachability 3D</strong> (filter) → <strong>Cover Score
 3D</strong> (score↑) → <strong>Threat Exposure</strong> (score↓) →
 <strong>Path Distance 3D</strong> (score↓, mild weight).</p>
 <blockquote>
-<p>The threats every threat-scoring test sees come from the bridge via
-<strong>LCM Nav3D | Threats From AI Perception</strong> - no manual
-tagging. (For non-perception workflows, <strong>LCM Nav3D | Known
+<p>Every test that scores against threats gets them from the bridge
+through <strong>LCM Nav3D | Threats From AI Perception</strong>, so you
+don't need to tag anything by hand. (For non-perception workflows, <strong>LCM Nav3D | Known
 Threats</strong> returns actors tagged <code>ApexThreat</code>
 instead.)</p>
 </blockquote>
@@ -387,9 +388,9 @@ the chosen location, then transition into your LCM Nav3D move task (see
 Tutorial 05).</li>
 </ul>
 <p><strong>Verify in PIE:</strong> the agent should pick positions that
-are reachable, in cover from, and low-exposure toward the threats it
-currently perceives - and should <strong>stop reacting to a threat ~5 s
-after losing sight of it</strong> (the decay window). Walk a threat out
+it can reach, that are in cover from the threats it can see, and that are
+not very exposed to them. It should also <strong>stop reacting to a
+threat about 5 s after losing sight of it</strong> (the decay window). Walk a threat out
 of the sight cone and watch the chosen position shift once it
 decays.</p>
 <hr />
@@ -414,15 +415,15 @@ drive evade / engage / regroup behaviour.</li>
 <p>Mass agents consume the perceived-threats fragment
 <strong>directly</strong> - they don't issue EQS queries (there is no
 Mass-native EQS querier). EQS tactical queries are the UActor path (Part
-A). A hero-NPC-as-UActor querying with <code>Apex: Known Threats</code>
-can include crowd-relevant threats by tagging, giving a practical
-hybrid.</p>
+A). If you want both, make your hero NPC an actor-based agent and query
+with <code>Apex: Known Threats</code>. Tag the threats the crowd cares
+about so the hero sees them too.</p>
 <hr />
 <h2 id="what-you-build-by-hand">What you build by hand</h2>
-<p>The nodes above are all shipped and usable. What is
-<strong>not</strong> shipped is prebuilt query assets - you author your
-own from the generators and tests, which <a
-href="tactical-eqs.html">Tutorial 07</a> walks through end to end.</p>
+<p>All the nodes above are included and ready to use. Ready-made query
+assets are <strong>not</strong> included. You build your own from the
+generators and tests, and <a href="tactical-eqs.html">Tutorial 07</a>
+shows how.</p>
 <p>Four nodes need live flow-field or macro-graph state and are not
 available: the flow-field-directed generator, the flow-field-alignment
 test, the active-flow-field context, and the portal-proximity

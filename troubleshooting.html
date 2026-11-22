@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Troubleshooting 3D Navigation Problems | LCM Nav3D</title>
-<meta name="description" content="LCM Nav3D problems in the order people hit them: agents that will not move, &quot;no path found&quot;, ignored geometry, dead dynamic obstacles and performance issues.">
+<meta name="description" content="Common LCM Nav3D problems and fixes: agents that will not move, &quot;no path found&quot;, ignored geometry, dynamic obstacles that do nothing, and performance.">
 <link rel="canonical" href="https://lcmnav3d.github.io/troubleshooting.html">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta name="author" content="L. Charitha Madhushanka">
@@ -17,7 +17,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://lcmnav3d.github.io/troubleshooting.html">
 <meta property="og:title" content="Troubleshooting 3D Navigation Problems | LCM Nav3D">
-<meta property="og:description" content="LCM Nav3D problems in the order people hit them: agents that will not move, &quot;no path found&quot;, ignored geometry, dead dynamic obstacles and performance issues.">
+<meta property="og:description" content="Common LCM Nav3D problems and fixes: agents that will not move, &quot;no path found&quot;, ignored geometry, dynamic obstacles that do nothing, and performance.">
 <meta property="og:image" content="https://lcmnav3d.github.io/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -25,7 +25,7 @@
 <meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Troubleshooting 3D Navigation Problems | LCM Nav3D">
-<meta name="twitter:description" content="LCM Nav3D problems in the order people hit them: agents that will not move, &quot;no path found&quot;, ignored geometry, dead dynamic obstacles and performance issues.">
+<meta name="twitter:description" content="Common LCM Nav3D problems and fixes: agents that will not move, &quot;no path found&quot;, ignored geometry, dynamic obstacles that do nothing, and performance.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
 <meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -146,7 +146,7 @@
    "@id": "https://lcmnav3d.github.io/troubleshooting.html#article",
    "headline": "Troubleshooting",
    "name": "Troubleshooting 3D Navigation Problems | LCM Nav3D",
-   "description": "LCM Nav3D problems in the order people hit them: agents that will not move, \"no path found\", ignored geometry, dead dynamic obstacles and performance issues.",
+   "description": "Common LCM Nav3D problems and fixes: agents that will not move, \"no path found\", ignored geometry, dynamic obstacles that do nothing, and performance.",
    "url": "https://lcmnav3d.github.io/troubleshooting.html",
    "inLanguage": "en",
    "isPartOf": {
@@ -310,7 +310,7 @@
 <h1 id="troubleshooting">Troubleshooting
 </h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p>Problems in the order people actually hit them. <strong>Start with the Quick Triage table</strong>: it resolves most issues in under a minute.
+<p>The problems on this page are in the order people usually run into them. <strong>Start with the Quick Triage table</strong>, which solves most issues in a minute or less.
 </p>
 <hr />
 <h2 id="quick-triage">Quick triage
@@ -388,11 +388,11 @@
 </table>
 </div>
 <hr />
-<h2 id="the-two-diagnostics-that-answer-almost-everything">The two diagnostics that answer almost everything
+<h2 id="the-two-diagnostics-that-answer-almost-everything">Two checks to try first
 </h2>
 <p><strong>1. Turn on <code>Draw Debug Volumes</code></strong> (navigation manager → <em>6. Debug</em>).
 </p>
-<p>This draws the octree. It tells you what the pathfinder actually sees, which is frequently not what you assume:
+<p>This draws the octree, so you can see what the pathfinder sees. It is often different from what you expect:
 </p>
 <ul>
 <li><strong>No small voxels around a doorway</strong> → the pathfinder can't route through it either.
@@ -411,7 +411,7 @@
 </p>
 <h3 id="is-there-a-navigation-manager">Is there a navigation manager?
 </h3>
-<p>Output Log shows <strong><code>LCMBTTask_FlyTo: No SVO Manager found in the level!</code></strong> → drag an <strong><code>LcmNavigationManagerSVO</code></strong> into the level. One per level, required.
+<p>Output Log shows <strong><code>LCMBTTask_FlyTo: No SVO Manager found in the level!</code></strong> → drag an <strong><code>LcmNavigationManagerSVO</code></strong> into the level. Every level needs exactly one.
 </p>
 <h3 id="did-the-ai-possess-the-pawn">Did the AI possess the pawn?
 </h3>
@@ -420,7 +420,7 @@
 </li>
 <li>Pawn → Class Defaults → <strong><code>AI Controller Class</code></strong> is set
 </li>
-<li>The controller actually runs the tree (<code>Run Behavior Tree</code>, or a <code>StateTreeAIComponent</code> with a State Tree assigned)
+<li>The controller runs the tree (<code>Run Behavior Tree</code>, or a <code>StateTreeAIComponent</code> with a State Tree assigned)
 </li>
 </ul>
 <h3 id="can-the-pawn-move-at-all">Can the pawn move at all?
@@ -548,12 +548,12 @@
 </li>
 <li><strong>Inside geometry?</strong> A goal (or start) buried in a wall has no free voxel. Move it into open air.
 </li>
-<li><strong>Genuinely enclosed?</strong> If the destination is sealed off, failure is correct.
+<li><strong>Is it really closed off?</strong> If nothing can get to the destination, the failure is correct.
 </li>
 </ul>
-<h3 id="the-classic-padding-sealed-the-opening">The classic: padding sealed the opening
+<h3 id="the-classic-padding-sealed-the-opening">Padding sealed the opening
 </h3>
-<p><strong>This is the most common cause of a mystifying "no path".</strong>
+<p><strong>This is the most common reason for a "no path" that you can't explain.</strong>
 </p>
 <p>If <code>Clearance Padding</code> is close to <code>Min Voxel Size</code>, obstacle inflation fills narrow openings completely. A 2 m doorway with 100 cm voxels and 100 cm padding can vanish entirely.
 </p>
@@ -561,12 +561,10 @@
 </p>
 <h3 id="short-paths-work-long-ones-fail">Short paths work, long ones fail
 </h3>
-<p>Almost always an <strong>infinite world</strong> issue: the route crosses chunks that haven't generated yet.
+<p>This is nearly always an <strong>infinite world</strong> problem. The route crosses chunks that haven't been generated yet.
 </p>
 <ul>
-<li>Turn on <strong><code>Persistent Skeleton</code></strong> under <strong>5. Coarse Skeleton (optional)</strong>. It is <strong>off by default</strong>
-</li>
-<li>it is what allows long-range planning before the detail exists, and it is the first thing to try when an agent loses routability over ground it has already crossed.
+<li>Turn on <strong><code>Persistent Skeleton</code></strong> under <strong>5. Coarse Skeleton (optional)</strong>. It is <strong>off by default</strong>. It lets the planner find long routes before the detailed chunks exist, so try it first when an agent can no longer find routes over ground it has already flown across.
 </li>
 <li>For routing to be complete on the very first frame, including into space the agent has never visited, tick <strong><code>Use Baked Skeleton</code></strong> (also under <strong>5. Coarse Skeleton (optional)</strong>) and then click the <strong><code>Bake Skeleton</code></strong> button, which appears in the banner once that option is on.
 </li>
@@ -637,7 +635,7 @@
 <h3 id="build-is-slow--hitches-when-streaming">Build is slow / hitches when streaming
 </h3>
 <ul>
-<li>Raise <strong><code>Min Voxel Size</code></strong> (the biggest lever by far).
+<li>Raise <strong><code>Min Voxel Size</code></strong>. This makes the biggest difference.
 </li>
 <li>Keep <strong><code>Voxelization Method</code></strong> on <code>Auto</code> (GPU).
 </li>
@@ -646,7 +644,7 @@
 </ul>
 <h3 id="the-log-says-the-gpu-failed-a-voxelization-check">The log says the GPU failed a voxelization check
 </h3>
-<p>With <code>Voxelization Method</code> on <code>Auto</code>, a GPU must prove its voxels before it builds navigation: a capability check, a self-test, and sampled checks of its chunks while it runs. When one fails, the log names the check and the reason, the session voxelizes on the CPU from then on (chunks already built are rebuilt), and the manager's <strong>On Voxelization Changed</strong> event fires. Navigation stays correct; only building it is slower.
+<p>With <code>Voxelization Method</code> on <code>Auto</code>, the GPU is tested before it builds navigation. There is a capability check, a self-test, and spot checks of its chunks while the game runs. If one of them fails, the log names the check and the reason. The rest of the session then voxelizes on the CPU (chunks that were already built get rebuilt), and the manager's <strong>On Voxelization Changed</strong> event fires. Navigation is still correct. It just takes longer to build.
 </p>
 <ul>
 <li>Update the graphics driver first: the failures seen so far came from a driver that dropped GPU writes.
@@ -661,11 +659,11 @@
 <ul>
 <li>Lower <strong><code>Max Path Requests Per Frame</code></strong> to cap per-frame planning.
 </li>
-<li>Use cheaper avoidance: <em>Reactive</em> rather than <em>Predictive</em>.
+<li>Use cheaper avoidance: <em>Reactive</em> instead of <em>Predictive</em>.
 </li>
 <li>For agents sharing a goal, enable <strong><code>Use Flow Fields</code></strong>.
 </li>
-<li><strong>Past a few hundred agents, move to <a href="mass-entity-crowds.html">Mass Entity</a>.</strong> Actor ticks, not pathfinding, are the ceiling.
+<li><strong>Past a few hundred agents, move to <a href="mass-entity-crowds.html">Mass Entity</a>.</strong> At that point the cost of ticking all the actors is the limit, more than the pathfinding.
 </li>
 </ul>
 <h3 id="memory-too-high">Memory too high
@@ -680,7 +678,7 @@
 </ul>
 <h3 id="debug-drawing-is-itself-slow">Debug drawing is itself slow
 </h3>
-<p>Expected: it's a debug tool. Raise <code>Debug Redraw Coalesce Seconds</code>, or turn it off.
+<p>That is normal for a debug view. Raise <code>Debug Redraw Coalesce Seconds</code>, or turn it off.
 </p>
 <hr />
 <h2 id="7-editor-and-install">7. Editor and install
@@ -756,12 +754,12 @@
 <li>Set <strong><code>Voxelization Method</code></strong> to <code>CPU</code>.
 </li>
 </ul>
-<p>Path solving already runs on the CPU and is deterministic by design. Voxelization is the part that can vary: GPU execution order isn't guaranteed run-to-run, so force the CPU voxelizer when you need a bit-identical rebuild.
+<p>Path solving already runs on the CPU and is deterministic. Voxelization is the part that can change between runs, because the GPU doesn't always run work in the same order. Use the CPU voxelizer when you need a rebuild that matches bit for bit.
 </p>
 <hr />
 <h2 id="still-stuck">Still stuck?
 </h2>
-<p>Gather these before asking for help, since they identify most problems immediately:
+<p>Please collect these before you ask for help. With them, most problems can be found straight away:
 </p>
 <ol type="1">
 <li><strong><code>Draw Debug Volumes</code> screenshot</strong> of the area that misbehaves.
@@ -777,7 +775,7 @@
 </ol>
 <p>Then bring them to the community Discord: <strong><a href="https://discord.gg/nXkpD6uaBG">https://discord.gg/nXkpD6uaBG</a></strong>
 </p>
-<p>Open a <strong>Technical Support</strong> ticket in <code>#get-help</code> and you get a private channel with the author. First reply within 24 hours on weekdays. <code>#support-faq</code> there carries this same triage list, and <code>#known-issues</code> tracks confirmed defects with their workarounds - worth checking before you write.
+<p>Open a <strong>Technical Support</strong> ticket in <code>#get-help</code> and you get a private channel with the author. First reply within 24 hours on weekdays. <code>#support-faq</code> there carries this same triage list, and <code>#known-issues</code> lists confirmed bugs and their workarounds, so have a look there before you post.
 </p>
 <div class="pager"><a href="settings.html">&larr; Settings reference</a><a href="flight-locomotion.html">Flight and locomotion &rarr;</a></div>
   <footer>

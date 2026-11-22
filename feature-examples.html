@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -242,7 +242,7 @@
 <p>Eight levels in the style of Epic's Content Examples: every display shows one feature of LCM Nav3D working, with a plaque that says what to look at and which chapter to read. They come with the free <strong>LCM Nav3D Samples</strong> download (<strong>LCM Nav3D</strong> menu → <strong>Get the Demo Levels (free)...</strong>), under <code>Content/Showcase/</code>; the demo menu lists them under <strong>Feature Examples</strong>.
 </p>
 <blockquote>
-<p>This page is generated from the levels themselves (<code>-run=LcmBuildShowcase -WriteGuide</code>), so it lists exactly what the levels contain.
+<p>The tables below are written out from the levels themselves, so they match what is in each level.
 </p>
 </blockquote>
 <h2 id="using-a-level">Using a level
@@ -359,7 +359,7 @@
 </h2>
 <p><code>/LCMNav3DSamples/Showcase/SC_02_FlightLocomotion</code> - 8 displays.
 </p>
-<p>The bodies the navigation flies: drone, jet, bird and fish, each on its own 6-DOF dynamics. The same nodes and the same paths - different physics. Tab jumps to the next display.
+<p>The bodies the navigation flies: drone, jet, bird and fish, each with its own 6-DOF dynamics. They use the same nodes and the same paths, but each body has different physics. Tab jumps to the next display.
 </p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>

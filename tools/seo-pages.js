@@ -12,7 +12,7 @@ const PAGES = {
   'index.html': {
     crumb: null, section: null, nav: 'Overview',
     title: 'LCM 3D Navigation AI Docs | 3D Pathfinding for Unreal Engine',
-    desc: 'Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.',
+    desc: '3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.',
   },
   'whats-new.html': {
     crumb: "What's New in 3.6", section: 'gs', nav: "What's new in 3.6",
@@ -166,7 +166,7 @@ const PAGES = {
   'troubleshooting.html': {
     crumb: 'Troubleshooting', section: 'ref', nav: "Troubleshooting",
     title: 'Troubleshooting 3D Navigation Problems | LCM Nav3D',
-    desc: 'LCM Nav3D problems in the order people hit them: agents that will not move, "no path found", ignored geometry, dead dynamic obstacles and performance issues.',
+    desc: 'Common LCM Nav3D problems and fixes: agents that will not move, "no path found", ignored geometry, dynamic obstacles that do nothing, and performance.',
     // Answers are drawn verbatim from the Quick Triage table and sections 1-7 on
     // the page itself. Structured data must not assert anything the page does not.
     faq: [

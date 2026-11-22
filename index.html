@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LCM 3D Navigation AI Docs | 3D Pathfinding for Unreal Engine</title>
-<meta name="description" content="Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.">
+<meta name="description" content="3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.">
 <link rel="canonical" href="https://lcmnav3d.github.io/">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta name="author" content="L. Charitha Madhushanka">
@@ -17,7 +17,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:url" content="https://lcmnav3d.github.io/">
 <meta property="og:title" content="LCM 3D Navigation AI Docs | 3D Pathfinding for Unreal Engine">
-<meta property="og:description" content="Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.">
+<meta property="og:description" content="3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.">
 <meta property="og:image" content="https://lcmnav3d.github.io/og.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -25,7 +25,7 @@
 <meta property="og:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="LCM 3D Navigation AI Docs | 3D Pathfinding for Unreal Engine">
-<meta name="twitter:description" content="Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.">
+<meta name="twitter:description" content="3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.">
 <meta name="twitter:image" content="https://lcmnav3d.github.io/og.jpg">
 <meta name="twitter:image:alt" content="LCM Nav3D - True Volumetric 3D Navigation for Unreal Engine">
 <link rel="icon" href="favicon.png" type="image/png">
@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -122,7 +122,7 @@
    "@id": "https://lcmnav3d.github.io/#webpage",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Docs | 3D Pathfinding for Unreal Engine",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "isPartOf": {
     "@id": "https://lcmnav3d.github.io/#website"
    },
@@ -207,89 +207,84 @@ href="https://uedevlabs.github.io/">uedevlabs.github.io</a></strong>.
 Want to try it before buying? The <strong><a
 href="https://uedevlabs.itch.io/lcm-3d-navigation">free playable
 demo</a></strong> is a standalone Windows build of the demo levels, and buyers get 57 demo levels free from inside the editor (LCM Nav3D menu &gt; Get the Demo Levels).
-Everything on this site is also available as PDFs — the <a
+You can also read everything here as a PDF: the <a
 href="pdf/LCM_Nav3D_Manual.pdf">full manual</a> and the <a
-href="pdf/LCM_Nav3D_QuickStart.pdf">quick start</a> — for reading away
-from the editor.</p>
+href="pdf/LCM_Nav3D_QuickStart.pdf">quick start</a>.</p>
 </blockquote>
-<h2 id="built-for-production">Built for production</h2>
-<p><strong>LCM Nav3D is an industry-leading volumetric navigation system for
-Unreal Engine: heavily optimised, production-grade, and built for AAA-scale
-projects.</strong> It ships complete C++ source,
-is fully exposed to Blueprint, and is engineered so that the expensive parts stay
-off your frame budget. The specifics:</p>
+<h2 id="what-it-does">What it does</h2>
+<p><strong>LCM Nav3D is a 3D navigation plugin for Unreal Engine.</strong> It builds a
+sparse voxel octree of the empty space in your level and finds paths through it, so
+flying and swimming agents can go anywhere there is room for them. You get the full
+C++ source and every feature is available in Blueprint. Here is what is in it:</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
 <tr>
-<th>Engineered for</th>
-<th>How</th>
+<th>Area</th>
+<th>Details</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>GPU acceleration</strong></td>
-<td>Voxelization, the octree and its links are built on the GPU (D3D12, D3D11, Vulkan), and each machine's GPU proves its voxels before it builds navigation; a GPU that fails its checks voxelizes on the CPU for the session - so it degrades gracefully instead of failing. A GPU path solver is experimental,
-currently in research validation, and ships in a future free update</td>
+<td><strong>GPU builds</strong></td>
+<td>Voxelization, the octree and its links are built on the GPU (D3D12, D3D11, Vulkan). Each machine tests its GPU's voxels first. If the GPU fails that test, the plugin voxelizes on the CPU for the rest of the session. A GPU path solver is still experimental and will come in a later free update</td>
 </tr>
 <tr>
 <td><strong>Per-agent cost areas</strong></td>
-<td>Storms, preferred lanes, toll gates and no-fly zones as volumes with stock NavArea classes. Every planner prices routes through them, and a stock Navigation Query Filter lets two agents read the same volume differently. See <a href="nav-links-and-areas.html">Cost areas</a></td>
+<td>Mark storms, preferred lanes, toll gates and no-fly zones with volumes and the stock NavArea classes. All the planners take them into account, and a stock Navigation Query Filter lets two agents treat the same volume differently. See <a href="nav-links-and-areas.html">Cost areas</a></td>
 </tr>
 <tr>
-<td><strong>Crowd scale</strong></td>
-<td>10,000+ agents through the Mass Entity ECS with LOD-culled rendering, where a
-UActor AI agent costs roughly 50 µs/tick once it has a controller, movement
-component and behaviour tree</td>
+<td><strong>Crowds</strong></td>
+<td>10,000+ agents through Mass Entity, with LOD-culled rendering. For comparison, an
+actor-based AI agent with a controller, movement component and behaviour tree costs
+about 50 µs per tick</td>
 </tr>
 <tr>
-<td><strong>Off the game thread</strong></td>
-<td>Asynchronous pathfinding throughout, with a callback on completion rather
-than a blocking query</td>
+<td><strong>Async pathfinding</strong></td>
+<td>Path requests run off the game thread and call you back when they finish</td>
 </tr>
 <tr>
 <td><strong>Frame budget</strong></td>
-<td>Explicit frame-budget controls, and dynamic-obstacle updates coalesce dirty
-regions into a single window (<code>r.LcmNav.DynObs.CoalesceMs</code>, default
-33 ms) instead of restamping per event</td>
+<td>Budget settings for the per-frame work. Dynamic-obstacle updates are batched
+into one window (<code>r.LcmNav.DynObs.CoalesceMs</code>, 33 ms by default)
+so the octree is not rebuilt on every single change</td>
 </tr>
 <tr>
 <td><strong>Memory</strong></td>
-<td>A sparse octree, so cost is driven by how cluttered your level is rather than
-how large it is - open sky is nearly free</td>
+<td>The octree is sparse. Memory depends on how much geometry your level has, and
+open sky takes up very little</td>
 </tr>
 <tr>
 <td><strong>Determinism</strong></td>
-<td>Same input, same output, every time - which is what makes replays, lockstep
-multiplayer and automated tests reproducible</td>
+<td>The same input gives the same path. Replays, lockstep multiplayer and automated
+tests all depend on that</td>
 </tr>
 <tr>
 <td><strong>Large worlds</strong></td>
-<td>World Partition and streaming support, with a bake path and a coarse skeleton
-for long-range routing before the detail exists</td>
+<td>World Partition and streaming are supported. You can bake navigation, and a
+coarse skeleton handles long-range routes before the detailed chunks have loaded</td>
 </tr>
 <tr>
-<td><strong>Not a black box</strong></td>
-<td>A health check that reports anything that would stop agents moving, an
-auto-tuner that measures candidate voxel settings against your real routes, and a
-Gameplay Debugger category costing roughly 10 µs</td>
+<td><strong>Debugging</strong></td>
+<td>A health check lists anything that would stop agents moving. An auto-tuner
+tries voxel settings on your own routes and ranks them. There is also a Gameplay
+Debugger category (about 10 µs)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Supported on <strong>Unreal Engine 5.2 to 5.8</strong>, on Windows, macOS, Linux, Android, iOS, PlayStation 5 and Xbox Series X|S. Every claim above is documented in the chapter it belongs to - start with
-<a href="core-concepts.html">Core Concepts</a>, or see
-<a href="nav3d-vs-recast.html">Nav3D vs Recast</a> if you are deciding whether you
-need volumetric navigation at all.</p>
+<p>It runs on <strong>Unreal Engine 5.2 to 5.8</strong>, on Windows, macOS, Linux, Android, iOS, PlayStation 5 and Xbox Series X|S. Each feature above has its own chapter. If you are new, start with
+<a href="core-concepts.html">Core Concepts</a>. If you are not sure you need 3D navigation
+at all, read <a href="nav3d-vs-recast.html">Nav3D vs Recast</a> first.</p>
 <h2 id="start-here">Start here</h2>
 <p><strong>New in 3.6.0:</strong> Fly To predicts moving obstacles and times its pass, a new Obstacle Gauntlet demo with 42 movers, GPU voxelization that checks itself on each machine, and fish that swim, turn and school like fish. See <a href="whats-new.html">What's new in 3.6</a>.</p>
 <p><strong>→ <a
 href="pdf/LCM_Nav3D_QuickStart.pdf">LCM_Nav3D_QuickStart.pdf</a>
-- 13 pages.</strong> Install it, understand the five settings that
-matter, and have a pawn flying through 3D space in your own level. About
-forty-five minutes end to end. This is the only document most people
-need to read from front to back.</p>
-<p>Everything else is there for when you need it:</p>
+(13 pages).</strong> It covers installing the plugin, the five settings
+you need to know, and getting a pawn flying in your own level. It takes
+about 45 minutes. Most people only need to read this one from start to
+finish.</p>
+<p>Use the rest when you need it:</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
@@ -308,25 +303,25 @@ href="pdf/LCM_Nav3D_QuickStart.pdf">LCM_Nav3D_QuickStart.pdf</a></td>
 </tr>
 <tr>
 <td><strong>Read up on one topic</strong></td>
-<td>The chapter pages in the sidebar - one page per document</td>
+<td>The chapter pages in the sidebar (one page per document)</td>
 <td>1-18 pp each</td>
 </tr>
 <tr>
 <td><strong>Look something up</strong></td>
 <td><a
 href="pdf/LCM_Nav3D_Manual.pdf">LCM_Nav3D_Manual.pdf</a>
-- everything, bookmarked and searchable</td>
+(everything, with bookmarks and search)</td>
 <td>165 pp</td>
 </tr>
 </tbody>
 </table>
 </div>
 <blockquote>
-<p>Every page on this site and every PDF is generated from the same
-source, so they cannot disagree with each other.</p>
+<p>This site and the PDFs are made from the same source files, so they
+say the same thing.</p>
 </blockquote>
 <h2 id="see-it-running">See it running</h2>
-<p>Every feature in these pages is in the free demo levels, and on video:</p>
+<p>You can see all of these features in the free demo levels and in these videos:</p>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=7_F3AvgQIQU">Showcase trailer</a> and <a href="https://www.youtube.com/watch?v=-02ah0bLMb4">technical trailer</a></li>
 <li>By use case: <a href="https://uedevlabs.github.io/unreal-engine-flying-ai/">flying AI and drones</a>, <a href="https://uedevlabs.github.io/unreal-engine-underwater-ai/">underwater and fish AI</a>, <a href="https://uedevlabs.github.io/unreal-engine-space-combat-ai/">space combat</a>, <a href="https://uedevlabs.github.io/unreal-engine-open-world-navigation/">open worlds</a>, <a href="https://uedevlabs.github.io/unreal-engine-mass-entity-crowds/">Mass Entity crowds</a> and <a href="https://uedevlabs.github.io/unreal-engine-moving-obstacle-avoidance/">moving obstacles</a></li>
@@ -335,8 +330,8 @@ source, so they cannot disagree with each other.</p>
 <hr />
 <h2 id="the-editor-tools-at-a-glance">The editor tools, at a glance</h2>
 <p>Everything below lives behind the <strong>Nav3D</strong> button in
-the Level Editor toolbar. If you are looking for a specific panel, this
-is the fastest way to find which document covers it.</p>
+the Level Editor toolbar. Use this table to find which chapter covers
+a panel.</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>

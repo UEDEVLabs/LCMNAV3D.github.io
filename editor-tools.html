@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -555,7 +555,7 @@ exist on the class; they are just noise here.</p>
 <p><strong>Replication</strong>, <strong>Actor</strong> (tags) and
 <strong>World Partition</strong> are deliberately kept: the manager
 hosts multicast RPCs, tags are a legitimate way to find it from
-gameplay, and <code>Is Spatially Loaded</code> genuinely matters for a
+gameplay, and <code>Is Spatially Loaded</code> really matters for a
 singleton that must not stream out.</p>
 <hr />
 <h2 id="bake-volumes">Bake Volumes</h2>
@@ -566,8 +566,7 @@ Configuration Health, What You Get.</p>
 <h3 id="i-want-two-separate-areas-navigable-which-setup">I want two
 separate areas navigable. Which setup?</h3>
 <p><strong>Grid mode + Infinite World. Nothing else does it.</strong>
-This is the single most common wrong turn, so it is worth being blunt
-about why:</p>
+People get this wrong more often than anything else, so here is why:</p>
 <p>A <strong>finite</strong> world has exactly <strong>one</strong>
 navigation volume - one slot, in memory. A single-volume Bake Volume
 writes it. The manager's <strong>Bake to Asset</strong> writes it. Both
@@ -1107,7 +1106,7 @@ alt="Auto-Tuner step 2: Quick / Standard / Thorough presets, the exact values ea
 <p><strong>Figure 8 - Step 2.</strong> A preset never leaves you
 guessing what it means: the exact Chunk Size, Min Voxel and Padding
 values it will try are printed underneath it. The amber line is the
-honest cost estimate - configuration count, worst-case chunk count and
+cost estimate: configuration count, worst-case chunk count and
 <em>which</em> Chunk Size produces that worst case, because a smaller
 chunk needs more of them for the same route.</p>
 <p>Leave <strong>Also verify Mass FlowField can traverse the

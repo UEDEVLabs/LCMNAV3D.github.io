@@ -106,11 +106,11 @@ const SOFTWARE = {
   sameAs: [FAB, PRODUCT_PAGE, YOUTUBE],
   image: OG_IMG,
   description:
-    'An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for '
-    + 'Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, '
-    + 'for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that '
-    + 'checks itself on each machine, asynchronous pathfinding, deterministic results, '
-    + 'explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.',
+    'A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of '
+    + 'over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. '
+    + 'It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the '
+    + 'game thread, gives the same result for the same input, and supports World Partition. '
+    + 'Full C++ source, and everything is available in Blueprint.',
   author: { '@type': 'Person', name: AUTHOR },
   publisher: { '@id': `${SITE}/#organization` },
   featureList: [
@@ -393,19 +393,18 @@ writeCRLF(path.join(ROOT, 'llms.txt'),
 
 > ${SOFTWARE.description}
 
-LCM Nav3D (LCM 3D Navigation AI) ${VERSION} is an industry-leading, production-grade,
-heavily optimised navigation plugin for Unreal Engine 5.2 to 5.8 (${PLATFORMS}),
-built for AAA-scale projects. It ships complete C++ source and is fully exposed to Blueprint.
+LCM Nav3D (LCM 3D Navigation AI) ${VERSION} is a 3D navigation plugin for Unreal
+Engine 5.2 to 5.8 (${PLATFORMS}). It comes with full C++ source, and everything is
+available in Blueprint.
 
-Engineering characteristics: voxelization, octrees and links built on the GPU (D3D12,
-D3D11, Vulkan), with each machine's GPU proving its voxels before it builds navigation
-and a CPU voxelizer for a GPU that fails its checks; asynchronous pathfinding off the game thread;
-deterministic results, so replays, lockstep multiplayer and automated tests are
-reproducible; explicit frame-budget controls, with dynamic-obstacle updates
-coalesced into a single window rather than restamped per event; a sparse octree
-whose memory cost is driven by how cluttered a level is rather than how large it
-is; World Partition and streaming support with a bake path; and 10,000+ agent
-crowds through the Mass Entity ECS with LOD-culled rendering.
+Main features: voxelization, octrees and links are built on the GPU (D3D12, D3D11,
+Vulkan). Each machine tests its GPU first, and a GPU that fails the test voxelizes on
+the CPU instead. Path requests run off the game thread. Results are deterministic,
+so replays, lockstep multiplayer and automated tests can be reproduced. There are
+frame-budget settings, and dynamic-obstacle updates are batched into one window.
+The octree is sparse, so memory depends on how much geometry a level has more than
+on its size. World Partition and streaming are supported, with an option to bake.
+Mass Entity crowds of 10,000+ agents are supported, with LOD-culled rendering.
 
 Unreal's stock Recast navmesh represents a walkable *surface* and answers
 "where can I stand?". LCM Nav3D represents the navigable *volume* and answers

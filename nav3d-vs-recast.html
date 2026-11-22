@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -285,26 +285,23 @@
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-i-getting-started">Getting Started</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Nav3D vs Recast</span></nav>
   <h1 id="nav3d-vs-recast">LCM Nav3D vs Recast: navigation for flying AI</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> Unreal's Recast navmesh answers <em>"where can I
-stand?"</em>. LCM Nav3D answers <em>"where is there empty air?"</em>. They solve
-different problems and they are not really competitors - if your project has
-both infantry and aircraft, the right answer is usually to run both, which
-<a href="hybrid-recast.html">Tutorial 09</a> covers.</p>
-<p>This page is for deciding which one your project needs. If you already know
-you need volumetric navigation, skip to <a href="installation.html">Installation</a>.</p>
+<p><strong>In short:</strong> Unreal's Recast navmesh tells an agent <em>"where can I
+stand?"</em>. LCM Nav3D tells it <em>"where is there empty air?"</em>. They do
+different jobs. If your project has both soldiers and aircraft, you will usually
+run both, and <a href="hybrid-recast.html">Tutorial 09</a> shows how.</p>
+<p>Read this page if you are not sure which one you need. If you already know
+you need 3D navigation, go straight to <a href="installation.html">Installation</a>.</p>
 <hr />
-<h2 id="the-structural-difference">The structural difference</h2>
-<p>Recast builds a <strong>surface</strong>: a mesh of convex walkable polygons,
-a two-dimensional sheet folded through three-dimensional space. Every position on
-it is somewhere an agent could put its feet.</p>
-<p>LCM Nav3D builds a <strong>volume</strong>: a sparse voxel octree that
-partitions the empty space itself, so a position is anywhere an agent could fit -
-including two hundred metres up with nothing underneath it.</p>
-<p>That difference is structural, not a matter of configuration. There is no
-Recast setting that produces a representation of open air, because a navmesh has
-no way to express <em>"this cubic metre of sky is free"</em>. The vocabulary
-isn't there. <a href="core-concepts.html">Core Concepts</a> explains how the
-octree represents it instead, and why open sky costs almost nothing to store.</p>
+<h2 id="the-structural-difference">How they differ</h2>
+<p>Recast builds a <strong>surface</strong>. It is a mesh of convex polygons laid
+over the ground, and every point on it is a place where an agent could stand.</p>
+<p>LCM Nav3D builds a <strong>volume</strong>. It is a sparse voxel octree that
+divides up the empty space in the level, so a valid position is anywhere an agent
+fits, even 200 metres up with nothing below it.</p>
+<p>You cannot get the second from the first by changing settings. A navmesh only
+stores surfaces, so it has no way to say that a block of sky is free to fly
+through. <a href="core-concepts.html">Core Concepts</a> explains how the octree
+stores that space, and why open sky takes up so little memory.</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
@@ -338,7 +335,7 @@ octree represents it instead, and why open sky costs almost nothing to store.</p
 <tr>
 <td><strong>Memory driven by</strong></td>
 <td>the surface area you cover</td>
-<td>how cluttered the level is, not how big it is</td>
+<td>the amount of geometry in the level</td>
 </tr>
 <tr>
 <td><strong>Natural fit</strong></td>
@@ -354,69 +351,65 @@ octree represents it instead, and why open sky costs almost nothing to store.</p
 </table>
 </div>
 <hr />
-<h2 id="the-workarounds">The workarounds, and where each one breaks</h2>
-<p>Everyone tries at least one of these before reaching for volumetric
-navigation. They are listed here honestly, because several of them are genuinely
-the correct choice for the right project.</p>
+<h2 id="the-workarounds">Common workarounds and their limits</h2>
+<p>Most teams try one of these before they look at 3D navigation. Some of them
+are the right choice for some projects, so each one is described below with
+where it stops working.</p>
 <h3 id="workaround-navmesh-at-altitude">A navmesh plane at flight altitude</h3>
-<p>Put an invisible floor at 3000 units and let Recast build on it. Cheap, and it
-works - as long as every agent flies at that one altitude. The moment something
-needs to dive under a bridge or climb over a building, you are back to 2D
-pathfinding wearing a hat. There is no vertical avoidance, because there is no
-vertical.</p>
+<p>You put an invisible floor at 3000 units and let Recast build on it. This is
+cheap and it works as long as every agent flies at that one height. As soon as an
+agent has to dive under a bridge or climb over a building, it can't. Paths are
+still 2D, and there is no way to avoid things above or below.</p>
 <h3 id="workaround-stacked-navmeshes">Several stacked navmeshes</h3>
-<p>The obvious extension, and it multiplies the problem rather than solving it.
-Transitions between layers have to be authored by hand, and an agent still cannot
-travel diagonally through the space <em>between</em> two layers - which, for a
-flyer, is most of the space.</p>
+<p>This adds more layers, and more work. You have to author the transitions
+between layers by hand. An agent also can't fly diagonally through the space
+<em>between</em> two layers, and for a flying agent that is most of the space.</p>
 <h3 id="workaround-uniform-grid">A uniform 3D grid</h3>
-<p>Correct in principle: a voxel grid genuinely represents volume, and A* over it
-works. The problem is that it is dense. Memory grows with the cube of the extent,
-and empty sky costs exactly as much as solid rock. A 2 km level is unaffordable.
-Sparsity is the entire reason the octree exists - one node can cover a huge empty
-region, and detail only appears where geometry actually is.</p>
+<p>A voxel grid does store volume, and A* on it works. The problem is memory.
+It grows with the cube of the level size, and empty sky costs as much as solid
+rock, so a 2 km level needs far too much. An octree fixes this: one large node can
+cover a big empty area, and it only subdivides near geometry.</p>
 <h3 id="workaround-raycast-steering">Raycast steering with no pathfinding</h3>
-<p>Fire a few traces, steer away from what you hit. Cheap, and it looks fine in
-open terrain. It fails on anything concave: a U-shaped canyon, a hangar with one
-door, a courtyard. Steering has no global plan, so the agent walks into the
-pocket and stays there. This is the workaround that ships and then generates bug
-reports six months later.</p>
+<p>You fire a few traces and steer away from whatever they hit. It is cheap and
+looks fine in open terrain. It breaks on concave shapes like a U-shaped canyon, a
+hangar with one door or a courtyard. Steering has no plan for the whole route, so
+the agent flies into the pocket and gets stuck there. Problems like this often only
+show up late in a project.</p>
 <h3 id="workaround-splines">Hand-authored spline highways</h3>
-<p>Predictable, cheap and fully art-directable. For scripted flypasts and fixed
-patrol routes this is the right answer and you should not replace it with
-pathfinding. But it is not navigation - agents cannot respond to a goal nobody
-anticipated, and every new route is authoring work.</p>
+<p>Splines are predictable, cheap and easy to art-direct. For scripted flypasts
+and fixed patrol routes they are the right tool, and you don't need pathfinding
+for those. Agents on splines can't go to a goal you didn't plan for, though, and
+every new route has to be made by hand.</p>
 <hr />
 <h2 id="when-recast-is-right">When Recast is the right answer</h2>
-<p>Recast is mature, free, extremely well tested and already integrated with
-Behavior Trees, EQS and the crowd system. Use it when:</p>
+<p>Recast is mature, free, well tested and already works with Behavior Trees,
+EQS and the crowd system. Use it when:</p>
 <ul>
-<li><strong>Your agents walk.</strong> This is most games. Nothing here improves
-on Recast for infantry.</li>
-<li><strong>Your "flying" is cosmetic</strong> - a hover drone that floats 50 cm
-above the floor and follows terrain. Recast plus a Z offset is simpler and
-cheaper.</li>
+<li><strong>Your agents walk.</strong> That covers most games, and LCM Nav3D
+adds nothing for walking characters.</li>
+<li><strong>Your agents only look like they fly</strong>, for example a drone that
+hovers 50 cm above the floor and follows the terrain. Recast with a Z offset is
+simpler and cheaper.</li>
 <li><strong>Flight routes are fixed and scripted.</strong> Use splines.</li>
 <li><strong>You need Detour crowd avoidance for a ground army.</strong> That is
 Recast's <code>UCrowdManager</code>, and it works well.</li>
 </ul>
-<h2 id="when-volume-is-right">When you actually need volume</h2>
+<h2 id="when-volume-is-right">When you need 3D navigation</h2>
 <ul>
-<li>Agents move through open space where the <em>gaps</em> are the interesting
-geometry - canyons, cave systems, asteroid fields, city airspace.</li>
+<li>Agents fly through open space and have to find their way through gaps, such
+as canyons, caves, asteroid fields or the air between city buildings.</li>
 <li>Multi-level interiors where above and below both matter, and an agent should
 be able to choose between them.</li>
 <li>Underwater or zero-gravity movement, where there is no floor to project
 onto.</li>
-<li>You need tactical queries about <em>volume</em> - cover, line of sight,
-height advantage - rather than about floor positions.</li>
+<li>You need tactical queries (cover, line of sight, height advantage) about
+points in the air as well as on the floor.</li>
 <li>Agents must reroute around things that move, in three dimensions.</li>
 </ul>
 <hr />
-<h2 id="beyond-pathfinding">What you get beyond the pathfinder</h2>
-<p>A weekend of work gets you 3D A* over a grid. The reason to use a plugin is
-everything that has to exist around the solver before flying agents stop looking
-broken:</p>
+<h2 id="beyond-pathfinding">What you get besides pathfinding</h2>
+<p>You can write 3D A* over a grid in a weekend. Flying agents need a lot more
+than that before they behave well in a game, and the plugin includes it:</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
@@ -453,8 +446,8 @@ for water and danger zones</td>
 </tr>
 <tr>
 <td><strong>6-DOF flight dynamics</strong></td>
-<td>A rigid-body flight and hydro model - thrust, lift, drag, attitude - so
-movement looks like a body rather than a lerp</td>
+<td>A rigid-body flight and swim model (thrust, lift, drag and attitude), so
+agents move like real bodies with weight</td>
 <td><a href="flight-locomotion.html">Flight and Locomotion</a></td>
 </tr>
 <tr>
@@ -474,41 +467,37 @@ and an auto-tuner that measures voxel settings against your real routes</td>
 </div>
 <hr />
 <h2 id="running-both">Running both in one level</h2>
-<p>This is the common case, and it is supported directly rather than being a
-workaround. Walking agents stay on Recast; flying agents use the octree; both
-exist in the same level at the same time.</p>
-<p>Adding a <code>ULcmCrowdAvoidanceBridge</code> to a flying pawn registers it
-with Unreal's stock <code>UCrowdManager</code>, so Detour RVO steers Recast crowd
-agents around it. A Z-band filter stops agents at very different altitudes from
-uselessly avoiding each other. Full walkthrough in
-<a href="hybrid-recast.html">Tutorial 09</a>.</p>
+<p>Most projects with flying agents also have walking ones, and the plugin is
+built for that. Walking agents use Recast and flying agents use the octree, in the
+same level at the same time.</p>
+<p>Add a <code>ULcmCrowdAvoidanceBridge</code> to a flying pawn and it registers
+with Unreal's stock <code>UCrowdManager</code>. Detour RVO then steers the Recast
+crowd agents around it. A Z-band filter stops agents at very different heights
+from avoiding each other for no reason. <a href="hybrid-recast.html">Tutorial 09</a>
+walks through the setup.</p>
 <blockquote>
-<p>The two systems do not fight over anything. Recast keeps its navmesh, LCM
-Nav3D keeps its octree, and the bridge is the only place they meet.</p>
+<p>Recast keeps its navmesh and LCM Nav3D keeps its octree. The bridge is the
+only part that connects them.</p>
 </blockquote>
 <hr />
 <h2 id="faq">Common questions</h2>
 <h3 id="faq-navmesh-flying">Can Unreal's navmesh handle flying AI at all?</h3>
-<p>Only by approximating it. A navmesh describes a walkable surface, so any
-flying behaviour built on it is really surface navigation with an offset, or a
-set of stacked surfaces with hand-authored transitions. That is fine for a hover
-drone following terrain and inadequate for anything that has to choose its
-altitude.</p>
+<p>Only roughly. A navmesh describes a walkable surface, so flying built on it is
+surface navigation with a height offset, or several stacked surfaces joined by
+hand. That works for a hover drone that follows the terrain. It doesn't work for an
+agent that has to pick its own height.</p>
 <h3 id="faq-both">Do I have to choose between Recast and LCM Nav3D?</h3>
-<p>No. They coexist in the same level and are designed to. Ground agents on
-Recast, flying agents on the octree, and a bridge so Detour crowd avoidance sees
-the flyers.</p>
+<p>No. You can use both in the same level. Ground agents use Recast, flying agents
+use the octree, and a bridge lets Detour crowd avoidance see the flying ones.</p>
 <h3 id="faq-grid">Why an octree instead of a simple 3D grid?</h3>
-<p>Density. A uniform grid spends the same memory on empty sky as on solid
-geometry, and the cost grows with the cube of the extent. The octree is sparse:
-one node covers a large empty region, and it only subdivides where there is
-something to subdivide around. Navigation data ends up driven by how cluttered
-the level is rather than how big it is.</p>
+<p>Memory. A uniform grid uses as much memory for empty sky as for solid
+geometry, and the total grows with the cube of the level size. In an octree, one
+node can cover a large empty area, and it only subdivides near geometry. So the
+size of the navigation data depends mostly on how much geometry the level has.</p>
 <h3 id="faq-replace">Does this replace Unreal's navigation system?</h3>
-<p>No, it sits beside it. Recast, Behavior Trees, StateTree, EQS, AI Perception,
-Mass and the Gameplay Debugger all keep working as they do now - LCM Nav3D adds
-tasks, tests, traits and a debugger category to them rather than substituting for
-them.</p>
+<p>No, it works alongside it. Recast, Behavior Trees, StateTree, EQS, AI
+Perception, Mass and the Gameplay Debugger all work as before. LCM Nav3D adds its
+own tasks, tests, traits and a debugger category to those systems.</p>
 <h3 id="faq-versions">Which engine versions are supported?</h3>
 <p>Unreal Engine 5.2 to 5.8, on Windows, macOS, Linux, Android, iOS, PlayStation 5 and Xbox Series X|S. See
 <a href="installation.html">Installation</a> for the full requirements.</p>

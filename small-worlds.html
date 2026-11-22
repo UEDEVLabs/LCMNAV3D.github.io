@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -240,9 +240,9 @@
 <h1 id="tutorial-12---small-worlds-centimetre-scale-navigation">Tutorial 12 - Small worlds (centimetre-scale navigation)
 </h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> the plugin voxelizes in Unreal units (1 uu = 1 cm). A 120 × 70 × 40 cm aquarium with 5 cm cave openings navigates at a 1 cm leaf either way you build it: at 100:1 on any release, or at 1:1 with the <em>World Scale</em> profile set to <em>Small</em>. Both were measured on the same test tank.
+<p><strong>In short:</strong> the plugin voxelizes in Unreal units (1 uu = 1 cm). A 120 × 70 × 40 cm aquarium with 5 cm cave openings navigates at a 1 cm leaf with either of two setups: at 100:1 on any release, or at 1:1 with the <em>World Scale</em> profile set to <em>Small</em>. Both were tested in the same tank.
 </p>
-<h2 id="the-two-rules-that-are-not-obvious">The two rules that are not obvious
+<h2 id="the-two-rules-that-are-not-obvious">Two rules to know first
 </h2>
 <ol type="1">
 <li><strong>Set half the leaf you want.</strong> The octree halves a half-extent until it drops below <code>Min Voxel Size</code>, so the finest leaf lands at 2-4× the value. For a 1 cm leaf set 0.5.
@@ -308,23 +308,23 @@
 </tbody>
 </table>
 </div>
-<p>Measured: a 5 cm cave mouth resolved and routed, a plugged cave correctly unreachable, an agent crossing the tank in 3 s.
+<p>In testing, agents found and used a 5 cm cave mouth, a blocked cave was correctly reported as unreachable, and an agent crossed the tank in 3 s.
 </p>
 <h2 id="option-b---build-at-11-with-world-scale--small">Option B - build at 1:1 with World Scale = Small
 </h2>
-<p>Set <code>World Scale</code> to <code>Small</code>, <code>World Extent</code> to 64, <code>Min Voxel Size</code> to 0.5. Clearance Padding is derived for you (half the leaf); the start-rescue distances and the large-node cost threshold scale with the leaf as well. The Details panel will note that the world is only 128 leaves across - that is expected for a small world, not a fault. The line-of-sight sampler, the neighbour probe and the route executor's sampling floors follow the leaf on their own, on every profile.
+<p>Set <code>World Scale</code> to <code>Small</code>, <code>World Extent</code> to 64, <code>Min Voxel Size</code> to 0.5. Clearance Padding is derived for you (half the leaf); the start-rescue distances and the large-node cost threshold scale with the leaf as well. The Details panel will tell you that the world is only 128 leaves across. That is normal for a small world. The line-of-sight sampler, the neighbour probe and the route executor's sampling floors follow the leaf on their own, on every profile.
 </p>
-<p>Agents follow too. The <strong>Fly To</strong> task (BT and StateTree) and the flight movement component carry an <code>Agent Scale</code> that defaults to <code>0</code> = follow the manager's World Scale, so under <code>Small</code> a fish authored with the shipped drone values (600 cm/s, 100 cm acceptance, 120 cm agent size) flies at 6 cm/s with a 1 cm acceptance and a 1.2 cm agent size, along the same path shape, in the same time. Scale the pawn actor itself (mesh and collision) to match - the plugin scales motion, not geometry. Set <code>Agent Scale</code> explicitly on a task when an agent should not follow the world (a large creature in a small world, or the reverse).
+<p>Agents follow too. The <strong>Fly To</strong> task (BT and StateTree) and the flight movement component carry an <code>Agent Scale</code> that defaults to <code>0</code> = follow the manager's World Scale, so under <code>Small</code> a fish authored with the shipped drone values (600 cm/s, 100 cm acceptance, 120 cm agent size) flies at 6 cm/s with a 1 cm acceptance and a 1.2 cm agent size, along the same path shape, in the same time. You still have to scale the pawn actor itself (mesh and collision) to match, because the plugin only scales the motion. Set <code>Agent Scale</code> explicitly on a task when an agent should not follow the world (a large creature in a small world, or the reverse).
 </p>
-<p>One engine-side limit remains for very small bodies: Unreal's swept movement pulls every blocking hit back by an absolute 0.1-1 cm and treats gaps inside the physics contact offset (2 cm minimum) as an initial overlap, so a body whose collision is itself a centimetre or less meets a wall under a different regime than its metre-scale twin. Measured with the bird pawn at agent scale 0.01: the flight is identical to the 100:1 flight until the first wall contact (and, on this tank, arrives sooner after it). Bodies that keep clear of walls, such as the navigator drones, are exact end to end. If wall-hugging behaviour must match a metre-scale reference exactly, build at 10:1 (agent scale 0.1), where the engine tolerances are still small against the body.
+<p>There is one engine limit for very small bodies. Unreal's swept movement pulls every blocking hit back by a fixed 0.1-1 cm, and it treats gaps inside the physics contact offset (2 cm minimum) as an overlap. So a body with collision of a centimetre or less touches walls differently from the same body at metre scale. We tested this with the bird pawn at agent scale 0.01. Its flight matched the 100:1 flight exactly until it first touched a wall (and in this tank it arrived sooner after that). Bodies that stay clear of walls, like the navigator drones, match exactly the whole way. If wall-hugging behaviour must match a metre-scale reference exactly, build at 10:1 (agent scale 0.1), where the engine tolerances are still small against the body.
 </p>
-<h2 id="stones-with-caves-collision-not-the-mesh">Stones with caves: collision, not the mesh
+<h2 id="stones-with-caves-collision-not-the-mesh">Stones with caves: use the collision
 </h2>
-<p>Solidity is read from <strong>collision</strong>. Set stone meshes to <em>Use Complex Collision As Simple</em>; a convex hull or box spanning a cave mouth is solid as far as the plugin is concerned, however fine the leaf. (Measured: the same tank with the stones' collision removed routes straight through them; with complex-as-simple it is byte-identical to the baseline.)
+<p>The plugin decides what is solid from <strong>collision</strong>, not from the visible mesh. Set stone meshes to <em>Use Complex Collision As Simple</em>. A convex hull or box that covers a cave mouth makes the cave solid for the plugin, however small the leaf is. (In testing, the same tank with the stones' collision removed routed straight through them. With complex-as-simple collision the result was exactly the same as the reference.)
 </p>
 <h2 id="props-that-must-not-be-solid">Props that must not be solid
 </h2>
-<p>Grass, backdrops and other dressing a body should pass through need the collision <strong>profile</strong> <em>NoCollision</em>, not only <em>Collision Enabled = No Collision</em>: a component that keeps the <em>BlockAll</em> profile gets its collision back when the map loads, and is then voxelized like stone. (Measured: seagrass saved that way walled two of the demo tank's goals off from a 4 cm body.)
+<p>Grass, backdrops and other dressing a body should pass through need the collision <strong>profile</strong> <em>NoCollision</em>, not only <em>Collision Enabled = No Collision</em>: a component that keeps the <em>BlockAll</em> profile gets its collision back when the map loads, and is then voxelized like stone. (In one test, seagrass saved that way blocked a 4 cm body from two of the demo tank's goals.)
 </p>
 <h2 id="mass-crowds-at-small-scale">Mass crowds at small scale
 </h2>
@@ -336,12 +336,12 @@
 </p>
 <h2 id="your-own-aquarium-the-checklist">Your own aquarium: the checklist
 </h2>
-<p>Everything below is automatic in the demo tanks; in a tank of your own, check each line.
+<p>The demo tanks already have all of this set up. In your own tank, check each item.
 </p>
 <ol type="1">
-<li><strong>Agent Scale matches the fish.</strong> Every Flight Config value describes a ~1 m agent. Set the Flight Movement component's <strong>Agent Scale</strong> to the fish's length / 100 (0.08 for an 8 cm fish), and the same on its Fly To nodes - or set the navigation manager's <strong>World Scale</strong> instead. Left at 1, an 8 cm fish swims at a metre agent's 280 cm/s with a ~1.4 m turning circle: it circles its targets and ploughs into the school. The component says so in the Output Log, once per Blueprint, with the value to set.
+<li><strong>Agent Scale matches the fish.</strong> Every Flight Config value describes a ~1 m agent. Set the Flight Movement component's <strong>Agent Scale</strong> to the fish's length / 100 (0.08 for an 8 cm fish), and the same on its Fly To nodes - or set the navigation manager's <strong>World Scale</strong> instead. If you leave it at 1, an 8 cm fish swims at 280 cm/s like a metre-sized agent, with a turning circle of about 1.4 m. It then circles its targets and crashes into the rest of the school. The component says so in the Output Log, once per Blueprint, with the value to set.
 </li>
-<li><strong>A Water Volume round the water.</strong> Add a <em>Physics Volume</em>, tick <strong>Water Volume</strong>, and size it to the water. A Fish-archetype body inside it never leaves it, and its top face is a navigation boundary, so routes stay under the surface. Without one, nothing knows where the water ends: a route between two points can cut through the air above a rock, or above the glass, and a fish can swim out of the tank. (The demo tanks have one; <code>r.LcmNav.WaterSurfaceIsBoundary</code>, <code>r.LcmNav.Flight.FishStayInWater</code>. A water volume wider than 200 m - a sea - gets no surface boundary, <code>r.LcmNav.WaterSurfaceMaxSizeCm</code>: its sheet would split the octree along the whole surface.)
+<li><strong>A Water Volume round the water.</strong> Add a <em>Physics Volume</em>, tick <strong>Water Volume</strong>, and size it to the water. A Fish-archetype body inside it never leaves it, and its top face is a navigation boundary, so routes stay under the surface. Without one, the plugin doesn't know where the water ends. A route between two points can then go through the air above a rock or over the glass, and a fish can swim out of the tank. (The demo tanks have one; <code>r.LcmNav.WaterSurfaceIsBoundary</code>, <code>r.LcmNav.Flight.FishStayInWater</code>. A water volume wider than 200 m - a sea - gets no surface boundary, <code>r.LcmNav.WaterSurfaceMaxSizeCm</code>: its sheet would split the octree along the whole surface.)
 </li>
 <li><strong>Glass that is solid to the octree.</strong> The panes need collision that blocks WorldStatic and at least two leaves of thickness (2 x Min Voxel Size); a pane one leaf thick can voxelize open.
 </li>
@@ -353,13 +353,13 @@
 <h2 id="what-to-expect-at-small-scale">What to expect at small scale
 </h2>
 <ul>
-<li><strong>Cost trends volumetric.</strong> In a world a few dozen leaves across nothing is far from geometry <em>in leaves</em>, so the octree cannot stay coarse anywhere; node count grew 7.3-7.9× per halving of the leaf on the test tank. The voxel budget (64 M cells per volume) still applies.
+<li><strong>Memory grows quickly as the leaf gets smaller.</strong> In a world only a few dozen leaves across, every point is close to geometry when measured in leaves, so the octree can't use large nodes anywhere. In the test tank, the node count grew 7.3-7.9× each time the leaf size was halved. The voxel budget (64 M cells per volume) still applies.
 </li>
 <li><strong>Unreachable goals are cheap.</strong> Free-space components are labelled at build time, so a goal behind sealed stone fails before any search runs.
 </li>
-<li><strong>Bakes land in your project.</strong> <code>Bake to Asset</code> writes under <strong>Project Settings → LCM Nav3D → Baked Navigation Path</strong> (default <code>/Game/LcmNavigation/BakedData</code>). If you point that at a plugin's content folder, the manager warns when it bakes a map that lives outside that plugin: the bake would ship with the plugin.
+<li><strong>Bakes land in your project.</strong> <code>Bake to Asset</code> writes under <strong>Project Settings → LCM Nav3D → Baked Navigation Path</strong> (default <code>/Game/LcmNavigation/BakedData</code>). If you point that at a plugin's content folder, the manager warns you when it bakes a map from outside that plugin, because the bake would then ship with the plugin.
 </li>
-<li><strong>Infinite mode is not for this.</strong> Its per-chunk budget forces <code>Chunk Size ≤ 400 × Min Voxel Size</code>; the panel says so if you try.
+<li><strong>Don't use infinite mode for small worlds.</strong> Its per-chunk budget forces <code>Chunk Size ≤ 400 × Min Voxel Size</code>; the panel says so if you try.
 </li>
 </ul>
 <div class="pager"><a href="gameplay-debugger.html">&larr; The Gameplay Debugger</a><a href="fly-to-location.html">Fly To Location node &rarr;</a></div>

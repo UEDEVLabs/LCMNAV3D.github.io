@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -485,7 +485,7 @@
 </li>
 <li><code>SeparationWeight</code> - How hard should we push away from neighbors? (0.0 = No push, 2.0 = Strong push)
 </li>
-<li><code>bUseFlightMovementComponent</code> - Delegate locomotion to a ULcmFlightMovementComponent on the pawn (for ultra-realistic 6-DOF drone/bird/fish dynamics). When ON and the pawn has an enabled component, this task only produces the guidance velocity (pure-pursuit + avoidance + arrival slowdown) and the component owns position + orientation. OFF (default) = the built-in kinematic integrator below. The kinematic-only knobs below (accel/banking/flight style) hide when this is ON - the component owns them via its FlightConfig.
+<li><code>bUseFlightMovementComponent</code> - Delegate locomotion to a ULcmFlightMovementComponent on the pawn (for realistic 6-DOF drone/bird/fish dynamics). When ON and the pawn has an enabled component, this task only produces the guidance velocity (pure-pursuit + avoidance + arrival slowdown) and the component owns position + orientation. OFF (default) = the built-in kinematic integrator below. The kinematic-only knobs below (accel/banking/flight style) hide when this is ON - the component owns them via its FlightConfig.
 </li>
 <li><code>MaxAcceleration</code> - How fast can we accelerate? (Higher = Snappier, Lower = Drifty/Heavy) [Kinematic only - owned by the flight component when delegating.]
 </li>
@@ -509,13 +509,13 @@
 </li>
 <li><code>PathCenteringForce</code> - PATH CORRECTION How hard to pull agents back to the center line? (e.g. 500) 0 = Free drift (current behavior) 1000 = Strict line following (Train on tracks)
 </li>
-<li><code>bEnableGoalPrediction</code> - When true, AND r.LcmNav.Chase.Enable != 0, the task resolves moving Object-key goals through FLcmGoalProvider and uses constant-velocity lead prediction (linear-extrapolation intercept) as the planner goal. When false, the legacy snapshot behavior is preserved bit-identically.
+<li><code>bEnableGoalPrediction</code> - When true, AND r.LcmNav.Chase.Enable != 0, the task resolves moving Object-key goals through FLcmGoalProvider and uses constant-velocity lead prediction (linear-extrapolation intercept) as the planner goal. When false, the old snapshot behavior is kept exactly as it was.
 </li>
 <li><code>LeadSecondsCap</code> - Upper bound on lead time (seconds). Forwarded as LeadSecondsCap to FLcmGoalProvider::GetLeadPosition. Clamps blow-up when the target is receding faster than the agent can close. Override at runtime via r.LcmNav.Chase.LeadSecondsCap (&gt;= 0). Typical 0.5 to 2.0.
 </li>
 <li><code>DriftReplanCm</code> - Distance (cm) between the last-planned goal and the current lead position that triggers an automatic replan. Override at runtime via r.LcmNav.Chase.DriftReplanCm (&gt;= 0).
 </li>
-<li><code>bForceEnableChase</code> - Per-task override for the <code>r.LcmNav.Chase.Enable</code> CVar gate. When true, chase activates from <code>bEnableGoalPrediction</code> alone - you don't need to know the CVar exists. Default false preserves the legacy two-gate behavior (CVar AND bEnableGoalPrediction) bit-identically. The CVar is retained as a project-wide kill switch / debug toggle.
+<li><code>bForceEnableChase</code> - Per-task override for the <code>r.LcmNav.Chase.Enable</code> CVar gate. When true, chase activates from <code>bEnableGoalPrediction</code> alone - you don't need to know the CVar exists. Default false keeps the old two-gate behavior (CVar AND bEnableGoalPrediction) exactly as it was. The CVar is retained as a project-wide kill switch / debug toggle.
 </li>
 </ul>
 <h3 id="lcmbttask_followflowfield"><code>LcmBTTask_FollowFlowField</code>
@@ -1013,7 +1013,7 @@
 <p><strong>Properties</strong>
 </p>
 <ul>
-<li><code>bEnabled</code> - Master opt-in. Default false → the component is inert (base behaviour), guaranteeing byte-identical motion to before it was added.
+<li><code>bEnabled</code> - Master opt-in. Default false → the component does nothing, so motion is exactly the same as without it.
 </li>
 <li><code>FlightConfig</code> - Body/aero/control tuning. The LocomotionModel + Archetype selectors live at the top of this struct and drive which parameters are shown (only the selected model/archetype's fields appear).
 </li>
@@ -1100,7 +1100,7 @@
 </ul>
 <h3 id="lcmmassflowsteertrait"><code>LcmMassFlowSteerTrait</code>
 </h3>
-<p>[DEPRECATED - M3, 2026-07-03] Legacy flow-field crowd trait. Superseded by the unified <code>ULcmMassNavAgentTrait</code> ("LCM Nav3D Agent") with NavMode=FlowField, which composes a byte-identical archetype. Kept fully functional; prefer the unified trait for new content. Authoring trait for a flow-field-steered crowd agent.
+<p>[DEPRECATED - M3, 2026-07-03] Legacy flow-field crowd trait. Superseded by the unified <code>ULcmMassNavAgentTrait</code> ("LCM Nav3D Agent") with NavMode=FlowField, which builds exactly the same archetype. Kept fully functional; prefer the unified trait for new content. Authoring trait for a flow-field-steered crowd agent.
 </p>
 <p><strong>Properties</strong>
 </p>
@@ -1182,7 +1182,7 @@
 </ul>
 <h3 id="lcmmassnav3dtrait"><code>LcmMassNav3DTrait</code>
 </h3>
-<p>[DEPRECATED - M3, 2026-07-03] Legacy path-based agent trait. Superseded by the unified <code>ULcmMassNavAgentTrait</code> ("LCM Nav3D Agent") with NavMode=PathFollowing, which composes a byte-identical archetype. Kept fully functional so existing configs (DA_MassAgent_Apex) keep working; prefer the unified trait for new content.
+<p>[DEPRECATED - M3, 2026-07-03] Legacy path-based agent trait. Superseded by the unified <code>ULcmMassNavAgentTrait</code> ("LCM Nav3D Agent") with NavMode=PathFollowing, which builds exactly the same archetype. Kept fully functional so existing configs (DA_MassAgent_Apex) keep working; prefer the unified trait for new content.
 </p>
 <p>Authoring trait: attaches the path nav fragments and exposes radius/speed, pathfinding, and natural-movement settings.
 </p>
@@ -1487,7 +1487,7 @@
 </li>
 <li><code>AllowedObstacleClasses</code> - If empty, ALL overlapping geometry is voxelized. If populated, ONLY these actor classes are voxelized.
 </li>
-<li><code>CoarseCellSize</code> - The size of a single topological macro-cell. 2500 units (25 meters) is the AAA standard for coarse LOD pathfinding.
+<li><code>CoarseCellSize</code> - The size of a single topological macro-cell. 2500 units (25 meters) is a common size for coarse LOD pathfinding.
 </li>
 <li><code>bUseFlowFields</code> - When true, the request classifier can elect the flow-field path instead of per-agent A* for swarms of ≥ <code>FlowFieldThreshold</code> agents sharing a goal. Off by default; opt-in for swarm gameplay.
 </li>
@@ -1555,7 +1555,7 @@
 </li>
 <li><code>bBidirectional</code> - When true (default), the link can be traversed Start→End AND End→Start. Set false for one-way patterns (teleporter, drop-down, etc.).
 </li>
-<li><code>bAutoRegister</code> - Auto-register with the LCM Nav3D link registry on BeginPlay so v2 solver integration discovers the link without buyer code.
+<li><code>bAutoRegister</code> - Auto-register with the LCM Nav3D link registry on BeginPlay so a later solver version can find the link without any code on your side.
 </li>
 <li><code>TraversalCostCm</code> - Traversal cost (cm-equivalent) added to the path through this link. Default 0 = no penalty (geometric distance counts as-is).
 </li>

@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -240,12 +240,12 @@
   <h1 id="tutorial-11---lcmnav3d-in-the-gameplay-debugger">Tutorial 11 -
 LCMNav3D in the Gameplay Debugger</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> LCMNav3D ships an <code>LCMNav3D</code>
+<p><strong>In short:</strong> LCMNav3D ships an <code>LCMNav3D</code>
 category in the stock UE5 Gameplay Debugger. In PIE, press the standard
 Gameplay Debugger key (usually apostrophe <code>'</code>), select an
-agent → the category renders per-agent + plugin-wide state alongside
-Recast / BT / EQS / Perception. Zero project setup beyond the plugin
-being loaded.</p>
+agent, and the category shows that agent's state and the plugin's state
+next to Recast, BT, EQS and Perception. You don't have to set anything up
+in your project. It works as soon as the plugin is loaded.</p>
 <h2 id="what-it-shows">What it shows</h2>
 <h3 id="plugin-wide-block-always">Plugin-wide block (always)</h3>
 <pre><code>== LCMNav3D ==
@@ -355,8 +355,9 @@ out when <code>WITH_GAMEPLAY_DEBUGGER=0</code>).</li>
 <h2 id="what-survives-pie--editor--pie-reloads">What survives PIE →
 editor → PIE reloads</h2>
 <ul>
-<li><strong>CVars</strong> (debug toggles, chase tuning, OTel NDJSON,
-etc.) - persist across PIE sessions, reset on editor restart.</li>
+<li><strong>CVars</strong> (debug toggles, chase tuning, telemetry
+output and so on) stay set between PIE sessions and reset when you
+restart the editor.</li>
 <li><strong>Profile loader state</strong>
 (<code>ULcmNavProfileSubsystem</code>) - re-applied on each PIE init if
 the profile path is in your project's startup.</li>
@@ -368,12 +369,11 @@ actor's <code>BeginPlay</code>; PIE-stop clears via
 <li><strong>NavSystem bridge proxy</strong> - spawned per-world; new PIE
 session = new proxy.</li>
 </ul>
-<p>The Gameplay Debugger category itself is <strong>always-on after
-module load</strong> - it doesn't lose its registration across PIE
-sessions because the category lives in the GameplayDebugger module's
-category map, not in the world.</p>
-<h2 id="adding-new-fields-v2-design-hook">Adding new fields (v2 design
-hook)</h2>
+<p>The Gameplay Debugger category itself <strong>stays on once the
+module has loaded</strong>. It keeps its registration between PIE
+sessions, because it is stored in the GameplayDebugger module's category
+list and not in the world.</p>
+<h2 id="adding-new-fields-v2-design-hook">Adding your own fields</h2>
 <p>To extend the category in your project subclass:</p>
 <pre class="cpp"><code>#if WITH_GAMEPLAY_DEBUGGER
 class FProjectGameplayDebuggerCategory_Apex: public FGameplayDebuggerCategory_LcmNav3D
@@ -398,13 +398,13 @@ module startup.</p>
 <li><code>CollectData</code> is called once per tick per active
 category. Cost ≈ 10 µs (one <code>GetActorOfClass</code> + a few
 accessors + a perception query when an actor is selected).</li>
-<li><code>DrawData</code> runs only when the HUD is visible. Cost ≈
-negligible (text rendering).</li>
-<li>Shipping builds: <strong>zero cost</strong> (entire category
-compiles out via <code>WITH_GAMEPLAY_DEBUGGER</code> gate).</li>
+<li><code>DrawData</code> only runs when the HUD is visible, and it only
+draws text, so it costs very little.</li>
+<li>Shipping builds: <strong>no cost</strong>, because the whole category
+is compiled out by <code>WITH_GAMEPLAY_DEBUGGER</code>.</li>
 </ul>
-<h2 id="related-lcm-nav3d-debug-surfaces">Related LCM Nav3D debug
-surfaces</h2>
+<h2 id="related-lcm-nav3d-debug-surfaces">Other LCM Nav3D debug
+tools</h2>
 <ul>
 <li><code>r.LcmNav.Debug.StateTreeOverlay</code> - on-screen pawn state
 DrawDebugString</li>

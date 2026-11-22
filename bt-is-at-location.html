@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -240,13 +240,13 @@
   <h1 id="bt-isatlocation---use-the-stock-ue5-decorator">BT IsAtLocation -
 use the stock UE5 decorator</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> Unreal Engine already ships
+<p><strong>In short:</strong> Unreal Engine already ships
 <code>UBTDecorator_IsAtLocation</code>. Use it directly on LCM Nav3D
 pawns. No LCM Nav3D-specific variant exists or is needed.</p>
-<h2 id="why-we-didnt-ship-lcm_btdecorator_isatlocation">Why we didn't
-ship <code>LCM_BTDecorator_IsAtLocation</code></h2>
-<p>This audit found that <code>UBTDecorator_IsAtLocation</code> already
-does what an LCM Nav3D-side variant would do:</p>
+<h2 id="why-we-didnt-ship-lcm_btdecorator_isatlocation">Why there is no
+<code>LCM_BTDecorator_IsAtLocation</code></h2>
+<p><code>UBTDecorator_IsAtLocation</code> already does everything an LCM
+Nav3D version would do:</p>
 <ul>
 <li>Reads a <code>Vector</code> or <code>Object</code> blackboard
 key</li>
@@ -255,9 +255,9 @@ key</li>
 <li>Optional <code>bPathFindingBasedTest</code> reuses the active
 path-following result</li>
 </ul>
-<p>This is the canonical "did the AI reach the location" predicate.
-Re-shipping it on the LCM Nav3D side would be redundant and force you
-to pick between two identical nodes.</p>
+<p>This is the standard way to check "did the AI reach the location".
+A copy in LCM Nav3D would only make you choose between two identical
+nodes.</p>
 <h2 id="three-step-usage-on-an-lcm-nav3d-pawn">Three-step usage on an
 LCM Nav3D pawn</h2>
 <ol type="1">
@@ -272,8 +272,8 @@ use Vector.</p></li>
 <li><p><strong>Set <code>AcceptableRadius</code></strong> to your "we
 count this as arrived" distance in cm. Typical: 50-150 cm.</p></li>
 </ol>
-<p>That's it. The decorator works on every LCM Nav3D pawn that has an
-AIController - no LCM Nav3D-specific configuration needed.</p>
+<p>The decorator works on every LCM Nav3D pawn that has an AIController,
+and you don't need any LCM Nav3D settings for it.</p>
 <h2 id="when-to-use-the-path-finding-variant">When to use the
 path-finding variant</h2>
 <p><code>UBTDecorator_IsAtLocation::bPathFindingBasedTest</code> makes
@@ -299,8 +299,8 @@ LOS predicate</li>
 <li><code>LCM_BTDecorator_ThreatVisibleViaPerception</code> -
 AIPerception + LCM Nav3D LOS composite</li>
 </ul>
-<p>These are genuinely additive surfaces; "IsAtLocation" is not - use
-stock.</p>
+<p>These do things the stock nodes can't. "IsAtLocation" doesn't, so use
+the stock one.</p>
 
   <div class="pager"><a href="bt-wait.html">&larr; Wait</a><a href="bt-look-at.html">Look At &rarr;</a></div>
   <footer>

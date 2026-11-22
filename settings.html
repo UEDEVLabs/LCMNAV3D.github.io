@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -253,14 +253,14 @@
 </p>
 <p><img src="images/manager-details-top.png" alt="Manager Details, upper half: header pills, Configuration Health, What You Get, section 1 Setup and section 2 Voxels" width="792" height="1074" decoding="async" fetchpriority="high">
 </p>
-<p><strong>Figure 1 - Sections 1-2, plus the three blocks above them.</strong> <em>Configuration Health</em> and <em>What You Get</em> are not settings; they are what the settings below <em>resolve to</em>. They are worth reading before you change anything - the health block in this shot is reporting a raised invoker radius, and the <em>What You Get</em> block is reporting a 250 cm finest leaf from a 100 cm <code>Min Voxel Size</code>, which is the single most misread number in the plugin.
+<p><strong>Figure 1 - Sections 1-2, plus the three blocks above them.</strong> <em>Configuration Health</em> and <em>What You Get</em> are not settings; they are what the settings below <em>resolve to</em>. They are worth reading before you change anything - the health block in this shot is reporting a raised invoker radius, and the <em>What You Get</em> block is reporting a 250 cm finest leaf from a 100 cm <code>Min Voxel Size</code>. That difference is the one people most often misunderstand.
 </p>
 <p><img src="images/manager-details-lower.png" alt="Manager Details, lower half: sections 3 Collision, 4 Performance, 5 Coarse Skeleton, 6 Debug and 7 Runtime State" width="780" height="1008" loading="lazy" decoding="async">
 </p>
 <p><strong>Figure 2 - Sections 3-7.</strong> Two things to notice:
 </p>
 <ul>
-<li><strong>Section 7 is read-only.</strong> Every <code>(auto)</code> row is a value the Streaming Profile <em>derived</em>, shown so the profile is auditable rather than magic. <code>Frontier Stall Recovery (auto)</code> is the only place a BehaviorTree task's <code>Inherit</code> can be resolved for you, because a BT asset is not owned by a level and cannot know which manager it will run under.
+<li><strong>Section 7 is read-only.</strong> Every <code>(auto)</code> row is a value the Streaming Profile <em>derived</em>, shown so you can see exactly what the profile chose. <code>Frontier Stall Recovery (auto)</code> is the only place a BehaviorTree task's <code>Inherit</code> can be resolved for you, because a BT asset is not owned by a level and cannot know which manager it will run under.
 </li>
 <li><strong>Sections hide what does not apply.</strong> A finite world shows no Coarse Skeleton options, and <code>Max Generations Per Frame</code> disappears unless you are finite or on the Manual profile - the plugin does not show you a property it is going to ignore.
 </li>
@@ -272,7 +272,7 @@
 </h3>
 <p>The biggest decision. Off = one fixed navigation volume built up front. On = the world is divided into chunks generated around agents as they move.
 </p>
-<p><strong>Leave it off</strong> unless you have a genuinely unbounded or streaming world. Finite is simpler, faster and more predictable.
+<p><strong>Leave it off</strong> unless your world really is unbounded or streamed. Finite is simpler, faster and more predictable.
 </p>
 <p>Ticking this hides <code>World Extent</code> and reveals <code>Chunk Size</code> and the skeleton options.
 </p>
@@ -398,22 +398,22 @@
 </p>
 </blockquote>
 <blockquote>
-<p>⚠ <strong>The volume does NOT follow the manager actor.</strong> The manager is a logical singleton with no root component, so its position is ignored - moving it does not move the navigation volume. Build your playable space around the world origin, or switch to an infinite world. The manager's Details panel reports the resolved bounds under <strong>What You Get</strong> so you can see them directly.
+<p><strong>Note: The volume does NOT follow the manager actor.</strong> The manager is a logical singleton with no root component, so its position is ignored - moving it does not move the navigation volume. Build your playable space around the world origin, or switch to an infinite world. The manager's Details panel reports the resolved bounds under <strong>What You Get</strong> so you can see them directly.
 </p>
 </blockquote>
 <h3 id="chunk-size-default-8000-cm-infinite-only"><code>Chunk Size</code>: default <strong>8000 cm</strong> <em>(infinite only)</em>
 </h3>
 <p>Edge length of one streaming chunk.
 </p>
-<p><em>Range: 1000-800000. Recommended UI range (slider): 3000-8000.</em> The clamp carries the same caveat as <code>World Extent</code> above - it is a sanity ceiling, not the real budget, which depends on <code>Min Voxel Size</code> and is reported live in Configuration Health. <strong>Here the slider range is the number that matters:</strong> it is the measured-reliable band, and going outside it degrades long-range routing regardless of the budget.
+<p><em>Range: 1000-800000. Recommended UI range (slider): 3000-8000.</em> The clamp carries the same caveat as <code>World Extent</code> above - it is a sanity ceiling, not the real budget, which depends on <code>Min Voxel Size</code> and is reported live in Configuration Health. <strong>Here the slider range is the number to follow:</strong> it is the range that tested reliably, and values outside it make long-range routing worse whatever the budget is.
 </p>
 <blockquote>
-<p><strong>⚠ Do not treat this as a free dial.</strong> It affects memory, generation cost, <em>and</em> whether long routes can be found at all. <strong>8000 is the tested default.</strong> If you change it, re-test long-range routing specifically: a value that looks fine for short hops can break distant paths.
+<p><strong>Note: be careful when changing this.</strong> It affects memory, generation cost, <em>and</em> whether long routes can be found at all. <strong>8000 is the tested default.</strong> If you change it, re-test long-range routing specifically: a value that looks fine for short hops can break distant paths.
 </p>
 </blockquote>
-<h4 id="-chunk-size-changes-navigation-precision-and-not-in-the-direction-you-expect">⚠ Chunk Size changes navigation <em>precision</em>, and not in the direction you expect
+<h4 id="-chunk-size-changes-navigation-precision-and-not-in-the-direction-you-expect">Chunk Size changes navigation <em>precision</em>, and not in the direction you expect
 </h4>
-<p>This is the single most surprising thing about the setting, so it is worth stating plainly.
+<p>This surprises a lot of people, so here is how it works.
 </p>
 <p>Subdivision stops when a child's half-extent falls below <code>Min Voxel Size</code>, starting from <code>Chunk Size / 2</code>. The finest leaf edge you actually get is therefore <code>Chunk Size / 2ᵏ</code> - it lands somewhere between <strong>2× and 4× <code>Min Voxel Size</code></strong>, and it does <strong>not</strong> improve as Chunk Size shrinks. Measured on a real level at <code>Min Voxel Size = 100</code>:
 </p>
@@ -497,7 +497,7 @@
 </blockquote>
 <h3 id="world-scale-default-standard"><code>World Scale</code>: default <strong>Standard</strong>
 </h3>
-<p>Which set of centimetre constants the manager uses. <code>Standard</code> is the shipped tuning for metre-scale worlds at a 100 cm leaf and is byte-identical to earlier releases. <code>Small</code> derives those constants from the finest leaf this manager produces - Clearance Padding becomes half the leaf (written into the property, which turns read-only), and the start-rescue probe distances and the large-node cost threshold scale with it - so a centimetre-scale world such as a 120 × 70 × 40 cm aquarium at 1 cm voxels gets defaults that mean the same thing. <code>Custom</code> keeps whatever you set. Change <code>Min Voxel Size</code>, <code>World Extent</code> or <code>Chunk Size</code> under <code>Small</code> and the padding is re-derived; it is re-derived again at BeginPlay so config-driven setups match the editor.
+<p>Which set of centimetre constants the manager uses. <code>Standard</code> is the default tuning for metre-scale worlds at a 100 cm leaf, and it behaves exactly like earlier releases. <code>Small</code> derives those constants from the finest leaf this manager produces - Clearance Padding becomes half the leaf (written into the property, which turns read-only), and the start-rescue probe distances and the large-node cost threshold scale with it - so a centimetre-scale world such as a 120 × 70 × 40 cm aquarium at 1 cm voxels gets defaults that mean the same thing. <code>Custom</code> keeps whatever you set. Change <code>Min Voxel Size</code>, <code>World Extent</code> or <code>Chunk Size</code> under <code>Small</code> and the padding is re-derived; it is re-derived again at BeginPlay so config-driven setups match the editor.
 </p>
 <p><code>Min Voxel Size</code> now accepts down to <strong>0.5 cm</strong> and <code>World Extent</code> down to <strong>50 cm</strong>. The finest leaf is 2-4× <code>Min Voxel Size</code>, so set half the leaf you want and make the world edge a power-of-two multiple of it. Small worlds are small in <em>leaves</em> too: below ~32 leaves across, node count grows nearly with volume as the leaf shrinks (the panel says so). See <a href="small-worlds.html">Small Worlds</a>.
 </p>
@@ -518,7 +518,7 @@
 <p><em>Range: 0-1000. Recommended UI range: 0-300.</em>
 </p>
 <blockquote>
-<p><strong>⚠ Keep this well below <code>Min Voxel Size</code>.</strong> Padding that approaches voxel size fills in doorways and corridors completely, and the pathfinder reports no route through openings you can clearly see. <strong>This is the single most common cause of "it says there's no path but I can see the gap".</strong>
+<p><strong>Note: Keep this well below <code>Min Voxel Size</code>.</strong> Padding that approaches voxel size fills in doorways and corridors completely, and the pathfinder reports no route through openings you can clearly see. <strong>This is the most common reason for "it says there's no path but I can see the gap".</strong>
 </p>
 </blockquote>
 <h3 id="coarse-cell-size-default-2500-cm"><code>Coarse Cell Size</code>: default <strong>2500 cm</strong>

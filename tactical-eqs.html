@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -240,11 +240,11 @@
   <h1 id="tutorial-07---authoring-true-3d-tactical-eqs">Tutorial 07 -
 Authoring true-3D tactical EQS</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> LCM Nav3D ships EQS generators and tests that
-work in <strong>true 3D</strong> - candidate points anywhere in the
-navigable volume, scored by volumetric SVO line-of-sight, cover,
-threat-exposure, LCM Nav3D-path-distance and height. Author a query from
-these nodes exactly like stock EQS; the only differences are the
+<p><strong>In short:</strong> LCM Nav3D ships EQS generators and tests that
+work in <strong>3D</strong>. They generate candidate points anywhere in
+the navigable volume and score them by SVO line of sight, cover, threat
+exposure, LCM Nav3D path distance and height. You build a query from
+these nodes the same way as with stock EQS. The only differences are the
 <code>Apex:</code>-prefixed generators/tests and that "distance" means
 <em>LCM Nav3D path</em>, not Euclidean or navmesh.</p>
 <h2 id="the-lcm-nav3d-eqs-node-catalog">The LCM Nav3D EQS node
@@ -363,38 +363,36 @@ threats) - <em>Score↑</em> - favour high ground.</li>
 <li><strong>Test: LCM Nav3D | Reachability 3D</strong> (Context =
 Querier) - <em>Filter</em> - the agent must be able to get there.</li>
 </ol>
-<p>The winning item is a reachable, high, in-cover position that still
-has line of sight to the threat - a sniper perch, chosen in full 3D.</p>
+<p>The best item is a high position the agent can reach, partly in cover,
+with line of sight to the threat, which makes it a good sniper perch.</p>
 <p><img src="images/eqs-example.png"
 alt="An EQS query graph with the LCM Nav3D | Points In SVO Volume generator carrying LcmLineOfSight3D and LcmPathDistance3D tests, and the test Details panel open" width="1514" height="784" decoding="async" fetchpriority="high"></p>
-<p><strong>Figure 07.1 - The anatomy of a Nav3D query.</strong> One
-<strong>generator</strong> produces candidate points, then
-<strong>tests</strong> score or filter them, top to bottom. Here
-<code>Apex: Points In SVO Volume</code> is emitting unblocked 3D points
-across an 800×800×400 half-extent at 200 spacing - <em>unblocked</em>
-being the part a floor-plane generator cannot do, because it never had a
-third axis to be blocked in.</p>
+<p><strong>Figure 07.1: the parts of a Nav3D query.</strong> One
+<strong>generator</strong> makes candidate points, and then the
+<strong>tests</strong> score or filter them, from top to bottom. Here
+<code>Apex: Points In SVO Volume</code> makes unblocked 3D points over an
+800×800×400 half-extent at 200 spacing. A floor-based generator can't do
+this, because it only knows about points on the ground.</p>
 <p>The two tests are colour-coded by role in the graph: a
 <strong>filter</strong> removes items, a <strong>score</strong> ranks
 them. The Details panel on the right belongs to the selected test:</p>
 <ul>
 <li><strong><code>Test Purpose</code></strong> -
-<code>Score Only</code>, <code>Filter Only</code>, or both. This is the
-switch that decides whether a failing item is <em>penalised</em> or
-<em>deleted</em>.</li>
+<code>Score Only</code>, <code>Filter Only</code>, or both. This decides
+whether an item that fails the test is <em>scored lower</em> or
+<em>removed</em>.</li>
 <li><strong><code>Context</code></strong> - what the test measures
 <em>against</em>. <code>EnvQueryContext_LcmKnownThreats</code> here, so
 line of sight is evaluated toward the threats the agent knows
 about.</li>
 <li><strong><code>Agent Radius</code></strong> - how wide the thing that
-has to fit is. Leave this at your real agent size; a query that scores a
-perch a 50 cm drone can reach tells you nothing about a 200 cm
-gunship.</li>
+has to fit is. Set it to your real agent size. A perch that a 50 cm drone
+can reach may be too small for a 200 cm gunship.</li>
 <li><strong><code>Scoring Equation</code></strong> and the
 <strong>Preview</strong> graph - the curve mapping raw measurement to
-score. The preview updates live, so you can see a <code>Linear</code>
-ramp become a <code>Square</code> bias before you ever run the
-query.</li>
+score. The preview updates as you edit, so you can see how a
+<code>Linear</code> curve changes to <code>Square</code> before you run
+the query.</li>
 </ul>
 <h2 id="step-2---the-eqs-testing-pawn">Step 2 - The EQS Testing
 Pawn</h2>
@@ -404,8 +402,8 @@ place threats so the contexts resolve. The candidate items render as
 colour-graded balls; tweak generator/test parameters and watch the
 scores update live.</p>
 <blockquote>
-<p>UE's stock <code>EQSTestingPawn</code> is all you need - the LCM
-Nav3D nodes render through it normally.</p>
+<p>You only need UE's stock <code>EQSTestingPawn</code>. The LCM Nav3D
+nodes show up in it like any other EQS node.</p>
 </blockquote>
 <h2 id="step-3---wire-the-result-into-a-behavior-tree">Step 3 - Wire the
 result into a Behavior Tree</h2>
@@ -420,8 +418,7 @@ move.</li>
 </ol>
 <p>(StateTree: run the query from a task that stores the location, then
 transition to your LCM Nav3D move task - see Tutorial 05.)</p>
-<h2 id="the-five-shipped-example-queries">The five shipped example
-queries</h2>
+<h2 id="the-five-shipped-example-queries">Example queries</h2>
 <p>Recipes you can build now from the catalog above:</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>

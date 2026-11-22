@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -239,25 +239,27 @@
   <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Documentation</a><span class="sep" aria-hidden="true">/</span><a href="index.html#part-i-getting-started">Getting Started</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">Core Concepts</span></nav>
   <h1 id="tutorial-02-core-concepts">Tutorial 02: Core Concepts</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> LCM Nav3D carves your level's <strong>empty
-air</strong> into a tree of boxes (a Sparse Voxel Octree) and paths
-through the empty ones. You place one
+<p><strong>In short:</strong> LCM Nav3D splits the <strong>empty
+space</strong> in your level into a tree of boxes (a Sparse Voxel Octree)
+and finds paths through the empty ones. You place one
 <strong><code>LcmNavigationManagerSVO</code></strong> actor per level,
 tell it how big your world is and how small the tightest gap is, and it
-does the rest.</p>
-<p><strong>Time:</strong> ~10 minutes reading. No project changes. This
-is the chapter that makes every later setting make sense.</p>
+handles the rest.</p>
+<p><strong>Time:</strong> about 10 minutes of reading. You don't change
+anything in your project. The settings in later chapters will be easier
+to follow after this one.</p>
 <hr />
 <h2 id="1-why-not-just-use-unreals-navmesh">1. Why not just use Unreal's
 navmesh?</h2>
 <p>Unreal's Recast navmesh is a <strong>surface</strong>. It answers
-"where can I stand?" by flattening your level onto walkable polygons.
-That is exactly right for a soldier and completely wrong for a dragon,
-because the interesting space for a flyer is the part with nothing in
-it.</p>
+"where can I stand?" by covering the walkable parts of your level with
+polygons. That works well for a soldier. It doesn't work for a dragon,
+because a flying agent needs to know about the space above the ground,
+and the navmesh has nothing there.</p>
 <p>LCM Nav3D answers a different question: <strong>"where is there empty
-air?"</strong> It represents the volume, not the floor. That's the whole
-idea. Everything else is engineering around making that fast.</p>
+space?"</strong> It stores the volume of the level instead of the floor.
+Most of the rest of the plugin is about making that quick to build and
+quick to search.</p>
 <hr />
 <h2 id="2-the-sparse-voxel-octree-in-one-picture">2. The Sparse Voxel
 Octree, in one picture</h2>
@@ -269,7 +271,7 @@ box of free space.</li>
 cubes and ask each one the same question.</li>
 <li>Repeat until the cubes reach your minimum size.</li>
 </ol>
-<p>That's it. That's the octree.</p>
+<p>The result of those steps is the octree.</p>
 <pre><code>     Big empty region                Region with a wall in it
   ┌───────────────────┐          ┌─────────┬─────────┐
   │                   │          │  empty  │  empty  │
@@ -278,23 +280,22 @@ cubes and ask each one the same question.</li>
   │       Done.       │          ├────┼────┤         │        subdividing
   │                   │          │ e  │ ▓▓ │         │    e = empty, stops
   └───────────────────┘          └────┴────┴─────────┘</code></pre>
-<p><strong>"Sparse" is the important word.</strong> Open sky costs
-almost nothing: one node covers a huge volume. Detail only appears where
-geometry actually is. This is why a 2 km map doesn't cost 2 km worth of
-memory: most of it is air, and air is cheap.</p>
-<p><strong>What this means for you:</strong> the cost of your navigation
-data is driven by <em>how much clutter you have</em>, not by how big
-your level is.</p>
+<p><strong>Sparse</strong> means open sky takes very little memory,
+because one node can cover a huge volume. The octree only gets detailed
+near geometry. So a 2 km map doesn't need memory for every cubic metre.
+Most of it is empty air, which is stored in a few large nodes.</p>
+<p><strong>What this means for you:</strong> the size of your navigation
+data depends mostly on <em>how much geometry your level has</em>, and
+much less on how big the level is.</p>
 <hr />
 <h2 id="3-the-one-actor-you-must-place">3. The one actor you must
 place</h2>
-<p><strong><code>LcmNavigationManagerSVO</code></strong>: drop one into
-your level. One per level, that's the rule.</p>
-<p>It owns the octree, runs the pathfinder, and answers every query.
-Every agent talks to it. If it isn't in the level, nothing
-navigates.</p>
-<p>Its Details panel is deliberately organised in the order you should
-think about it:</p>
+<p><strong><code>LcmNavigationManagerSVO</code></strong>: place one in
+your level. You need exactly one per level.</p>
+<p>It holds the octree, runs the pathfinder and answers every query.
+Every agent uses it, so if it isn't in the level, nothing can
+navigate.</p>
+<p>Its Details panel is sorted in the order you should set things up:</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
@@ -331,13 +332,14 @@ think about it:</p>
 </tbody>
 </table>
 </div>
-<p>Full field-by-field detail is in the <a href="settings.html">Settings
-Reference</a>. Here we only cover the concepts behind them.</p>
+<p>Every field is described in the <a href="settings.html">Settings
+Reference</a>. This page only covers the ideas behind them.</p>
 <hr />
 <h2 id="4-finite-vs-infinite-the-decision-that-shapes-everything">4.
-Finite vs Infinite: the decision that shapes everything</h2>
-<p>This is <strong><code>1. Setup → Infinite World</code></strong>, and
-it changes which other settings even appear.</p>
+Finite vs Infinite</h2>
+<p>This is <strong><code>1. Setup → Infinite World</code></strong>. It is
+the most important choice, and it changes which other settings are
+shown.</p>
 <h3 id="finite-default-infinite-world-unticked">Finite (default,
 <code>Infinite World</code> unticked)</h3>
 <p>One fixed box of navigation, built once. You set
@@ -348,7 +350,7 @@ outward).</p>
 <li>Built at <code>BeginPlay</code> if
 <strong><code>Auto Build On Play</code></strong> is on (it is by
 default).</li>
-<li>Simple, fast, completely predictable.</li>
+<li>Simple, fast and predictable.</li>
 <li><strong>Use this for:</strong> arenas, levels, dungeons, single
 buildings, anything with a boundary.</li>
 </ul>
@@ -363,23 +365,24 @@ thrown away behind them.</p>
 <ul>
 <li><strong>Use this for:</strong> open worlds, streaming levels,
 procedural terrain, anything without a boundary.</li>
-<li>Costs more complexity: chunks must generate before an agent can
-route through them.</li>
+<li>It is more complicated, because a chunk has to be generated before an
+agent can route through it.</li>
 </ul>
 <blockquote>
-<p><strong><code>ChunkSize</code> is not a free dial.</strong> It
-decides both memory <em>and</em> whether distant routes can be found at
-all. <strong>8000 is the tested default. Change it only with a reason
-and re-test.</strong> Larger chunks mean fewer, heavier generations;
-smaller means more, lighter ones, and more seams to cross.</p>
+<p><strong>Be careful with <code>ChunkSize</code>.</strong> It affects
+memory, and it also affects whether long routes can be found at all.
+<strong>8000 is the tested default. Only change it if you have a reason,
+and test again afterwards.</strong> Larger chunks mean fewer but heavier
+builds. Smaller chunks mean more, lighter builds and more seams for routes
+to cross.</p>
 </blockquote>
 <hr />
-<h2 id="5-resolution-the-two-settings-people-get-wrong">5. Resolution:
-the two settings people get wrong</h2>
+<h2 id="5-resolution-the-two-settings-people-get-wrong">5. Resolution
+settings</h2>
 <h3 id="minvoxelsize-default-100-cm"><code>MinVoxelSize</code> (default
 <strong>100 cm</strong>)</h3>
-<p>How small the smallest box is allowed to get. <strong>This is the
-single biggest driver of both quality and cost.</strong></p>
+<p>How small the smallest box can get. <strong>This setting has the
+biggest effect on both path quality and cost.</strong></p>
 <ul>
 <li><strong>Smaller</strong> → finds tighter gaps, uses more memory,
 takes longer to build.</li>
@@ -387,30 +390,31 @@ takes longer to build.</li>
 vanish and agents route around them.</li>
 </ul>
 <blockquote>
-<p><strong>⚠ It's a floor, not an exact size.</strong> The octree halves
-its way down, so the real leaf size is the world (or chunk) size
-repeatedly divided by two until it's about your
-<code>MinVoxelSize</code>. Two consequences that surprise people:</p>
+<p><strong>Note: this is a lower limit.</strong> The octree keeps
+halving its boxes, so the real leaf size is the world (or chunk) size
+divided by two again and again until it gets close to
+<code>MinVoxelSize</code>. That has two effects you might not expect:</p>
 <ul>
 <li>Changing <code>MinVoxelSize</code> from 100 to 90 may change
 <strong>nothing</strong> (same number of halvings).</li>
 <li>Changing it from 100 to 60 may cross a threshold and <strong>double
 your memory</strong> in one step.</li>
 </ul>
-<p>Tune it by testing, not by assuming the number is literal.</p>
+<p>Test your changes. The leaf size you get is usually not the exact
+number you typed in.</p>
 </blockquote>
 <p><strong>Rule of thumb:</strong> set <code>MinVoxelSize</code> to
 roughly <strong>half the narrowest gap</strong> your agents must fly
 through. A 3 m window needs about 150 cm or finer.</p>
 <h3 id="clearancepadding-default-100-cm"><code>ClearancePadding</code>
 (default <strong>100 cm</strong>)</h3>
-<p>Inflates obstacles by this much when voxelizing, so agents don't clip
+<p>Grows obstacles by this much when voxelizing, so agents don't clip
 walls.</p>
 <blockquote>
-<p><strong>⚠ The classic mistake: setting this too high seals your
-level.</strong> If padding approaches the size of your voxels, doorways
-and corridors fill in completely and the pathfinder reports "no route"
-through an opening you can plainly see. <strong>Keep
+<p><strong>Note: if you set this too high, your level gets sealed
+off.</strong> When the padding gets close to the voxel size, doorways and
+corridors fill in completely, and the pathfinder reports "no route"
+through an opening you can clearly see. <strong>Keep
 <code>ClearancePadding</code> well below
 <code>MinVoxelSize</code>.</strong> If you need more clearance than
 that, lower <code>MinVoxelSize</code> too.</p>
@@ -418,8 +422,7 @@ that, lower <code>MinVoxelSize</code> too.</p>
 <p>If agents refuse to path through an opening, this setting is the
 first thing to check.</p>
 <hr />
-<h2 id="6-how-a-path-is-actually-found">6. How a path is actually
-found</h2>
+<h2 id="6-how-a-path-is-actually-found">6. How a path is found</h2>
 <p>For a short hop, it's a straight search through the octree. For
 anything longer, there are two levels:</p>
 <pre><code>   1. MACRO: &quot;which chunks/regions do I cross?&quot;     (coarse, cheap, long-range)
@@ -427,9 +430,9 @@ anything longer, there are two levels:</p>
    2. MICRO: &quot;which voxels inside them?&quot;            (fine, detailed, short-range)
                      ↓
    3. SMOOTH: turn the blocky voxel path into a nice line</code></pre>
-<p>You don't call these yourself; it's automatic. The reason to know is
-that it explains a common symptom: if a long route fails but a short one
-works, the problem is usually <strong>macro</strong>. Either chunks are
+<p>This happens automatically, so you don't call these steps yourself.
+It is still useful to know about them. If a long route fails but a short
+one works, the problem is usually in the <strong>macro</strong> step. Either chunks are
 not generated yet, or <code>ChunkSize</code> is interacting badly with
 your layout.</p>
 <h3 id="choosing-a-solver">Choosing a solver</h3>
@@ -450,13 +453,13 @@ your layout.</p>
 </tr>
 <tr>
 <td><strong>Theta*</strong> <em>(Accurate, Any Angle)</em></td>
-<td>Most direct; cuts corners properly</td>
+<td>Most direct paths, with proper corner cutting</td>
 <td>Quality matters more than cost</td>
 </tr>
 <tr>
 <td><strong>Lazy Theta*</strong> <em>(Balanced)</em></td>
 <td>Nearly Theta* quality, near A* cost</td>
-<td><strong>The sensible default</strong></td>
+<td><strong>A good default for most projects</strong></td>
 </tr>
 </tbody>
 </table>
@@ -491,27 +494,25 @@ your layout.</p>
 geometry, so a smoothed path won't cut through a wall.</p>
 </blockquote>
 <h3 id="where-the-work-runs">Where the work runs</h3>
-<p><strong>Path solving runs on the CPU</strong>, on a worker pool, off
-the game thread. It is deterministic: same input, same output, every
-time - which is what makes replays, lockstep multiplayer and automated
-tests reproducible.</p>
-<p>The GPU is used for <strong>voxelization</strong>: turning your
-geometry into the octree, where it is substantially faster. If no
-suitable GPU is present it falls back to the CPU automatically, so
-nothing breaks.</p>
+<p><strong>Path solving runs on the CPU</strong>, on a pool of worker
+threads, off the game thread. It is deterministic, so the same input
+always gives the same path. That matters for replays, lockstep
+multiplayer and automated tests.</p>
+<p>The GPU is used for <strong>voxelization</strong>, which turns your
+geometry into the octree. That step is much faster on the GPU. If there
+is no suitable GPU, the plugin uses the CPU instead.</p>
 <blockquote>
-<p><strong>Coming soon:</strong> a GPU <em>path solver</em> exists as
-part of our research programme and is currently in experimental
-validation. It ships in a future free update once the supporting
-research clears peer review - in this release, path solving is
-CPU-only by design.</p>
+<p><strong>Coming soon:</strong> we also have a GPU <em>path solver</em>.
+It is part of our research work and is still being tested. It will come
+in a later free update, after the research behind it has been peer
+reviewed. In this release, path solving is always done on the CPU.</p>
 </blockquote>
 <hr />
 <h2 id="7-things-that-move">7. Things that move</h2>
 <p>Static geometry is baked into the octree. For things that move, add a
 <strong><code>LcmDynamicObstacleComponent</code></strong> to the actor.
-It restamps the octree as the actor moves, and agents reroute around it.
-That's <a href="dynamic-obstacles.html">Tutorial 05</a>.</p>
+It updates the octree as the actor moves, and agents reroute around it.
+<a href="dynamic-obstacles.html">Tutorial 05</a> covers this.</p>
 <hr />
 <h2 id="8-terms-youll-meet-in-the-rest-of-the-docs">8. Terms you'll meet
 in the rest of the docs</h2>
@@ -559,16 +560,16 @@ one</td>
 <hr />
 <h2 id="recap">Recap</h2>
 <ul>
-<li>The octree stores <strong>empty space</strong>, and empty space is
-cheap.</li>
+<li>The octree stores <strong>empty space</strong>, and large empty areas
+take very little memory.</li>
 <li><strong>One <code>LcmNavigationManagerSVO</code></strong> per
 level.</li>
-<li><strong>Finite</strong> unless you genuinely have an open
+<li>Use <strong>Finite</strong> unless you really have an open
 world.</li>
 <li><strong><code>MinVoxelSize</code></strong> ≈ half your tightest gap;
 it snaps to powers of two.</li>
-<li><strong><code>ClearancePadding</code></strong> below
-<code>MinVoxelSize</code>, or you'll seal your own level.</li>
+<li>Keep <strong><code>ClearancePadding</code></strong> below
+<code>MinVoxelSize</code>, or openings in your level will close up.</li>
 <li><strong>Lazy Theta* + Curved Spline</strong> is a good default for a
 flyer.</li>
 </ul>

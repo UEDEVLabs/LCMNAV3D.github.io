@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -241,7 +241,7 @@
 id="tutorial-13---lcm-fly-to-location-no-behavior-tree-no-statetree">Tutorial
 13 - LCM Fly To Location (no Behavior Tree, no StateTree)</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> <code>LCM Fly To Location</code> is the
+<p><strong>In short:</strong> <code>LCM Fly To Location</code> is the
 flying counterpart of the engine's <strong>AI Move To</strong> node.
 Call it from any Blueprint - a level script, a pawn's Event Graph, a
 widget - with a pawn and a destination, and it fires <strong>On
@@ -255,8 +255,8 @@ data built or baked (as for any agent).</li>
 <li>A <strong>pawn</strong>. Either kind works:
 <ul>
 <li>With an enabled <strong>LCM Flight Movement Component</strong>, the
-pawn flies with its 6-DOF dynamics - banking, braking, a fish's tail -
-exactly as it does under the Fly To tasks. The component's <em>Agent
+pawn flies with its 6-DOF dynamics (banking, braking, a fish's tail),
+the same as it does under the Fly To tasks. The component's <em>Agent
 Scale</em> carries over, so a fish at 0.08 uses its own acceptance,
 speeds and clearances.</li>
 <li>Without one, the pawn is moved kinematically at <em>Flight
@@ -392,10 +392,11 @@ LCM Fly To</strong> (on the pawn) ends the request with
 flying one.</li>
 </ul>
 <p>A stopped 6-DOF pawn <strong>holds where it was stopped</strong>
-rather than cruising on its last command. A body that cannot stop dead -
-a fish, a bird - glides its stopping distance and comes back. Measured
-on the demo fish: at most 4-7 cm past the cancel point, and settled
-within 2 cm of it 4 s later.</p>
+instead of carrying on with its last command. A body that can't stop
+at once, like a fish or a bird, glides for its stopping distance and then
+comes back. With the demo fish, this was at most 4-7 cm past the point
+where it was cancelled, and it had settled within 2 cm of that point 4 s
+later.</p>
 <h2 id="how-arrival-is-judged">How arrival is judged</h2>
 <ul>
 <li>A pawn arrives within <strong>Acceptance Radius</strong> of the
@@ -412,12 +413,12 @@ infinite world, is <strong>not</strong> a failure. The request
 waits.</li>
 <li>The request pauses with the game.</li>
 </ul>
-<h2 id="one-fly-to-not-three">One Fly To, not three</h2>
-<p>The node has no movement code of its own. It runs the StateTree Fly
-To task's own code - the same planner, cost areas, re-planning,
-streaming waits, avoidance, speed governor, arrival and flight-component
-hand-off. A pawn flies the same whether a tree or this node sends
-it.</p>
+<h2 id="one-fly-to-not-three">It uses the same Fly To code</h2>
+<p>The node has no movement code of its own. It runs the code of the
+StateTree Fly To task, with the same planner, cost areas, re-planning,
+streaming waits, avoidance, speed governor, arrival and hand-off to the
+flight component. A pawn flies the same way whether a tree or this node
+sends it.</p>
 <p><strong>Do not drive one pawn from two places at once.</strong> A
 pawn running a Fly To task in a Behavior Tree or StateTree and an
 <code>LCM Fly To Location</code> at the same time has two sources of
@@ -434,14 +435,13 @@ Fly-&gt;Activate();</code></pre>
 <p>In C++, bind the delegates <strong>before</strong> calling
 <code>Activate()</code>: an invalid request fires On Fail inside
 <code>Activate()</code>. The Blueprint node does this for you.</p>
-<h2 id="verified">Verified</h2>
-<p>The battery gate <code>g35_flyto_node</code>
-(<code>-run=LcmNavCostTest -Group=FlyToNode</code>) flies a pawn with no
-controller through the demo fish tank at a 1 cm leaf and the stock
-navigator pawn across the metre-scale cost showcase. It checks every
-case above: an invalid request, arrival and a single On Success, never
-inside rock or glass, No Path, replacement, Cancel and hold, a chase to
-a moving actor.</p>
+<h2 id="verified">How it is tested</h2>
+<p>An automated test flies a pawn with no controller through the demo
+fish tank at a 1 cm leaf, and flies the stock navigator pawn across the
+metre-scale cost showcase. It covers every case on this page: an invalid
+request, arrival with a single On Success, never ending up inside rock or
+glass, No Path, replacing a request, Cancel and hold, and chasing a
+moving actor.</p>
   <div class="pager"><a href="small-worlds.html">&larr; Small worlds</a><a href="stock-navigation.html">Stock Move To and EQS &rarr;</a></div>
   <footer>
    <p><strong>LCM Nav3D</strong> True Volumetric 3D Navigation for Unreal Engine &nbsp;|&nbsp;

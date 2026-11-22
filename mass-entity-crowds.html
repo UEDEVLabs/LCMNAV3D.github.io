@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -240,15 +240,16 @@
   <h1 id="tutorial-06---mass-entity-crowds-10k-agents">Tutorial 06 - Mass
 Entity crowds (10K+ agents)</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p>Add one trait to a Mass Entity Config and a crowd navigates in full
-3D. No per-agent controller, no tick function, no code.</p>
+<p>Add one trait to a Mass Entity Config and a crowd can navigate in 3D.
+You don't need a controller for each agent, a tick function or any
+code.</p>
 <p><strong>Time:</strong> ~20 minutes. <strong>You'll end with:</strong>
 thousands of agents flying to a goal.</p>
 <blockquote>
-<p>A <code>UActor</code> AI agent costs roughly 50 µs/tick once it has a
-controller, movement component and behaviour tree - a few hundred
-saturate the game thread. Mass represents agents as ECS fragments
-instead, so the same work runs in one processor sweep.</p>
+<p>An actor-based AI agent with a controller, movement component and
+behaviour tree costs about 50 µs per tick, so a few hundred of them fill
+up the game thread. Mass stores agents as ECS fragments instead, and
+processes all of them in one pass.</p>
 </blockquote>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
@@ -257,8 +258,8 @@ instead, so the same work runs in one processor sweep.</p>
 you stripped them, re-enable both or the module fails to load.</li>
 <li>An <code>LcmNavigationManagerSVO</code> in the level with navigation
 built.</li>
-<li>Epic's "MassEntity Quick Start" if you have never used Mass - this
-tutorial only adds a trait on top of the standard flow.</li>
+<li>If you have never used Mass, read Epic's "MassEntity Quick Start"
+first. This tutorial only adds a trait to the standard setup.</li>
 </ul>
 <hr />
 <h2 id="step-1-create-the-agent-config">Step 1: Create the agent
@@ -266,7 +267,7 @@ config</h2>
 <p><strong>Add → Miscellaneous → Data Asset →
 <code>MassEntityConfigAsset</code></strong>. Name it
 <code>DA_MyCrowd</code>.</p>
-<p>Open it and add three traits - one from each category:</p>
+<p>Open it and add three traits, one from each category:</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
@@ -322,13 +323,12 @@ worlds</td>
 </table>
 </div>
 <blockquote>
-<p>⚠ <strong>Add a rendering trait or your agents are
-invisible.</strong> They spawn and navigate correctly, they just draw
-nothing - the navigation trait deliberately owns navigation only. This
-is the most common first-run surprise.</p>
+<p><strong>Note: add a rendering trait, or you won't see your
+agents.</strong> They spawn and navigate correctly but nothing is drawn,
+because the navigation trait only handles navigation. Most people run
+into this the first time.</p>
 </blockquote>
-<h3 id="movement-settings-worth-knowing">Movement settings worth
-knowing</h3>
+<h3 id="movement-settings-worth-knowing">Useful movement settings</h3>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
@@ -342,14 +342,14 @@ knowing</h3>
 <tr>
 <td><code>Max Turn Rate Deg</code></td>
 <td><code>360</code></td>
-<td>The knob that turns square corners into arcs. <code>0</code> =
-instant snap</td>
+<td>Rounds off sharp corners into curves. <code>0</code> = turn
+instantly</td>
 </tr>
 <tr>
 <td><code>Max Acceleration</code></td>
 <td><code>2000</code></td>
-<td>cm/s². With turn rate, this is what makes movement look
-weighted</td>
+<td>cm/s². Together with turn rate, this gives the movement a sense of
+weight</td>
 </tr>
 <tr>
 <td><code>Flight Style</code></td>
@@ -372,7 +372,7 @@ turns</td>
 </tbody>
 </table>
 </div>
-<p>Defaults give natural movement out of the box.</p>
+<p>The defaults already give natural-looking movement.</p>
 <hr />
 <h2 id="step-2-spawn-them">Step 2: Spawn them</h2>
 <ol type="1">
@@ -380,7 +380,7 @@ turns</td>
 level.</li>
 <li>In <strong>Entity Types</strong>, reference
 <code>DA_MyCrowd</code>.</li>
-<li>Set <strong>Spawn Count</strong> - start at 100 while you wire it
+<li>Set <strong>Spawn Count</strong>. Start with 100 while you set it
 up.</li>
 <li>Give it a spawn-distribution asset so agents start at distinct
 positions <strong>inside your navigation volume</strong>.</li>
@@ -417,8 +417,8 @@ they stop.</p>
 <details>
 <summary>Setting a goal from code instead</summary>
 
-<p>Write the goal and flip the status; the processors own every
-transition from there.</p>
+<p>Write the goal and set the status. The processors handle everything
+after that.</p>
 <pre class="cpp"><code>auto&amp; Req = EntityManager.GetFragmentDataChecked&lt;FLcmMassPathRequestFragment&gt;(Handle);
 Req.Goal   = TargetPos;
 Req.Status = ELcmMassPathStatus::Pending;</code></pre>
@@ -430,11 +430,11 @@ can branch on it.</p>
 <hr />
 <h2 id="step-4-check-it-works">Step 4: Check it works</h2>
 <ol type="1">
-<li>Press <strong>Validate Entity Config</strong> on the asset. It
-catches the trait mistakes that are silent at runtime and all present as
-"my agents don't move".</li>
-<li>Press Play with <code>r.LcmNav.Mass.DebugDraw 1</code> - agents draw
-as status-coloured spheres (grey idle, yellow pending, green complete,
+<li>Press <strong>Validate Entity Config</strong> on the asset. It finds
+trait mistakes that give no error at runtime, where the only sign is that
+the agents don't move.</li>
+<li>Press Play with <code>r.LcmNav.Mass.DebugDraw 1</code>. Agents are
+drawn as spheres coloured by status (grey idle, yellow pending, green complete,
 red failed) with a line to their waypoint.</li>
 <li>Scale up gradually: 100, then 1,000, then 10,000, watching frame
 time.</li>
@@ -482,8 +482,8 @@ fragment</td>
 </div>
 <hr />
 <h2 id="tuning">Tuning</h2>
-<p>Kill-switches and global overrides. Production authoring is the
-trait, not the console.</p>
+<p>These console variables switch features off or override them for the
+whole game. For normal setup, use the trait settings instead.</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Table">
 <table>
 <thead>
@@ -518,8 +518,8 @@ chunk</strong>. Keep crowd goals in the same chunk as the crowd, or use
 a Behaviour Tree agent for long cross-chunk routes.</p>
 <h2 id="related">Related</h2>
 <ul>
-<li><a href="mass-traits.html">Mass Trait Reference</a> - every trait,
-the combination matrix, and the World Partition trap.</li>
+<li><a href="mass-traits.html">Mass Trait Reference</a>: every trait,
+which ones you can combine, and a World Partition problem to avoid.</li>
 <li><a href="statetree-agent.html">Tutorial 04 - StateTree</a>, the
 per-entity AI layer that pairs with Mass.</li>
 </ul>

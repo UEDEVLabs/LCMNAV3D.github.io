@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -240,7 +240,7 @@
   <h1 id="tutorial-10---cost-areas-query-filters-and-3d-navlinks">Tutorial
 10 - Cost areas, query filters and 3D NavLinks</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> Drop an <code>ALcmNavAreaModifier</code>
+<p><strong>In short:</strong> Drop an <code>ALcmNavAreaModifier</code>
 volume, give it a stock NavArea class, and every LCM Nav3D planner
 routes by it: FlyTo (BT and StateTree), Fly To Location, Mass crowds,
 <code>FindPath</code> and the stock Move To. A stock
@@ -281,10 +281,10 @@ more)</td>
 </table>
 </div>
 <p>A <strong>query filter</strong> on an agent overrides those per
-class, exactly as it does for Recast: a travel cost override, an
-entering cost override, or <strong>excluded</strong>. Two agents read
-the same volume differently. The prey avoids a predator's territory that
-the predator itself ignores.</p>
+class, the same way it does for Recast: a travel cost override, an
+entering cost override, or <strong>excluded</strong>. That way two agents
+can treat the same volume differently. For example, prey can avoid a
+predator's territory while the predator ignores it.</p>
 <p>Routes follow the cheapest total, not the shortest distance. An agent
 goes round a storm when going round is cheaper, and flies straight
 through when the detour costs more than the storm.</p>
@@ -394,8 +394,8 @@ sees</h2>
 <ul>
 <li><strong>Cost View</strong>: Regions draws each volume and what it
 costs. Heat tints the octree by price.</li>
-<li><strong>Cost View Filter</strong>: whose eyes the view looks
-through. Set it to the prey's filter to see the territory light up.</li>
+<li><strong>Cost View Filter</strong>: which agent's filter the view
+uses. Set it to the prey's filter and the territory is highlighted.</li>
 </ul>
 <p>The console variable <code>r.LcmNav.CostView 0|1|2</code> overrides
 the property while playing. The Gameplay Debugger's LCM category shows
@@ -476,7 +476,7 @@ preferred lane off the direct line, a no-fly goal beside a storm goal
 (impassable is not the same as expensive), one territory that only the
 prey pays for, a toll gate, and two craft of different sizes making the
 same decision.</p>
-<h2 id="acceptance-test-manual">Acceptance test (manual)</h2>
+<h2 id="acceptance-test-manual">Testing it by hand</h2>
 <ol type="1">
 <li>Place a <code>Storm (x5)</code> box between two points, with open
 space around it.</li>

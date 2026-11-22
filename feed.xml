@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>LCM Nav3D Documentation</title>
-  <subtitle>Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.</subtitle>
+  <subtitle>3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.</subtitle>
   <link href="https://lcmnav3d.github.io/feed.xml" rel="self"/>
   <link href="https://lcmnav3d.github.io/"/>
   <id>https://lcmnav3d.github.io/</id>
@@ -13,7 +13,7 @@
     <link href="https://lcmnav3d.github.io/"/>
     <id>https://lcmnav3d.github.io/</id>
     <updated>2026-10-24T00:00:00Z</updated>
-    <summary>Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.</summary>
+    <summary>3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.</summary>
   </entry>
   <entry>
     <title>What's New in LCM Nav3D 3.6.0 | Release Notes</title>
@@ -209,7 +209,7 @@
     <link href="https://lcmnav3d.github.io/troubleshooting.html"/>
     <id>https://lcmnav3d.github.io/troubleshooting.html</id>
     <updated>2026-10-24T00:00:00Z</updated>
-    <summary>LCM Nav3D problems in the order people hit them: agents that will not move, &quot;no path found&quot;, ignored geometry, dead dynamic obstacles and performance issues.</summary>
+    <summary>Common LCM Nav3D problems and fixes: agents that will not move, &quot;no path found&quot;, ignored geometry, dynamic obstacles that do nothing, and performance.</summary>
   </entry>
   <entry>
     <title>6-DOF Flight and Swim Locomotion Reference | LCM Nav3D</title>

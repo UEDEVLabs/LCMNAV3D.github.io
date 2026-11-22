@@ -59,7 +59,7 @@
    "@id": "https://lcmnav3d.github.io/#website",
    "url": "https://lcmnav3d.github.io/",
    "name": "LCM 3D Navigation AI Documentation",
-   "description": "Production-grade volumetric 3D navigation for Unreal Engine 5. Sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and true-3D EQS.",
+   "description": "3D navigation for flying and swimming AI in Unreal Engine 5: sparse voxel octree pathfinding, GPU voxelization, 10,000+ Mass Entity agents and 3D EQS.",
    "inLanguage": "en",
    "publisher": {
     "@id": "https://lcmnav3d.github.io/#organization"
@@ -89,7 +89,7 @@
     "https://www.youtube.com/watch?v=7_F3AvgQIQU"
    ],
    "image": "https://lcmnav3d.github.io/og.jpg",
-   "description": "An industry-leading, production-grade, heavily optimised sparse voxel octree navigation plugin for Unreal Engine, built for AAA-scale projects. It pathfinds through true 3D volume rather than a walkable surface, for flying, swimming and free-floating agents and Mass Entity crowds. GPU-built navigation that checks itself on each machine, asynchronous pathfinding, deterministic results, explicit frame-budget controls and World Partition support. Complete C++ source, Blueprint exposed.",
+   "description": "A sparse voxel octree navigation plugin for Unreal Engine. It finds paths through 3D space instead of over a walkable surface, for flying, swimming and free-floating agents and for Mass Entity crowds. It builds navigation on the GPU and tests the GPU on each machine first, runs path requests off the game thread, gives the same result for the same input, and supports World Partition. Full C++ source, and everything is available in Blueprint.",
    "author": {
     "@type": "Person",
     "name": "L. Charitha Madhushanka"
@@ -241,7 +241,7 @@
 PerceptionRelay - bind <code>OnTargetPerceptionUpdated</code>
 directly</h1>
 <p class="docmeta">Applies to LCM Nav3D 3.6.0 · Unreal Engine 5.2 to 5.8 · Updated <time datetime="2026-10-24">24 October 2026</time></p>
-<p><strong>TL;DR:</strong> Unreal Engine's
+<p><strong>In short:</strong> Unreal Engine's
 <code>UAIPerceptionComponent</code> already emits perception updates as
 a delegate. You don't need a custom BT service - just bind the delegate
 in your AI controller and write to a blackboard key.</p>
@@ -278,15 +278,15 @@ void AYourAIController::OnPerceptionUpdate(AActor* Actor, FAIStimulus Stimulus)
         }
     }
 }</code></pre>
-<p>That's the canonical UE5 way. Three lines in your AIController + a
+<p>This is the usual UE5 approach: three lines in your AIController and a
 Blackboard decorator in the BT.</p>
-<h2 id="why-we-didnt-ship-lcm_btservice_perceptionrelay">Why we didn't
-ship <code>LCM_BTService_PerceptionRelay</code></h2>
+<h2 id="why-we-didnt-ship-lcm_btservice_perceptionrelay">Why there is no
+<code>LCM_BTService_PerceptionRelay</code></h2>
 <p>A custom service that ticks each frame and re-queries
 <code>GetCurrentlyPerceivedActors</code> is less efficient than binding
 the <strong>event-driven</strong> <code>OnTargetPerceptionUpdated</code>
-delegate. The stock pattern is also more idiomatic - every UE5 AI
-tutorial uses this pattern.</p>
+delegate. It is also the approach most UE5 AI tutorials use, so it will
+look familiar.</p>
 <p>The LCM Nav3D StateTree variant
 <code>FLcmSTEval_PerceptionRelay</code> is kept because StateTree has no
 per-state perception delegate (its evaluators are tick-based by design).
